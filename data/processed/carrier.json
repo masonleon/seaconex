@@ -1,0 +1,44 @@
+[
+  {
+    "carrier_id":"ICL",
+    "carrier_name":"Independent Container Line",
+    "carrier_smdg_code":null,
+    "carrier_nmfta_code":"IILU",
+    "carrier_website":"https:\/\/www.icl-ltd.com\/"
+  },
+  {
+    "carrier_id":"ACL",
+    "carrier_name":"Atlantic Container Line",
+    "carrier_smdg_code":"ACL",
+    "carrier_nmfta_code":"ACLU",
+    "carrier_website":"https:\/\/www.aclcargo.com\/"
+  },
+  {
+    "carrier_id":"HLUS",
+    "carrier_name":"Hapag-Lloyd USA, LLC",
+    "carrier_smdg_code":"HLC",
+    "carrier_nmfta_code":"HLCU",
+    "carrier_website":"https:\/\/www.hapag-lloyd.com\/en\/offices-localinfo\/north-america\/usa\/piscataway-area-us-flag-main-office.html"
+  },
+  {
+    "carrier_id":"BISL",
+    "carrier_name":"Bermuda International Shipping Ltd.",
+    "carrier_smdg_code":null,
+    "carrier_nmfta_code":"BISU",
+    "carrier_website":"https:\/\/www.bermudaislander.bm\/"
+  },
+  {
+    "carrier_id":"SISL",
+    "carrier_name":"Somers Isles Shipping Ltd.",
+    "carrier_smdg_code":null,
+    "carrier_nmfta_code":"SISJ",
+    "carrier_website":"https:\/\/www.somers-isles-shipping.com\/"
+  },
+  {
+    "carrier_id":"BCL",
+    "carrier_name":"Bermuda Container Line",
+    "carrier_smdg_code":null,
+    "carrier_nmfta_code":"BCLU",
+    "carrier_website":"https:\/\/neptunebermuda.com\/"
+  }
+]

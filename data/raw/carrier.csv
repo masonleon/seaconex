@@ -1,0 +1,7 @@
+﻿carrier_id,carrier_name,carrier_smdg_code,carrier_nmfta_code,carrier_website
+ICL,Independent Container Line,,IILU,https://www.icl-ltd.com/
+ACL,Atlantic Container Line,ACL,ACLU,https://www.aclcargo.com/
+HLUS,"Hapag-Lloyd USA, LLC",HLC,HLCU,https://www.hapag-lloyd.com/en/offices-localinfo/north-america/usa/piscataway-area-us-flag-main-office.html
+BISL,Bermuda International Shipping Ltd.,,BISU,https://www.bermudaislander.bm/
+SISL,Somers Isles Shipping Ltd.,,SISJ,https://www.somers-isles-shipping.com/
+BCL,Bermuda Container Line,,BCLU,https://neptunebermuda.com/
