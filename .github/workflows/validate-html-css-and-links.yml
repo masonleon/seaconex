@@ -1,0 +1,60 @@
+name: "Validate HTML, CSS, and Links"
+on: push
+
+jobs: 
+  linkChecker: 
+    runs-on: ubuntu-latest
+    steps: 
+      - 
+        uses: actions/checkout@v2
+      - 
+        id: lc
+        name: "Run link checker"
+        uses: peter-evans/link-checker@v1.2.0
+        with: 
+          args: "index.html README.md -x (?i)^https?:\\/\\/(github.com\\/NEU-(CS|DS)-\\d{4}-[SF]\\d{2}\\/)|(localhost|127.0.0.1|::1):\\d+"
+      -       
+        name: "Fail and print if there were link errors"
+        run: "test -f link-checker/out.md && cat link-checker/out.md; exit ${{ steps.lc.outputs.exit_code }}"
+        
+  htmlValidator: 
+    runs-on: ubuntu-latest
+    steps: 
+      - 
+        uses: actions/checkout@v2
+      - 
+        name: "Install dependencies"
+        run: "npm i html-validator-cli"
+      - 
+        name: "Validate HTML"
+        env: 
+          CI: true
+        run: "find . -path ./node_modules -prune -o -name '*.html' -exec node_modules/.bin/html-validator --file={} --quiet --format=gnu --ignore='Error: Bad value “100%” for attribute “width” on element “video”: Expected a digit but saw “%” instead.' \\; > htmlResultsQuiet.log"
+      - 
+        name: "Validate HTML (pretty print)"
+        env: 
+          CI: true
+        run: "find . -path ./node_modules -prune -o -name '*.html' -exec echo {} \\; -exec node_modules/.bin/html-validator --file={} --verbose --quiet --format=gnu --ignore='Error: Bad value “100%” for attribute “width” on element “video”: Expected a digit but saw “%” instead.' \\; > htmlResults.log"
+      - 
+        name: "Fail and print if there were HTML errors"
+        # run: "((! test -f htmlResultsQuiet.log) && echo No errors && exit 0) || (echo ***HTML Errors*** && cat htmlResultsQuiet.log && exit 1)"
+        run: "if [[ $(sed -e :a -e '/^\\n*$/{$d;N;};/\\n$/ba' htmlResultsQuiet.log | wc -l) -ge 1 ]]; then echo ***HTML Errors*** && cat htmlResults.log && exit 1; else echo No errors && exit 0; fi"
+        if: always()
+
+  cssValidator: 
+    runs-on: ubuntu-latest
+    steps: 
+      - 
+        uses: actions/checkout@v2
+      - 
+        name: "Install dependencies"
+        run: "npm i csstree-validator"
+      - 
+        name: "Validate CSS"
+        env: 
+          CI: true
+        run: "find . -path ./node_modules -prune -o -name '*.css' -exec node_modules/.bin/csstree-validator {} -r gnu \\; > cssResults.log;"
+      - 
+        name: "Fail and print if there were CSS errors"
+        run: "if [[ $(sed -e :a -e '/^\\n*$/{$d;N;};/\\n$/ba' cssResults.log | wc -l) -ge 1 ]]; then echo ***CSS Errors*** && cat cssResults.log && exit 1; else echo No errors && exit 0; fi"
+        if: always()
