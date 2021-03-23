@@ -22,7 +22,7 @@ function map() {
             var g = svg.append("g");
 
             // load and display the World
-            d3.json("../countries-110m.json").then(function(topology) {
+            d3.json("/data/countries-110m.json").then(function(topology) {
 
                 // load and display the cities
                 d3.json('./data/processed/terminal.json').then(function(data) {
