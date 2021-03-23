@@ -26,13 +26,13 @@
 <body>
 
   <!-- Update this with your GitHub repo URL -->
-  <span id='forkongithub'><a href='https://github.com/NEU-CS-7250-S21-Staff/Project'>Fork me on GitHub</a></span>
+  <span id='forkongithub'><a href='https://github.com/NEU-CS-7250-S21/project-group-09-seaconex'>Fork me on GitHub</a></span>
 
   <!-- Writeup -->
   <div class='content-column'>
-   <h1>Project Group ##: Topic, CS 7250 S21</h1>
+   <h1>Project Group 09: SeaCONEX Maritime Supply Chain Networks, CS 7250 S21</h1>
     
-    <p><strong>Student One</strong>, <strong>Student Two</strong>, <strong>Student Three</strong></p>
+    <p><strong>Mason Leon</strong>, <strong>Rithika Lakshminarayanan</strong>, <strong>Alice Tilles</strong></p>
     
     <p>Service-Learning Course Project as part of
 	<a href='https://northeastern.instructure.com/courses/63405'>CS 7250 S21 Information Visualization: Theory and Applications</a>, 
@@ -61,14 +61,17 @@
       preserveAspectRatio='xMidYMid meet' class='vis-svg' viewBox='0 0 1000 1000' version='1.1' xmlns='http://www.w3.org/2000/svg' xmlns:xlink='http://www.w3.org/1999/xlink'>
       
       
-      <text x='30%' y='35%' text-anchor='middle'>A</text>
+      <!-- <text x='30%' y='35%' text-anchor='middle'>A</text>
       <text x='70%' y='35%' text-anchor='middle'>B</text>
       <rect x='20%' y='40%' width='20%' height='20%' fill='yellow'></rect>
-      <circle cx='70%' cy='50%' r='10%' fill='blue'></circle>
+      <circle cx='70%' cy='50%' r='10%' fill='blue'></circle> -->
       
       
     <!-- Don't delete the closing tag! -->
     </svg>
+
+    <div id='vis-map-1'></div>
+
   </div>
   
   <!-- Further writeup -->
@@ -114,62 +117,6 @@
   <script src='lib/d3.v6.1.1/d3.min.js'></script>
   <script src="https://unpkg.com/topojson@3"></script>
   <script src='js/visualization.js'></script>
-  <script>
-    var width = 960,
-        height = 500;
-    
-    var projection = d3.geoMercator()
-        .center([0, 0])
-        .scale(200)
-        .rotate([0,0]);
-    
-    var svg = d3.select("body").append("svg")
-        .attr("width", width)
-        .attr("height", height);
-    
-    var path = d3.geoPath()
-        .projection(projection);
-    
-    var g = svg.append("g");
-    
-    // load and display the World
-    d3.json("countries-110m.json").then(function(topology) {
-    
-      // load and display the cities
-      d3.json('./data/processed/terminal.json').then(function(data) {
-          g.selectAll("circle")
-            .data(data)
-            .enter()
-            .append("circle")
-            .attr("cx", function(d) {
-                    return projection([d.terminal_lon, d.terminal_lat])[0];
-            })
-            .attr("cy", function(d) {
-                    return projection([d.terminal_lon, d.terminal_lat])[1];
-            })
-            .attr("r", 5)
-            .style("fill", "red");
-      });
-
-      g.selectAll("path")
-          .data(topojson.feature(topology, topology.objects.countries).features)
-          .enter().append("path")
-          .attr("d", path);
-    
-    });
-
-    var zoom = d3.zoom()
-      .scaleExtent([1, 20])
-      .on('zoom', function(event) {
-          g.selectAll('path')
-           .attr('transform', event.transform);
-          g.selectAll("circle")
-           .attr('transform', event.transform);
-});
-
-svg.call(zoom);
-    
-    </script>
 </body>
 
 </html>

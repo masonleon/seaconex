@@ -1,0 +1,9 @@
+version: '3.8'
+services:
+  searoute:
+    build:
+      context: .
+      dockerfile: docker/Dockerfile
+    container_name: searoute
+    volumes:
+      - ./data/:/data
