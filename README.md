@@ -2,7 +2,7 @@
 
 This repository is your starting point for your project. Please look through all these materials so you know how to organize your project.
 
-Link to your GitHub pages website: `[insert your *clickable* hyperlink here]`
+Link to your GitHub pages website: https://neu-cs-7250-s21.github.io/project-group-09-seaconex
 
 # Aim of the assignment
 
