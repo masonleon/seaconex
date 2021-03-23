@@ -1,4 +1,4 @@
-﻿service_id_fk,service_proforma_port_call_sequence_no,service_proforma_terminal_call_sequence_no,service_trade,service_trade_lane,rotation
+﻿service_id_fk,service_proforma_port_call_sequence_no,service_proforma_terminal_call_sequence_no,service_trade,service_trade_lane,terminal
 TAC1,0,0,Trans-Atlantic,E,PSAP
 TAC1,1,1,Trans-Atlantic,E,NCSPA
 TAC1,2,2,Trans-Atlantic,E,ACOT

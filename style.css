@@ -25,6 +25,12 @@ h1, h2, h3 {
   background-color: #f4f1f0;
 }
 
+path {
+	stroke: white;
+	stroke-width: 0.25px;
+	fill: grey;
+}
+
 /* Fork on GitHub ribbon via https://codepo8.github.io/css-fork-on-github-ribbon/# */  
 #forkongithub a{
 	background:#00F;
