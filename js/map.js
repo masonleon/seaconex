@@ -4,10 +4,9 @@ function map() {
     var width = 960,
         height = 500;
 
-    console.log('creating map');
 
-    function my(selector) {
-        console.log("creating map (inner)...");
+    function createMap(selector) {
+
         var projection = d3.geoMercator()
                 .center([0, 0])
                 .scale(200)
@@ -63,19 +62,19 @@ function map() {
 
     }
 
-    my.width = function(value) {
+    createMap.width = function(value) {
         if (!arguments.length) return width;
         width = value;
-        return my;
+        return createMap;
       };
     
-      my.height = function(value) {
+      createMap.height = function(value) {
         if (!arguments.length) return height;
         height = value;
-        return my;
+        return createMap;
       };
 
-    return my;
+    return createMap;
 
 
 };
