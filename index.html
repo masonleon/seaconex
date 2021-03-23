@@ -55,6 +55,9 @@
   
   <!-- Visualization goes here -->
   <div class='vis-holder'>
+    <div id='vis-map-1'></div>
+
+
     <!-- Change viewbox to whatever you want, e.g., '0 0 1000 6000' This determines your aspect ratio and coordinate system -->    
     <!-- Delete all the sample SVG code below after the viewbox to before the closing tag. Populate this part of the SVG with D3. -->
     <svg id='vis-svg-1'
@@ -69,8 +72,6 @@
       
     <!-- Don't delete the closing tag! -->
     </svg>
-
-    <div id='vis-map-1'></div>
 
   </div>
   
@@ -116,7 +117,9 @@
   <!-- Scripts at the end avoid need for dealing with async, defer, or onload event handlers -->
   <script src='lib/d3.v6.1.1/d3.min.js'></script>
   <script src="https://unpkg.com/topojson@3"></script>
+  <script src='js/map.js'></script>
   <script src='js/visualization.js'></script>
+
 </body>
 
 </html>
