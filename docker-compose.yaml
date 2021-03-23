@@ -3,7 +3,7 @@ services:
   seaconexlab: 
     restart: always
     build:
-      context: .
+      context: ..
       dockerfile: docker/Dockerfile
     container_name: seaconex
     ports:
