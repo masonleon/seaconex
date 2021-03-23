@@ -6,8 +6,8 @@ function map() {
 
     console.log('creating map');
 
-    function createMap(selector) {
-        console.log("creating map...");
+    function my(selector) {
+        console.log("creating map (inner)...");
         var projection = d3.geoMercator()
                 .center([0, 0])
                 .scale(200)
@@ -59,10 +59,23 @@ function map() {
 
             svg.call(zoom);
 
-            return createMap;
+            return map;
+
     }
 
-    return map;
+    my.width = function(value) {
+        if (!arguments.length) return width;
+        width = value;
+        return my;
+      };
+    
+      my.height = function(value) {
+        if (!arguments.length) return height;
+        height = value;
+        return my;
+      };
+
+    return my;
 
 
 };

@@ -4,10 +4,8 @@
 
   console.log('Hello, world!');
 
-
-  let mapViz = map;
-  mapViz.selector = '#vis-map-1';
-  
+  let myMap = map()
+  myMap('#vis-map-1');  
   
 })());
 
