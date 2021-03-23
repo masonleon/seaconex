@@ -8,9 +8,9 @@ RUN apt-get update && \
     unzip tmp.zip && \
     rm -f tmp.zip
 
-COPY data /data
+COPY data/searoute/data/ /data
 
-COPY run.sh run.sh
+COPY docker/searoute/run.sh run.sh
 RUN chmod +x run.sh
 
 WORKDIR /searoute-2.1
