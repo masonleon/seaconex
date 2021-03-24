@@ -4,4 +4,9 @@
 
   console.log('Hello, world!');
 
+  let myMap = map()
+  myMap('#vis-map-1');  
+  
 })());
+
+
