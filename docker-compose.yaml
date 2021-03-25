@@ -9,6 +9,8 @@ services:
     volumes:
       - ./notebooks/:/home/jovyan/work/notebooks
       - ./data/:/home/jovyan/work/data
+      - ./files/:/home/jovyan/work/files
+      - ./img/:/home/jovyan/work/img
     ports:
       - 8888:8888
     environment:
