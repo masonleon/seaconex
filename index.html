@@ -54,26 +54,39 @@
   </div>
   
   <!-- Visualization goes here -->
+  
   <div class='vis-holder'>
-    <div id='vis-map-1'></div>
 
+    <div class='flex-box'>
 
-    <!-- Change viewbox to whatever you want, e.g., '0 0 1000 6000' This determines your aspect ratio and coordinate system -->    
-    <!-- Delete all the sample SVG code below after the viewbox to before the closing tag. Populate this part of the SVG with D3. -->
-    <!-- <svg id='vis-svg-1'
-      preserveAspectRatio='xMidYMid meet' class='vis-svg' viewBox='0 0 1000 1000' version='1.1' xmlns='http://www.w3.org/2000/svg' xmlns:xlink='http://www.w3.org/1999/xlink'>
-      
-       -->
-      <!-- <text x='30%' y='35%' text-anchor='middle'>A</text>
-      <text x='70%' y='35%' text-anchor='middle'>B</text>
-      <rect x='20%' y='40%' width='20%' height='20%' fill='yellow'></rect>
-      <circle cx='70%' cy='50%' r='10%' fill='blue'></circle> -->
-      
-      
-    <!-- Don't delete the closing tag! -->
-    <!-- </svg> -->
+      <div id='filters-component'>
+        Filters Here
+      </div>
+
+      <div id='center-component'>
+
+        <div id='vis-map-1'> </div>
+        <div id='map-settings'> 
+          <div id='toggle'>[Toggle]</div>
+          <div id='legend'>[Legend]</div>
+
+        </div>
+
+      </div>
+
+      <div id='detail-pane'>
+        Detail Pane Here
+      </div>
+
+    </div>
+
+    <div id="treegraph">[Treegraph]</div>
+
 
   </div>
+
+
+
   
   <!-- Further writeup -->
   <div class = 'content-column'>
