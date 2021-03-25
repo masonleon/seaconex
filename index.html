@@ -10,6 +10,8 @@
   
   <!-- CSS Styling -->
   <link rel='stylesheet' href='style.css'>
+  <link rel='stylesheet' href='toggle.css'>
+
 
   <!-- Favicons -->
   <link rel='apple-touch-icon' sizes='180x180' href='favicons/apple-touch-icon.png'>
@@ -60,15 +62,25 @@
     <div class='flex-box'>
 
       <div id='filters-component'>
-        Filters Here
+        <h2>Filters</h2>
+
+        <h3>Origin/Destination</h3>
+
       </div>
 
       <div id='center-component'>
 
         <div id='vis-map-1'> </div>
         <div id='map-settings'> 
-          <div id='toggle'>[Toggle]</div>
-          <div id='legend'>[Legend]</div>
+          <div id='toggle'>
+            Map
+            <label class="switch">
+              <input type="checkbox">
+              <span class="slider round"></span>
+            </label>
+            Network
+          </div>
+          <div id='legend'>[Legend - img?]</div>
 
         </div>
 
@@ -125,6 +137,9 @@
       <li>https://bl.ocks.org/d3noob/f052595e2f92c0da677c67d5cf6f98a1</li>
       <li>https://bl.ocks.org/d3noob/c056543aff74a0ac45bef099ee6f5ff4</li>
       <li>https://www.d3-graph-gallery.com/graph/connectionmap_csv.html for paths between ports on the map</li>
+      
+      <li><a href="https://css-tricks.com/snippets/css/a-guide-to-flexbox/">css-tricks.com</a>for flexbox overview </li>
+      <li><a href="https://www.w3schools.com/howto/howto_css_switch.asp">w3schools</a> for toggle CSS switch code</li>
     </ul>
   </div>
   
