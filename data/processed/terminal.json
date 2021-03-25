@@ -1,6 +1,6 @@
 [
   {
-    "terminal_id":"AET",
+    "id":"AET",
     "terminal_port":"Antwerp",
     "terminal_unlocode":"BEANR",
     "terminal_unlocode_alt":"",
@@ -18,7 +18,7 @@
     "O":0
   },
   {
-    "terminal_id":"K869",
+    "id":"K869",
     "terminal_port":"Antwerp",
     "terminal_unlocode":"BEANR",
     "terminal_unlocode_alt":"",
@@ -36,7 +36,7 @@
     "O":0
   },
   {
-    "terminal_id":"ACOT",
+    "id":"ACOT",
     "terminal_port":"Antwerp",
     "terminal_unlocode":"BEANR",
     "terminal_unlocode_alt":"",
@@ -54,7 +54,7 @@
     "O":0
   },
   {
-    "terminal_id":"DMT",
+    "id":"DMT",
     "terminal_port":"Baltimore",
     "terminal_unlocode":"USBAL",
     "terminal_unlocode_alt":"",
@@ -72,7 +72,7 @@
     "O":0
   },
   {
-    "terminal_id":"SMT",
+    "id":"SMT",
     "terminal_port":"Baltimore",
     "terminal_unlocode":"USBAL",
     "terminal_unlocode_alt":"",
@@ -90,7 +90,7 @@
     "O":0
   },
   {
-    "terminal_id":"NCMT",
+    "id":"NCMT",
     "terminal_port":"Charleston",
     "terminal_unlocode":"USCHS",
     "terminal_unlocode_alt":"",
@@ -108,7 +108,7 @@
     "O":0
   },
   {
-    "terminal_id":"PSAP",
+    "id":"PSAP",
     "terminal_port":"Chester",
     "terminal_unlocode":"USPHL",
     "terminal_unlocode_alt":"",
@@ -126,7 +126,7 @@
     "O":0
   },
   {
-    "terminal_id":"RDT",
+    "id":"RDT",
     "terminal_port":"Cork",
     "terminal_unlocode":"IEORK",
     "terminal_unlocode_alt":"",
@@ -144,7 +144,7 @@
     "O":0
   },
   {
-    "terminal_id":"OHPANC",
+    "id":"OHPANC",
     "terminal_port":"Fernandina",
     "terminal_unlocode":"USFEB",
     "terminal_unlocode_alt":"",
@@ -162,7 +162,7 @@
     "O":0
   },
   {
-    "terminal_id":"FCOVE",
+    "id":"FCOVE",
     "terminal_port":"Halifax",
     "terminal_unlocode":"CAHAL",
     "terminal_unlocode_alt":"",
@@ -180,7 +180,7 @@
     "O":0
   },
   {
-    "terminal_id":"UCT",
+    "id":"UCT",
     "terminal_port":"Hamburg",
     "terminal_unlocode":"DEHAM",
     "terminal_unlocode_alt":"",
@@ -198,7 +198,7 @@
     "O":0
   },
   {
-    "terminal_id":"CTA",
+    "id":"CTA",
     "terminal_port":"Hamburg",
     "terminal_unlocode":"DEHAM",
     "terminal_unlocode_alt":"",
@@ -216,7 +216,7 @@
     "O":0
   },
   {
-    "terminal_id":"PHCD",
+    "id":"PHCD",
     "terminal_port":"Hamilton",
     "terminal_unlocode":"BMBDA ",
     "terminal_unlocode_alt":"",
@@ -234,7 +234,7 @@
     "O":1
   },
   {
-    "terminal_id":"BCMT",
+    "id":"BCMT",
     "terminal_port":"Houston",
     "terminal_unlocode":"USHOU",
     "terminal_unlocode_alt":"",
@@ -252,7 +252,7 @@
     "O":0
   },
   {
-    "terminal_id":"RSCT",
+    "id":"RSCT",
     "terminal_port":"Liverpool",
     "terminal_unlocode":"GBLIV",
     "terminal_unlocode_alt":"",
@@ -270,7 +270,7 @@
     "O":0
   },
   {
-    "terminal_id":"DPWLG",
+    "id":"DPWLG",
     "terminal_port":"London",
     "terminal_unlocode":"GBLGP",
     "terminal_unlocode_alt":"",
@@ -288,7 +288,7 @@
     "O":0
   },
   {
-    "terminal_id":"PNCT",
+    "id":"PNCT",
     "terminal_port":"New York\/New Jersey",
     "terminal_unlocode":"USNYC",
     "terminal_unlocode_alt":"USEWR",
@@ -306,7 +306,7 @@
     "O":0
   },
   {
-    "terminal_id":"FAPS",
+    "id":"FAPS",
     "terminal_port":"New York\/New Jersey",
     "terminal_unlocode":"USNYC",
     "terminal_unlocode_alt":"USEWR",
@@ -324,7 +324,7 @@
     "O":0
   },
   {
-    "terminal_id":"MAHER",
+    "id":"MAHER",
     "terminal_port":"New York\/New Jersey",
     "terminal_unlocode":"USNYC",
     "terminal_unlocode_alt":"",
@@ -342,7 +342,7 @@
     "O":1
   },
   {
-    "terminal_id":"NIT",
+    "id":"NIT",
     "terminal_port":"Norfolk",
     "terminal_unlocode":"USORF",
     "terminal_unlocode_alt":"",
@@ -360,7 +360,7 @@
     "O":0
   },
   {
-    "terminal_id":"FIT",
+    "id":"FIT",
     "terminal_port":"Port Everglades",
     "terminal_unlocode":"USPEF",
     "terminal_unlocode_alt":"",
@@ -378,7 +378,7 @@
     "O":0
   },
   {
-    "terminal_id":"BIT",
+    "id":"BIT",
     "terminal_port":"Salem",
     "terminal_unlocode":"USSEM",
     "terminal_unlocode_alt":"",
@@ -396,7 +396,7 @@
     "O":0
   },
   {
-    "terminal_id":"GCMT",
+    "id":"GCMT",
     "terminal_port":"Savannah",
     "terminal_unlocode":"USSAV",
     "terminal_unlocode_alt":"",
@@ -414,7 +414,7 @@
     "O":0
   },
   {
-    "terminal_id":"DPWS",
+    "id":"DPWS",
     "terminal_port":"Southampton",
     "terminal_unlocode":"GBSOU",
     "terminal_unlocode_alt":"",
@@ -432,7 +432,7 @@
     "O":0
   },
   {
-    "terminal_id":"NCSPA",
+    "id":"NCSPA",
     "terminal_port":"Wilmington",
     "terminal_unlocode":"USILM",
     "terminal_unlocode_alt":"",
