@@ -7,7 +7,9 @@ USER root
 RUN apt update && \
     apt-get update
     # sudo apt install --assume-yes \
-RUN conda install -c conda-forge movingpandas && \
+RUN conda install -c conda-forge \
+        movingpandas \
+        folium && \
     conda clean --all -f -y && \
     rm -rf /home/$NB_USER/.cache/yarn 
 
