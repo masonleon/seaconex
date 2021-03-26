@@ -10,6 +10,8 @@
   
   <!-- CSS Styling -->
   <link rel='stylesheet' href='style.css'>
+  <link rel='stylesheet' href='toggle.css'>
+
 
   <!-- Favicons -->
   <link rel='apple-touch-icon' sizes='180x180' href='favicons/apple-touch-icon.png'>
@@ -54,26 +56,49 @@
   </div>
   
   <!-- Visualization goes here -->
+  
   <div class='vis-holder'>
-    <div id='vis-map-1'></div>
 
+    <div class='flex-box'>
 
-    <!-- Change viewbox to whatever you want, e.g., '0 0 1000 6000' This determines your aspect ratio and coordinate system -->    
-    <!-- Delete all the sample SVG code below after the viewbox to before the closing tag. Populate this part of the SVG with D3. -->
-    <!-- <svg id='vis-svg-1'
-      preserveAspectRatio='xMidYMid meet' class='vis-svg' viewBox='0 0 1000 1000' version='1.1' xmlns='http://www.w3.org/2000/svg' xmlns:xlink='http://www.w3.org/1999/xlink'>
-      
-       -->
-      <!-- <text x='30%' y='35%' text-anchor='middle'>A</text>
-      <text x='70%' y='35%' text-anchor='middle'>B</text>
-      <rect x='20%' y='40%' width='20%' height='20%' fill='yellow'></rect>
-      <circle cx='70%' cy='50%' r='10%' fill='blue'></circle> -->
-      
-      
-    <!-- Don't delete the closing tag! -->
-    <!-- </svg> -->
+      <div id='filters-component'>
+        <h2>Filters</h2>
+
+        <h3>Origin/Destination</h3>
+
+      </div>
+
+      <div id='center-component'>
+
+        <div id='vis-map-1'> </div>
+        <div id='map-settings'> 
+          <div id='toggle'>
+            Map
+            <label class="switch">
+              <input type="checkbox">
+              <span class="slider round"></span>
+            </label>
+            Network
+          </div>
+          <div id='legend'>[Legend - img?]</div>
+
+        </div>
+
+      </div>
+
+      <div id='detail-pane'>
+        Detail Pane Here
+      </div>
+
+    </div>
+
+    <div id="treegraph">[Treegraph]</div>
+
 
   </div>
+
+
+
   
   <!-- Further writeup -->
   <div class = 'content-column'>
@@ -112,6 +137,9 @@
       <li>https://bl.ocks.org/d3noob/f052595e2f92c0da677c67d5cf6f98a1</li>
       <li>https://bl.ocks.org/d3noob/c056543aff74a0ac45bef099ee6f5ff4</li>
       <li>https://www.d3-graph-gallery.com/graph/connectionmap_csv.html for paths between ports on the map</li>
+      
+      <li><a href="https://css-tricks.com/snippets/css/a-guide-to-flexbox/">css-tricks.com</a>for flexbox overview </li>
+      <li><a href="https://www.w3schools.com/howto/howto_css_switch.asp">w3schools</a> for toggle CSS switch code</li>
     </ul>
   </div>
   

@@ -15,10 +15,64 @@ h1, h2, h3 {
 	margin: 40px auto;
 }
 
-/* But your visualization should be full-width and full-height */
+/* Visualization is full-width and full-height */
 .vis-holder {
   width: 100%;
   height: 100%;
+}
+
+.flex-box {
+	display: flex;
+	flex-direction: row;
+	flex-wrap: nowrap;
+}
+
+#filters-component {
+	background-color: #387c6d;
+	width: 250px;
+	color: #FFF;
+	padding: 10px;
+	margin-right: 5px;
+}
+
+#center-component {
+	display: flex;
+	width: 100%;
+	flex-direction: column;
+}
+
+#map-settings {
+	display: flex;
+	width: 100%;
+	flex-direction: row;
+	justify-content: space-between;
+}
+
+
+
+#vis-map-1 {
+	width: 100%;
+	height: 100%;
+}
+
+#detail-pane{
+	background-color: #e9896a;
+	width: 400px;
+	color: #FFF;
+	padding: 10px;
+	margin-left: 5px;
+}
+
+.break {
+	flex-basis: 100%;
+	height: 0;
+  }
+
+#treegraph{
+	background-color: #f8f5f1;
+	width: 100%;
+	color: #343f56;
+	padding: 10px;
 }
 
 .vis-svg {
@@ -89,10 +143,6 @@ path {
 }
 
 
-#vis-map-1 {
-	width: 100%;
-	height: 100%;
-}
 
 .port-names{
 	font-size: small;
