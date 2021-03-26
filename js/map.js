@@ -2,8 +2,8 @@ function map() {
     
     let margin = {
         top: 100,
-        left: 80,
-        right: 80,
+        left: 40,
+        right: 20,
         bottom: 35
       },
       width = 960 - margin.left - margin.right,
@@ -12,8 +12,8 @@ function map() {
     function createMap(selector) {
 
         var projection = d3.geoMercator()
-                .center([-23, 42])
-                .scale(600)
+                .center([-40, 42])
+                .scale(470)
                 .rotate([0,0]);
 
         var svg = d3.select(selector).append("svg")
