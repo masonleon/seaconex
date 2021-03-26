@@ -11,7 +11,11 @@ RUN conda install -c conda-forge \
         movingpandas \
         folium && \
     conda clean --all -f -y && \
-    rm -rf /home/$NB_USER/.cache/yarn 
+    rm -rf /home/$NB_USER/.cache/yarn
 
 # Switch back to jovyan to avoid accidental container runs as root
 USER $NB_UID
+WORKDIR $HOME/work
+
+COPY seaconex/ .
+RUN pip install .
