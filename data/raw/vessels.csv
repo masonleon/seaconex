@@ -1,0 +1,19 @@
+﻿vessel_imo,vessel_name,vessel_mmsi,vessel_call_sign,vessel_build_year,vessel_gross_tonnage,vessel_type,vessel_flag_country,vessel_capacity_teu,vessel_capacity_vehicle_units,vessel_stern_ramp_capacity_tons,carrier_id_fk,TAC1,A,P1/AL3,BI,SI,O
+9334375,Independent Horizon,636091480,A8OH7,2008,35824,Container,Liberia,3108,,,ICL,1,0,0,0,0,0
+9336189,Independent Pursuit,211256150,DFCY2,2007,26368,Container,Germany,2546,,,ICL,1,0,0,0,0,0
+9252735,Independent Vision,255805987,CQIK7,2006,35881,Container,Portugal,3091,,,ICL,1,0,0,0,0,0
+9246700,Independent Quest,255806481,CQET6,2005,35881,Container,Portugal,3091,,,ICL,1,0,0,0,0,0
+9670573,Atlantic Star,215797000,9HA5288,2015,1000430,ConRo,Malta,3800,1300,420,ACL,0,1,0,0,0,0
+9670585,Atlantic Sail,215809000,9HA5297,2016,1000430,ConRo,Malta,3800,1300,420,ACL,0,1,0,0,0,0
+9670597,Atlantic Sea,215800000,9HA5295,2016,1000430,ConRo,Malta,3800,1300,420,ACL,0,1,0,0,0,0
+9670602,Atlantic Sky,215804000,9HA5293,2017,1000430,ConRo,Malta,3800,1300,420,ACL,0,1,0,0,0,0
+9670614,Atlantic Sun,215801000,9HA5292,2017,1000430,ConRo,Malta,3800,1300,420,ACL,0,1,0,0,0,0
+9243162,Charleston Express,367168640,WDD6126,2002,40146,Container,USA,3237,,,HLUS,0,0,1,0,0,0
+9243198,Washington Express,367136710,WDD3826,2003,40146,Container,USA,3237,,,HLUS,0,0,1,0,0,0
+9243203,Philadelphia Express,338781000,WDC6736,2003,40146,Container,USA,3237,,,HLUS,0,0,1,0,0,0
+9243186,St. Louis Express,367136680,WDD3825,2002,40146,Container,USA,3237,,,HLUS,0,0,1,0,0,0
+9243174,Yorktown Express,367168650,WDD6127,2002,40146,Container,USA,3237,,,HLUS,0,0,1,0,0,0
+9301823,Rio Grande Express,303672000,KRIH,2006,39941,Container,USA,4250,,,HLUS,0,0,1,0,0,0
+9234434,Bermuda Islander,244820000,PBDA,2001,2937,Container,USA,340,,,BISL,0,0,0,1,0,0
+9375147,Somers Isles,245227000,PHOX,2012,3871,Container,Netherlands,198,,,SISL,0,0,0,0,1,0
+9827334,Oleander,538008204,V7A2078,2019,8313,ConRo,Marshall Islands,456,113,60,BCL,0,0,0,0,0,1
