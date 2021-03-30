@@ -9,7 +9,8 @@ RUN apt update && \
     # sudo apt install --assume-yes \
 RUN conda install -c conda-forge \
         movingpandas \
-        folium && \
+        folium \
+        geopy && \
     conda clean --all -f -y && \
     rm -rf /home/$NB_USER/.cache/yarn
 

@@ -2,7 +2,7 @@
 
 from setuptools import setup, find_packages
 
-INSTALL_REQUIRES = []
+INSTALL_REQUIRES = ['requests']
 
 setup(
       name='seaconex',

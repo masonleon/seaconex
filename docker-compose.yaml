@@ -16,7 +16,7 @@ services:
       - 8888:8888
     environment:
       - JUPYTER_ENABLE_LAB=yes
-    restart: always
+#    restart: always
 
   searoute:
     build:
