@@ -1,4 +1,4 @@
-function map() {
+function map(topology, terminals, edges) {
     
     let margin = {
         top: 100,
@@ -12,27 +12,27 @@ function map() {
     function createMap(selector) {
 
         var projection = d3.geoMercator()
-                .center([-40, 42])
-                .scale(470)
-                .rotate([0,0]);
+            .center([-40, 42])
+            .scale(470)
+            .rotate([0,0]);
 
         var svg = d3.select(selector).append("svg")
-                .attr("height", height)
-                .attr('preserveAspectRatio', 'xMidYMid meet') // this will scale your visualization according to the size of its parent element and the page.
-                .attr('width', '100%') // this is now required by Chrome to ensure the SVG shows up at all
-                .style('background-color', '#ccc') // change the background color to light gray
-                .attr('viewBox', [0, 0, width + margin.left + margin.right, height + margin.top + margin.bottom].join(' '))
+            .attr("height", height)
+            .attr('preserveAspectRatio', 'xMidYMid meet') // this will scale your visualization according to the size of its parent element and the page.
+            .attr('width', '100%') // this is now required by Chrome to ensure the SVG shows up at all
+            .style('background-color', '#ccc') // change the background color to light gray
+            .attr('viewBox', [0, 0, width + margin.left + margin.right, height + margin.top + margin.bottom].join(' '))
 
         var path = d3.geoPath()
-                .projection(projection);
+            .projection(projection);
 
         var g = svg.append("g");
 
         // load and display the World
-        d3.json("data/countries-110m.json").then(function(topology) {
+        d3.json(topology).then(function(topology) {
 
             // load and display the cities
-            d3.json('./data/processed/terminal.json').then(function(data) {
+            d3.json(terminals).then(function(data) {
 
                 const ports = g.selectAll("circle")
                     .data(data)
@@ -74,7 +74,7 @@ function map() {
                             .classed('port-names', true);
                 });
 
-            d3.json('./data/processed/edges.json').then(function(data) {
+            d3.json(edges).then(function(data) {
 
                     var link = [];
 
@@ -125,13 +125,13 @@ function map() {
         if (!arguments.length) return width;
         width = value;
         return createMap;
-      };
+    };
     
-      createMap.height = function(value) {
+    createMap.height = function(value) {
         if (!arguments.length) return height;
         height = value;
         return createMap;
-      };
+    };
 
     return createMap;
 
