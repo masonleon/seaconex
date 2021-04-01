@@ -10,11 +10,11 @@
   let svgMap = map(topology, terminals, edges)
     svgMap('#vis-map-1');
 
-  // d3.json('data/texas.json').then(data => {
+  d3.json(trajectory).then(data => {
 
-  let interactiveMap = leafletMap()
-    ('#vis-map-2', trajectory);
+    let interactiveMap = leafletMap()
+      ('#vis-map-2', data);
 
-  // })
+  })
 
 })());
