@@ -53,13 +53,13 @@ function leafletMap() {
     let g = svg.append('g')
       .attr('class', 'leaflet-zoom-hide');
 
-    // // Use Leaflets projection API for drawing svg path (creates a stream of projected points)
+    // Use Leaflets projection API for drawing svg path (creates a stream of projected points)
     let projectPoint = function(x, y) {
         let point = map.latLngToLayerPoint(new L.LatLng(y, x));
         this.stream.point(point.x, point.y);
     }
 
-    // // Use d3's custom geo transform method to implement the above
+    // Use d3's custom geo transform method to implement the above
     let projection = d3.geoTransform({
         point: projectPoint
       });
@@ -70,19 +70,13 @@ function leafletMap() {
 
     let color = d3.scaleOrdinal(d3.schemeCategory10)
 
-    // paint = d3.scalePow()
-  // .exponent(k)
-  // .range(["yellow", "red"])
-
     let trajectories = g.selectAll('path')
       .data(data.features)
       .enter()
       .append("path")
       .attr("d", pathCreator)
       .style("fill", "none")
-      // .style("stroke", "#69b3a2")
-    .style("stroke", d => color(d.properties.vessel_mmsi))
-    //   .style("stroke", d => paint(d.properties.vessel_mmsi))
+      .style("stroke", d => color(d.properties.vessel_mmsi))
       .style("stroke-width", 2);
 
     // Function to place svg based on zoom
