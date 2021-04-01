@@ -83,7 +83,7 @@ function leafletMap() {
     let onZoom = () => trajectories.attr('d', pathCreator)
     // initialize positioning
     onZoom()
-    // reset whenever map is moved
+    // reset whenever svgMap is moved
     map.on('zoomend', onZoom)
 
 
@@ -92,12 +92,3 @@ function leafletMap() {
 
   return chart
 }
-
-
-
-
-
-
-
-
-

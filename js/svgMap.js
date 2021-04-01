@@ -1,4 +1,4 @@
-function map(topology, terminals, edges) {
+function svgMap() {
 
   let margin = {
         top: 100,
@@ -9,7 +9,7 @@ function map(topology, terminals, edges) {
       width = 960 - margin.left - margin.right,
       height = 600 - margin.top - margin.bottom;
 
-  function createMap(selector) {
+  function chart(selector, topology, terminals, edges) {
 
     let projection = d3.geoMercator()
       .center([-40, 42])
@@ -133,25 +133,25 @@ function map(topology, terminals, edges) {
 
     svg.call(zoom);
 
-    return map;
+    return chart;
   }
 
-  createMap.width = function (value) {
+  chart.width = function (value) {
     if (!arguments.length) {
       return width;
     }
     width = value;
-    return createMap;
+    return chart;
   };
 
-  createMap.height = function (value) {
+  chart.height = function (value) {
     if (!arguments.length) {
       return height;
     }
     height = value;
-    return createMap;
+    return chart;
   };
 
-  return createMap;
+  return chart;
 
-};
+}

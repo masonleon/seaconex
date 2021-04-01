@@ -7,12 +7,12 @@
   const edges = './data/processed/edges.json';
   const trajectory = './data/interim/timestamped-trajectory-icl-tac1.geojson'
 
-  let svgMap = map(topology, terminals, edges)
-    svgMap('#vis-map-1');
+  let visMap1 = svgMap()
+    ('#vis-map-1', topology, terminals, edges);
 
   d3.json(trajectory).then(data => {
 
-    let interactiveMap = leafletMap()
+    let visMap2 = leafletMap()
       ('#vis-map-2', data);
 
   })
