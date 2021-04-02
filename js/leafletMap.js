@@ -32,9 +32,26 @@ function leafletMap() {
 
     map = L.map(selector.slice(1), {
         center: [30, 0],
-        zoom: 2,
-        layers: [esriWorldImageryLayer, noaaEncLayer]
+        zoom: 3,
+        layers: [
+          esriWorldImageryLayer,
+          // noaaEncLayer
+        ],
       });
+
+    let baseMaps = {
+        // 'Noaa_EncTileService': noaaEncLayer,
+        'Esri_WorldImagery': esriWorldImageryLayer,
+    };
+
+    let overlayMaps = {
+        'Noaa_EncTileService': noaaEncLayer,
+        // 'Esri_WorldImagery': esriWorldImageryLayer,
+    };
+
+    L.control
+      .layers(baseMaps, overlayMaps)
+      .addTo(map);
 
     L.svg({
         clickable: true
@@ -68,7 +85,34 @@ function leafletMap() {
     let pathCreator = d3.geoPath()
       .projection(projection);
 
+    let vesselNames = data.features
+      .map( (c, i) => c.properties.vessel_name )
+      .filter ((item, i, ar) => ar.indexOf(item) ===i)
+
+    console.log(vesselNames)
+
+    let dates = data.features
+      .flatMap((c) => c.properties.times.map((x) => new Date(x)))
+
+    // console.log(dates)
+    // console.log(Math.min.apply(null, dates), Math.max.apply(null, dates))
+
+    // var min =
+    // var max =
+    let dateRange = {
+      min : dates.reduce(function (a, b) { return a < b ? a : b; }).toDateString(),
+      max : dates.reduce(function (a, b) { return a > b ? a : b; }).toDateString()
+    }
+        // Math.min.apply(null, dates), Math.max.apply(null, dates)]
+
+
+    // let dateRange = [Math.min.apply(null, dates), Math.max.apply(null, dates)]
+    // console.log(min, max)
+
     let color = d3.scaleOrdinal(d3.schemeCategory10)
+      .domain(vesselNames)
+
+    console.log(color(vesselNames))
 
     let trajectories = g.selectAll('path')
       .data(data.features)
@@ -76,7 +120,7 @@ function leafletMap() {
       .append("path")
       .attr("d", pathCreator)
       .style("fill", "none")
-      .style("stroke", d => color(d.properties.vessel_mmsi))
+      .style("stroke", d => color(d.properties.vessel_name))
       .style("stroke-width", 2);
 
     // Function to place svg based on zoom
@@ -86,9 +130,34 @@ function leafletMap() {
     // reset whenever svgMap is moved
     map.on('zoomend', onZoom)
 
+    let legend = L
+      .control({position: 'bottomright'});
 
+    legend.onAdd = () => {
+        let div = d3
+          .select(document.createElement("div"))
+          .classed('legend', true)
+          .text('ICL Vessels Trajectories between ' + dateRange.min + ' - ' + dateRange.max)
+
+        let p = div.selectAll('p')
+           .data(vesselNames)
+           .enter()
+           .append('p')
+
+        p.append('span')
+          .classed('legend-item', true)
+          .style('background-color', d => color(d));
+
+        p.append('span')
+          .text(d => d);
+
+      return div.node();
+    };
+
+    legend.addTo(map);
     return chart
   }
+
 
   return chart
 }
