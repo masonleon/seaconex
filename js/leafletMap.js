@@ -100,8 +100,10 @@ function leafletMap() {
     // var min =
     // var max =
     let dateRange = {
-      min : dates.reduce(function (a, b) { return a < b ? a : b; }).toDateString(),
-      max : dates.reduce(function (a, b) { return a > b ? a : b; }).toDateString()
+      // min : dates.reduce(function (a, b) { return a < b ? a : b; }).toDateString(),
+      // max : dates.reduce(function (a, b) { return a > b ? a : b; }).toDateString()
+      min : dates[0].toDateString(),
+      max : dates[dates.length -1].toDateString()
     }
         // Math.min.apply(null, dates), Math.max.apply(null, dates)]
 
