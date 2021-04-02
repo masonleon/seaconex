@@ -7,17 +7,16 @@
   const edges = './data/processed/edges.json';
   const trajectory = './data/interim/timestamped-trajectory-icl-tac1.geojson'
 
-
   let nodeViz = network()
   nodeViz('#vis-map-1');
 
   let visMap1 = svgMap()
-    ('#vis-map-1', topology, terminals, edges);
+  ('#vis-map-1', topology, terminals, edges);
 
   d3.json(trajectory).then(data => {
 
     let visMap2 = leafletMap()
-      ('#vis-map-2', data);
+    ('#vis-map-2', data);
 
   })
 
