@@ -3,141 +3,165 @@
 
 <!-- Metadata -->
 <head>
-    <meta charset='utf-8'>
+  <meta charset='utf-8'>
 
-    <!-- Title -->
-    <title>Project Group 9: SeaCONEX, CS 7250 S21</title>
+  <!-- Title -->
+  <title>Project Group 9: SeaCONEX, CS 7250 S21</title>
 
-    <!-- CSS Styling -->
-    <link rel='stylesheet' href='style.css'>
-    <link rel='stylesheet' href='toggle.css'>
+  <!-- CSS Styling -->
+  <link rel='stylesheet' href='style.css'>
+  <link rel='stylesheet' href='toggle.css'>
+  <link rel="stylesheet" href="lib/leaflet.v1.7.1/leaflet.css"/>
+  <script src="lib/leaflet.v1.7.1/leaflet.js"></script>
 
 
-    <!-- Favicons -->
-    <link rel='apple-touch-icon' sizes='180x180' href='favicons/apple-touch-icon.png'>
-    <link rel='icon' type='image/png' sizes='32x32' href='favicons/favicon-32x32.png'>
-    <link rel='icon' type='image/png' sizes='16x16' href='favicons/favicon-16x16.png'>
-    <link rel='manifest' href='favicons/site.webmanifest'>
-    <link rel='shortcut icon' href='favicons/favicon.ico'>
-    <meta name='msapplication-TileColor' content='#da532c'>
-    <meta name='msapplication-config' content='favicons/browserconfig.xml'>
-    <meta name='theme-color' content='#ffffff'>
+  <!-- Favicons -->
+  <link rel='apple-touch-icon' sizes='180x180' href='favicons/apple-touch-icon.png'>
+  <link rel='icon' type='image/png' sizes='32x32' href='favicons/favicon-32x32.png'>
+  <link rel='icon' type='image/png' sizes='16x16' href='favicons/favicon-16x16.png'>
+  <link rel='manifest' href='favicons/site.webmanifest'>
+  <link rel='shortcut icon' href='favicons/favicon.ico'>
+  <meta name='msapplication-TileColor' content='#da532c'>
+  <meta name='msapplication-config' content='favicons/browserconfig.xml'>
+  <meta name='theme-color' content='#ffffff'>
+
+
 </head>
 
 <!-- Main page content -->
 <body>
 
 <!-- Update this with your GitHub repo URL -->
-<span id='forkongithub'><a
-        href='https://github.com/NEU-CS-7250-S21/project-group-09-seaconex'>Fork me on GitHub</a></span>
+<span id='forkongithub'>
+  <a href='https://github.com/NEU-CS-7250-S21/project-group-09-seaconex'>
+    Fork me on GitHub
+  </a>
+</span>
 
 <!-- Writeup -->
 <div class='content-column'>
-    <h1>Project Group 09: SeaCONEX Visualizing Maritime Supply Chain Networks, CS 7250 S21</h1>
+  <h1>Project Group 09: SeaCONEX Visualizing Maritime Supply Chain Networks, CS 7250 S21</h1>
 
-    <p><strong>Mason Leon</strong>, <strong>Rithika Lakshminarayanan</strong>, <strong>Alice Tilles</strong></p>
+  <p>
+    <strong>Mason Leon</strong>,
+    <strong>Rithika Lakshminarayanan</strong>,
+    <strong>Alice Tilles</strong>
+  </p>
 
-    <p>
-        Service-Learning Course Project as part of
-        <a href='https://northeastern.instructure.com/courses/63405'>CS 7250 S21 Information Visualization: Theory and
-            Applications</a>,
-        taught by <a href='https://cody.khoury.northeastern.edu/'>Prof. Cody Dunne</a>,
-        <a href='https://visualization.khoury.northeastern.edu/'>Data Visualization @ Khoury</a>,
-        <a href='https://www.khoury.northeastern.edu/'>Northeastern University</a>.
-    </p>
-
-
-    <h1>Abstract</h1>
-
-    <p>
-        Supply chain operations and the world of transportation are often hidden from the general public, that is until
-        disaster strikes or an eagerly awaited online purchase is delayed. The complexity of the global supply chain can
-        make it unfathomable to track when "things go wrong", items are "lost in the mail", or how an entire truck
-        trailer
-        could "vanish". For professional supply chain managers and logisticians, even with the availability of abundant
-        internal and external data sets, it can be difficult to communicate the right information to stakeholders or to
-        investigate data and determine broken links in the supply chain.
-
-        For organizations responsible for the defense and security of a nation's citizens, economy, and strategic
-        interests, a firm understanding of logistics and transportation operations is essential. This project seeks to
-        develop new innovative visualization approaches to improve the presentation of logistics data and tools to
-        examine
-        chokepoints in the maritime supply chain for the <a href='https://www.volpe.dot.gov/'>United States Department
-        of
-        Transportation Volpe National Transportation Systems Center (Volpe)</a> and the
-        <a href='https://www.gov.uk/government/organisations/ministry-of-defence'>United Kingdom Ministry of Defense
-            (UKMOD)</a>.
-
-        The proposed supply chain visualization approach focuses on a case study developed for Volpe and the UKMOD
-        support
-        a hypothetical shipment from London to the UK Overseas Territory of Bermuda utilizing commercial maritime
-        carriers.
-    </p>
+  <p>
+    Service-Learning Course Project as part of
+    <a href='https://northeastern.instructure.com/courses/63405'>
+      CS 7250 S21 Information Visualization: Theory and Applications
+    </a>, taught by
+    <a href='https://cody.khoury.northeastern.edu/'>
+      Prof. Cody Dunne
+    </a>,
+    <a href='https://visualization.khoury.northeastern.edu/'>
+      Data Visualization @ Khoury
+    </a>,
+    <a href='https://www.khoury.northeastern.edu/'>
+      Northeastern University
+    </a>.
+  </p>
 
 
-    <h1>Visualization</h1>
+  <h1>Abstract</h1>
 
-    <p>
-        The visualization below depicts the network for Independent Container Line (ICL). ICL is a niche ocean carrier
-        with a single Eastbound and Westbound TAC1 service in the Trans-Atlantic trade. TAC1 links the following marine
-        terminals:
-    </p>
+  <p>
+    Supply chain operations and the world of transportation are often hidden from the general
+    public, that is until disaster strikes or an eagerly awaited online purchase is delayed. The
+    complexity of the global supply chain can make it unfathomable to track when "things go wrong",
+    items are "lost in the mail", or how an entire truck trailer could "vanish". For professional
+    supply chain managers and logisticians, even with the availability of abundant internal and
+    external data sets, it can be difficult to communicate the right information to stakeholders or
+    to investigate data and determine broken links in the supply chain.
+    <br>
+    <br>
+    For organizations responsible for the defense and security of a nation's citizens, economy, and
+    strategic interests, a firm understanding of logistics and transportation operations is
+    essential. This project seeks to develop new innovative visualization approaches to improve the
+    presentation of logistics data and tools to examine chokepoints in the maritime supply chain for
+    the
+    <a href='https://www.volpe.dot.gov/'>
+      United States Department of Transportation Volpe National Transportation Systems Center (Volpe)
+    </a>
+    and the
+    <a href='https://www.gov.uk/government/organisations/ministry-of-defence'>
+      United Kingdom Ministry of Defense (UKMOD)
+    </a>.
+    <br>
+    <br>
+    The proposed supply chain visualization approach focuses on a case study developed for Volpe and
+    the UKMOD support a hypothetical shipment from London to the UK Overseas Territory of Bermuda
+    utilizing commercial maritime carriers.
+  </p>
 
-    <table>
-        <thead>
-        <tr>
-            <th>terminal_id</th>
-            <th>terminal_port</th>
-            <th>terminal_unlocode</th>
-            <th>terminal_facility_name</th>
-            <th>terminal_company_name</th>
-        </tr>
-        </thead>
-        <tbody>
-        <tr>
-            <td>ACOT</td>
-            <td>Antwerp</td>
-            <td>BEANR</td>
-            <td>ANTWERP CONTAINER TERMINAL (K730)</td>
-            <td>ANTWERP CONTAINER TERMINAL - SEA INVEST</td>
-        </tr>
-        <tr>
-            <td>PSAP</td>
-            <td>Chester</td>
-            <td>USPHL</td>
-            <td>PSA PENN TERMINALS</td>
-            <td>PSA PENN TERMINALS LLC</td>
-        </tr>
-        <tr>
-            <td>RDT</td>
-            <td>Cork</td>
-            <td>IEORK</td>
-            <td>RINGASKIDDY DEEPWATER TERMINAL</td>
-            <td>PORT OF CORK</td>
-        </tr>
-        <tr>
-            <td>DPWS</td>
-            <td>Southampton</td>
-            <td>GBSOU</td>
-            <td>DP WORLD SOUTHAMPTON</td>
-            <td>DP WORLD</td>
-        </tr>
-        <tr>
-            <td>NCSPA</td>
-            <td>Wilmington</td>
-            <td>USILM</td>
-            <td>PORT OF WILMINGTON TERMINAL</td>
-            <td>NORTH CAROLINA STATE PORT AUTHORITY</td>
-        </tr>
-        </tbody>
-    </table>
 
-    <p>
-        Due to great circle lines, the links currently appear crossed. We plan to utilize the
-        <a href='https://github.com/eurostat/searoute'>searoute</a> tool of the EU EUROSTAT to generate GeoJSON shortest
-        path line segments between the port pairs. Through linking we will hide labels for ports out of network.
-    </p>
+  <h1>Visualization</h1>
 
+  <p>
+    The visualization below depicts the network for Independent Container Line (ICL). ICL is a niche
+    ocean carrier with a single Eastbound and Westbound TAC1 service in the Trans-Atlantic trade.
+    TAC1 links the following marine terminals:
+  </p>
+
+  <table>
+    <thead>
+    <tr>
+      <th>terminal_id</th>
+      <th>terminal_port</th>
+      <th>terminal_unlocode</th>
+      <th>terminal_facility_name</th>
+      <th>terminal_company_name</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr>
+      <td>ACOT</td>
+      <td>Antwerp</td>
+      <td>BEANR</td>
+      <td>ANTWERP CONTAINER TERMINAL (K730)</td>
+      <td>ANTWERP CONTAINER TERMINAL - SEA INVEST</td>
+    </tr>
+    <tr>
+      <td>PSAP</td>
+      <td>Chester</td>
+      <td>USPHL</td>
+      <td>PSA PENN TERMINALS</td>
+      <td>PSA PENN TERMINALS LLC</td>
+    </tr>
+    <tr>
+      <td>RDT</td>
+      <td>Cork</td>
+      <td>IEORK</td>
+      <td>RINGASKIDDY DEEPWATER TERMINAL</td>
+      <td>PORT OF CORK</td>
+    </tr>
+    <tr>
+      <td>DPWS</td>
+      <td>Southampton</td>
+      <td>GBSOU</td>
+      <td>DP WORLD SOUTHAMPTON</td>
+      <td>DP WORLD</td>
+    </tr>
+    <tr>
+      <td>NCSPA</td>
+      <td>Wilmington</td>
+      <td>USILM</td>
+      <td>PORT OF WILMINGTON TERMINAL</td>
+      <td>NORTH CAROLINA STATE PORT AUTHORITY</td>
+    </tr>
+    </tbody>
+  </table>
+
+  <p>
+    Due to great circle lines, the links currently appear crossed. We plan to utilize the
+    <a href='https://github.com/eurostat/searoute'>
+      searoute
+    </a>
+    tool of EU EUROSTAT to generate GeoJSON shortest path line segments between the port pairs.
+    Through linking we will hide labels for ports out of network.
+  </p>
 
 </div>
 
@@ -145,42 +169,49 @@
 Trans-Atlantic
 <div class='vis-holder'>
 
-    <div class='flex-box'>
+  <div class='flex-box'>
 
-        <div id='filters-component'>
-            <h2>Filters</h2>
+    <div id='filters-component'>
+      <h2>Filters</h2>
 
-            <h3>Origin/Destination</h3>
-
-        </div>
-
-        <div id='center-component'>
-
-            <div id='vis-map-1'></div>
-            <div id='network-map'></div>
-
-            <div id='map-settings'>
-                <div id='toggle'>
-                    Map
-                    <label class="switch">
-                        <input type="checkbox">
-                        <span class="slider round"></span>
-                    </label>
-                    Network
-                </div>
-                <div id='legend'>[Legend Placeholder]</div>
-
-            </div>
-
-        </div>
-
-        <div id='detail-pane'>
-            Detail Pane Here
-        </div>
+      <h3>Origin/Destination</h3>
 
     </div>
 
-    <div id="treegraph">[Treegraph]</div>
+    <div id='center-component'>
+
+      <div id='vis-map-1'></div>
+
+      <div id='network-map'></div>
+
+      <div id='vis-map-2'></div>
+
+      <div id='map-settings'>
+        <div id='toggle'>
+          Map
+          <label class="switch">
+            <input type="checkbox">
+            <span class="slider round"></span>
+          </label>
+          Network
+        </div>
+        <div id='legend'>
+          [Legend Placeholder]
+        </div>
+
+      </div>
+
+    </div>
+
+    <div id='detail-pane'>
+      Detail Pane Here
+    </div>
+
+  </div>
+
+  <div id="treegraph">
+    [Treegraph]
+  </div>
 
 
 </div>
@@ -189,29 +220,24 @@ Trans-Atlantic
 <!-- Further writeup -->
 <div class='content-column'>
 
-    <h1>Demo Video</h1>
+  <h1>Demo Video</h1>
 
+  <p>
+    Embed an MP4 demo video using the HTML5 &lt;video&gt; tag. For example, this screen recording
+    Prof. Cody Dunne made of Mike Bostock's flexible transitions in D3 slide:
+  </p>
+
+  <video controls width='100%'>
+    <source src='http://www.ccs.neu.edu/home/cody/courses/shared/d3-flexible-transitions.mp4'
+            type='video/mp4'>
     <p>
-        Embed an MP4 demo video using the HTML5 &lt;video&gt; tag. For example, this screen recording Prof. Cody Dunne
-        made of Mike Bostock's flexible transitions in D3 slide:
+      Your browser doesn't support HTML5 video. Here is a
+      <a href='http://www.ccs.neu.edu/home/cody/courses/shared/d3-flexible-transitions.mp4'>
+        link to the video
+      </a>
+      instead.
     </p>
-
-    <video controls width='100%'>
-        <source src='http://www.ccs.neu.edu/home/cody/courses/shared/d3-flexible-transitions.mp4' type='video/mp4'>
-        <p>Your browser doesn't support HTML5 video. Here is
-            a <a href='http://www.ccs.neu.edu/home/cody/courses/shared/d3-flexible-transitions.mp4'>link to the
-                video</a> instead.</p>
-    </video>
-
-    <h1>Visualization explanation</h1>
-
-    <p>Replace with a brief explanation (can be copied from the paper) and linked presentation slides.</p>
-
-    <h1>Acknowledgments</h1>
-
-    <p>
-        List here where any code, packages/libraries, text, images, designs, etc. that you leverage come from.
-    </p>
+<<<<<<< HEAD
 
     <ul>
         <li><a href='https://d3js.org/'>
@@ -254,12 +280,217 @@ Trans-Atlantic
         <li><a href= "http://bl.ocks.org/mbostock/2706022">Force directed graph with mouseover</a> by Mike Bostock to get unique nodes from edges</li>
         <li><a href= "https://stackoverflow.com/a/13369282">Stack overflow answer</a> by Superboggly to add labels to nodes in the force directed layout</li>
     </ul>
+=======
+  </video>
+
+  <h1>Visualization explanation</h1>
+
+  <p>
+    Replace with a brief explanation (can be copied from the paper) and linked presentation slides.
+  </p>
+
+  <h1>Acknowledgments</h1>
+
+  <p>
+    List here where any code, packages/libraries, text, images, designs, etc. that you leverage come
+    from.
+  </p>
+
+  <ul>
+    <li>
+      <a href='https://anitagraser.github.io/movingpandas/'>
+        Moving Pandas: Python library for handling movement data based on Pandas and GeoPandas.
+      </a>
+      by Anita Graser
+    </li>
+     <li>
+      <a href='https://github.com/anitagraser/movingpandas-examples'>
+        Moving Pandas Examples: Example notebooks illustrating MovingPandas use cases
+      </a>
+      by Anita Graser
+    </li>
+    <li>
+      <a href='https://anitagraser.com/2021/03/28/movement-data-in-gis-35-stop-detection-analysis-with-movingpandas/'>
+        Movement data in GIS #35: stop detection & analysis with MovingPandas
+      </a>
+      by Anita Graser
+    </li>
+    <li>
+      <a href='https://anitagraser.com/2021/03/17/movement-data-in-gis-34-a-protocol-for-exploring-movement-data/'>
+        Movement data in GIS #34: a protocol for exploring movement data
+      </a>
+      by Anita Graser
+    </li>
+    <li>
+      <a href='https://github.com/anitagraser/EDA-protocol-movement-data'>
+       A protocol for identifying problems in continuous movement data
+      </a>
+      by Anita Graser
+    </li>
+    <li>
+      <a href='https://anitagraser.com/2020/07/26/extracting-trajectories-from-massive-movement-datasets/'>
+       Generating trajectories from massive movement datasets
+      </a>
+      by Anita Graser
+    </li>
+    <li>
+      <a href='https://anitagraser.com/2020/01/12/movement-data-in-gis-27-extracting-trip-origin-clusters-from-movingpandas-trajectories/'>
+       Movement data in GIS #27: extracting trip origin clusters from MovingPandas trajectories
+      </a>
+      by Anita Graser
+    </li>
+    <li>
+      <a href='https://anitagraser.com/2019/09/11/movement-data-in-gis-24-movingpandas-hands-on-tutorials/'>
+       Movement data in GIS #24: MovingPandas hands-on tutorials
+      </a>
+      by Anita Graser
+    </li>
+    <li>
+      <a href='https://anitagraser.com/2019/05/22/movement-data-in-gis-23-trajectories-in-context/'>
+       Movement data in GIS #23: trajectories in context
+      </a>
+      by Anita Graser
+    </li>
+    <li>
+      <a href='https://d3js.org/'>
+        D3: Data-Driven Documents
+      </a>
+      by Mike Bostock is used for manipulating the DOM to create visualizations.
+    </li>
+    <li>
+      <a href='https://codepo8.github.io/css-fork-on-github-ribbon/#'>
+        Pure CSS responsive 'Fork me on GitHub' ribbon
+      </a>
+      by Chris Heilmann is used to create the banner that links back to the source code repository.
+    </li>
+
+    <li>
+      <a href='https://github.com/topojson/world-atlas'>
+        Pre-built TopoJSON from Natural Earth
+      </a>
+      by Mike Bostock is used for rendering vectors for the world countries.
+    </li>
+    <li>
+      <a href='https://bl.ocks.org/d3noob/f052595e2f92c0da677c67d5cf6f98a1'>
+        Bl.ocks.org: World Map Centered v6
+      </a>
+      by d3noob is used for basic rendering of a TopoJSON svgMap.
+    </li>
+    <li>
+      <a href='https://bl.ocks.org/d3noob/c056543aff74a0ac45bef099ee6f5ff4'>
+        Bl.ocks.org: Map Pan / Zoom with Cities v6
+      </a>
+      by d3noob is used for plotting points for world cities while allowing zoom and pan.
+    </li>
+    <li>
+      <a href='https://www.d3-graph-gallery.com/graph/connectionmap_csv.html'>
+        Connection svgMap from csv in d3.js
+      </a>
+      by d3 graph gallery is used for basic paths between ports on the svgMap.
+    </li>
+    <li>
+      <a href="https://css-tricks.com/snippets/css/a-guide-to-flexbox/">
+        A Guide to Flexbox
+      </a>
+      by css-tricks for a css flexbox review.
+    </li>
+    <li>
+      <a href="https://www.w3schools.com/howto/howto_css_switch.asp">
+        How TO - Toggle Switch
+      </a>
+      by w3schools for styling a toggle switch.
+    </li>
+    <li>
+      <a href="https://www.sohamkamani.com/blog/javascript/2019-02-18-d3-geo-projections-explained/">
+        D3 Geo Projections Explained
+      </a>
+      by Soham Kamani for processing GeoJSON with d3.
+    </li>
+     <li>
+      <a href="https://leafletjs.com/reference-1.7.1.html">
+        Leaflet: an open-source JavaScript library for mobile-friendly interactive maps
+      </a>
+      by Vladimir Agafonkin is used for web mapping.
+    </li>
+
+    <li>
+      <a href="https://leafletjs.com/reference-1.7.1.html">
+        Leaflet: an open-source JavaScript library for mobile-friendly interactive maps
+      </a>
+      by Vladimir Agafonkin is used for web mapping.
+    </li>
+    <li>
+      <a href="https://leafletjs.com/reference-1.7.1.html">
+        Leaflet: an open-source JavaScript library for mobile-friendly interactive maps
+      </a>
+      by Vladimir Agafonkin is used for web mapping.
+    </li>
+    <li>
+      <a href="https://geojson.org/geojson-spec.html#feature-collection-objects">
+        GeoJSON Spec
+      </a>
+    </li>
+    <li>
+      <a href="https://tools.ietf.org/html/rfc7946">
+        RFC 7946
+      </a>
+    </li>
+    <li>
+      <a href="https://observablehq.com/@bernardoct/leaftlet-d3-js-map-zoom--and-data-dependent-map-display">
+        Observable: Leaflet + D3.js Map, zoom- and data-dependent svgMap display
+      </a>
+      by bernardoct
+    </li>
+    <li>
+      <a href="https://observablehq.com/@sfu-iat355/introduction-to-leaflet-and-d3">
+        Observable: Introduction to leaflet and D3
+      </a>
+      by IAT355
+    </li>
+    <li>
+      <a href="https://observablehq.com/@valentinapremoli/week-10b-intro-to-d3-js-mapping-data-with-d3">
+        Observable: Week 10b - Intro to D3.js: Mapping Data with D3
+      </a>
+      by Valentina Premoli
+    </li>
+    <li>
+      <a href="https://livebook.manning.com/book/d3-js-in-action/chapter-7/1">
+        D3.js In Action, Chapter 7. Geospatial information visualization
+      </a>
+      by Elijah Meeks
+    </li>
+    <li>
+      <a href="http://bl.ocks.org/EE2dev/d17037089246a3b23cba1a3ca8ed0cc1">
+        Bl.ocks.org: leaflet and d3.legend
+      </a>
+      by EE2dev
+    </li>
+    <li>
+      <a href="http://bl.ocks.org/wrobstory/5762547">
+        Bl.ocks.org: Choropleth with Vincent
+      </a>
+      by Rob Story
+    </li>
+<!--    <li>-->
+<!--      <a href="http://codepen.io/ryshackleton/pen/NpdNjJ/">-->
+<!--        Codepen.io: D3 Earthquakes on Leaflet Map-->
+<!--      </a>-->
+<!--      by Ryan Shackleton-->
+<!--    </li>-->
+    <li>
+      <a href="https://observablehq.com/@olemi/mapping-data-on-openstreetmap-using-leaflet">
+        Observable: Mapping data on OpenStreetMap (using LeafLet) Bubble chart example
+      </a>
+      by olemi
+    </li>
+  </ul>
 </div>
 
 <!-- Scripts at the end avoid need for dealing with async, defer, or onload event handlers -->
 <script src='lib/d3.v6.1.1/d3.min.js'></script>
-<script src='lib/topojson-3.0.2/topojson.min.js'></script>
-<script src='js/map.js'></script>
+<script src='lib/topojson.v3.0.2/topojson.min.js'></script>
+<script src='js/svgMap.js'></script>
+<script src='js/leafletMap.js'></script>
 <script src='js/network.js'></script>
 <script src='js/visualization.js'></script>
 
