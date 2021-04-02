@@ -51,21 +51,22 @@ function network(){
                 .selectAll("circle")
                 .data(graph.nodes)
                 .join("circle")
-                    .attr("r", 10)
+                    .attr("r", 20)
                     .attr("fill", '#0000FF')
                 .call(d3.drag()
                     .on("start", dragstarted)
                     .on("drag", dragged)
                     .on("end", dragended));
 
-            node.append("text")
-                    .attr("x", 30 + 4)
-                    .attr("y", "0.31em")
-                    .text(d => d.id)
-                    .clone(true).lower()
-                    .attr("fill", "none")
-                    .attr("stroke", "black")
-                    .attr("stroke-width", 3);
+                node.append("text")
+                    .text(function(d) {
+                      return d.id;
+                    })
+                    .attr('x', function(d){return d.x + 6; })
+                    .attr('y', function(d){return d.y + 3; });
+
+                node.append("title")
+                    .text(function(d) { return d.id; });
 
             function ticked() {
                    link
@@ -80,20 +81,20 @@ function network(){
                 }
 
                 function dragstarted(d) {
-                    if (!d3.event.active) force.alphaTarget(0.3).restart();
-                    d.fx = d.x;
-                    d.fy = d.y;
+                    if (!d.active) force.alphaTarget(0.3).restart();
+                        d.subject.fx = d.subject.x;
+                        d.subject.fy = d.subject.y;
                 } 
                
                 function dragged(d) {
-                    d.fx = d3.event.x;
-                    d.fy = d3.event.y;
+                    d.subject.fx = d.x;
+                    d.subject.fy = d.y;
                 }
               
                 function dragended(d) {
-                    if (!d3.event.active) force.alphaTarget(0);
-                    //d.fx = null;
-                    //d.fy = null;
+                    if (!d.active) force.alphaTarget(0);
+                    d.subject.fx = null;
+                    d.subject.fy = null;
                 }
 
                 function releasenode(d) {
