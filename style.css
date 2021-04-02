@@ -1,3 +1,136 @@
+.flex-box {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: nowrap;
+}
+
+#filters-component {
+  background-color: #387c6d;
+  width: 250px;
+  color: #FFF;
+  padding: 10px;
+  margin-right: 5px;
+}
+
+#center-component {
+  display: flex;
+  width: 100%;
+  /*height: 100%;*/
+  flex-direction: column;
+  align-items: baseline;
+  background-color: #dddddd;
+}
+
+/*
+#map-settings {
+  display: flex;
+  width: 100%;
+  flex-direction: row;
+  justify-content: space-between;
+} */
+
+#vis-map-1 {
+  width: 100%;
+}
+
+#vis-map-2 {
+  width: 100%;
+}
+
+/*.legend {*/
+/*    padding: 0px 0px;*/
+/*    font: 10px sans-serif;*/
+/*    background: white;*/
+/*    background: rgba(255,255,255,0.8);*/
+/*    box-shadow: 0 0 15px rgba(0,0,0,0.2);*/
+/*    border-radius: 5px;*/
+/*}*/
+
+/*.key path {*/
+/*  display: none;*/
+/*}*/
+
+.legend {
+  line-height: 18px;
+  background-color: #eee;
+  padding: 10px;
+}
+
+.legend p {
+  margin: 1px
+}
+
+.legend .legend-item {
+  width: 18px;
+  height: 18px;
+  float: left;
+  margin-right: 8px;
+  opacity: 0.7;
+}
+
+#network-map {
+  width: 100%;
+  height: 100%;
+}
+
+#detail-pane {
+  background-color: #e9896a;
+  width: 400px;
+  color: #FFF;
+  padding: 10px;
+  margin-left: 5px;
+}
+
+.break {
+  flex-basis: 100%;
+  height: 0;
+}
+
+#treegraph {
+  background-color: #f8f5f1;
+  width: 100%;
+  color: #343f56;
+  padding: 10px;
+}
+
+path {
+  stroke: white;
+  stroke-width: .25px;
+  fill: grey;
+}
+
+.port-names {
+  font-size: small;
+}
+
+text.label {
+  font-family: sans-serif;
+  font-size: 12px;
+}
+
+/* Table formatting */
+table {
+  text-align: left;
+}
+
+th {
+  background-color: #f2f2f2;
+  font-size: 10pt;
+}
+
+tr {
+  font-size: 10pt;
+}
+
+tr:nth-child(even) {
+  background-color: #f2f2f2;
+}
+
+tr:nth-child(even) {
+  background-color: #f2f2f2;
+}
+
+/* The following are required from the project template https://github.com/NEU-CS-7250-S21-Staff/Project */
 /* General formatting */
 body {
   padding: 0 10px;
@@ -21,103 +154,8 @@ h1, h2, h3 {
   height: 100%;
 }
 
-.flex-box {
-  display: flex;
-  flex-direction: row;
-  flex-wrap: nowrap;
-}
-
-#filters-component {
-  background-color: #387c6d;
-  width: 250px;
-  color: #FFF;
-  padding: 10px;
-  margin-right: 5px;
-}
-
-#center-component {
-  display: flex;
-  width: 100%;
-  /*height: 100%;*/
-  flex-direction: column;
-  align-items: baseline;
-  background-color: #dddddd;
-}
-/* 
-#map-settings {
-  display: flex;
-  width: 100%;
-  flex-direction: row;
-  justify-content: space-between;
-} */
-
-#vis-map-1 {
-  width: 100%;
-}
-
-#vis-map-2 {
-  width: 100%;
-
-}
-
-/*.legend {*/
-/*    padding: 0px 0px;*/
-/*    font: 10px sans-serif;*/
-/*    background: white;*/
-/*    background: rgba(255,255,255,0.8);*/
-/*    box-shadow: 0 0 15px rgba(0,0,0,0.2);*/
-/*    border-radius: 5px;*/
-/*}*/
-
-/*.key path {*/
-/*  display: none;*/
-/*}*/
-
-.legend {
-    line-height: 18px;
-    background-color: #eee;
-    padding: 10px;
-}
-.legend p {
-   margin: 1px
-}
-.legend .legend-item {
-    width: 18px;
-    height: 18px;
-    float: left;
-    margin-right: 8px;
-    opacity: 0.7;
-}
-
-
-#detail-pane {
-  background-color: #e9896a;
-  width: 400px;
-  color: #FFF;
-  padding: 10px;
-  margin-left: 5px;
-}
-
-.break {
-  flex-basis: 100%;
-  height: 0;
-}
-
-#treegraph {
-  background-color: #f8f5f1;
-  width: 100%;
-  color: #343f56;
-  padding: 10px;
-}
-
 .vis-svg {
   background-color: #f4f1f0;
-}
-
-path {
-  stroke: white;
-  stroke-width: .25px;
-  fill: grey;
 }
 
 /* Fork on GitHub ribbon via https://codepo8.github.io/css-fork-on-github-ribbon/# */
@@ -180,30 +218,4 @@ path {
     -o-transform: rotate(45deg);
     box-shadow: 4px 4px 10px rgba(0, 0, 0, 0.8);
   }
-}
-
-
-.port-names {
-  font-size: small;
-}
-
-tr:nth-child(even) {
-  background-color: #f2f2f2;
-}
-
-tr:nth-child(even) {
-  background-color: #f2f2f2;
-}
-
-table {
-  text-align: left;
-}
-
-th {
-  background-color: #f2f2f2;
-  font-size: 10pt;
-}
-
-tr {
-  font-size: 10pt;
 }
