@@ -51,19 +51,19 @@ function network(){
                 .selectAll("circle")
                 .data(graph.nodes)
                 .join("circle")
-                    .attr("r", 20)
+                    .attr("r", 15)
                     .attr("fill", '#0000FF')
                 .call(d3.drag()
                     .on("start", dragstarted)
                     .on("drag", dragged)
                     .on("end", dragended));
 
-                node.append("text")
-                    .text(function(d) {
-                      return d.id;
-                    })
-                    .attr('x', function(d){return d.x + 6; })
-                    .attr('y', function(d){return d.y + 3; });
+                var labels = svg.selectAll("text.label")
+                    .data(graph.nodes)
+                    .enter().append("text")
+                    .attr("class", "label")
+                    .attr("fill", "black")
+                    .text(function(d) {  return d.id;  });
 
                 node.append("title")
                     .text(function(d) { return d.id; });
@@ -77,7 +77,11 @@ function network(){
                   
                     node
                         .attr("cx", d => d.x)
-                        .attr("cy", d => d.y);            
+                        .attr("cy", d => d.y); 
+                        
+                    labels.attr("transform", function(d) {
+                            return "translate(" + (d.x + 17) + "," + (d.y + 5) + ")";
+                        });
                 }
 
                 function dragstarted(d) {
