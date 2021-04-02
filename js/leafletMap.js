@@ -86,30 +86,18 @@ function leafletMap() {
       .projection(projection);
 
     let vesselNames = data.features
-      .map( (c, i) => c.properties.vessel_name )
-      .filter ((item, i, ar) => ar.indexOf(item) ===i)
+      .map((feature, i) => feature.properties.vessel_name)
+      .filter ((item, i, ar) => ar.indexOf(item) === i)
 
     console.log(vesselNames)
 
     let dates = data.features
       .flatMap((c) => c.properties.times.map((x) => new Date(x)))
 
-    // console.log(dates)
-    // console.log(Math.min.apply(null, dates), Math.max.apply(null, dates))
-
-    // var min =
-    // var max =
     let dateRange = {
-      // min : dates.reduce(function (a, b) { return a < b ? a : b; }).toDateString(),
-      // max : dates.reduce(function (a, b) { return a > b ? a : b; }).toDateString()
       min : dates[0].toDateString(),
       max : dates[dates.length -1].toDateString()
     }
-        // Math.min.apply(null, dates), Math.max.apply(null, dates)]
-
-
-    // let dateRange = [Math.min.apply(null, dates), Math.max.apply(null, dates)]
-    // console.log(min, max)
 
     let color = d3.scaleOrdinal(d3.schemeCategory10)
       .domain(vesselNames)
@@ -159,7 +147,6 @@ function leafletMap() {
     legend.addTo(map);
     return chart
   }
-
 
   return chart
 }
