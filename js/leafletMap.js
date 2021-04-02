@@ -6,19 +6,24 @@ function leafletMap() {
   //https://codepen.io/tforward/pen/ZPeZxd?editors=1010
   function chart(selector, data) {
 
-    let container = d3.select('#center-component'),
+    // let container = d3.select('#center-component'),
+    let container = d3.select('#vis-map-1'),
         width = container.node()
           .getBoundingClientRect()
             .width,
         height = container.node()
           .getBoundingClientRect()
             .height
+        // width = 960,
+        // height = 400
 
     // console.log('center-component width: ' + width, 'center-component height: ' + height)
 
     d3.select(selector)
       .style("width", width + "px")
-      .style("height", height * 2 + "px")
+      // .style("height", height * 2 + "px")
+      .style("height", height + "px")
+
 
     let esriWorldImageryLayer = L.tileLayer(
         'https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}', {

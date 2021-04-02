@@ -8,7 +8,7 @@
   const trajectory = './data/interim/timestamped-trajectory-icl-tac1.geojson'
 
   let nodeViz = network()
-  nodeViz('#vis-map-1');
+  nodeViz('#vis-network');
 
   let visMap1 = svgMap()
   ('#vis-map-1', topology, terminals, edges);
