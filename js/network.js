@@ -16,53 +16,94 @@ function network(){
                 .style('background-color', '#ccc') // change the background color to light gray
                 .attr('viewBox', [0, 0, width + margin.left + margin.right, height + margin.top + margin.bottom].join(' '));
 
-        var g = svg.append("g");
-
         d3.json('./data/processed/edges.json').then(function(data) {
-            const nodes = {};
-            data.forEach(function(link){
-                link.source = nodes[link.source] || (nodes[link.source] = {name: link.source});
-                link.target = nodes[link.target] || (nodes[link.target] = {name: link.target});
-            });
 
-            var force = d3.forceSimulation(nodes)
-                        .force("charge", d3.forceManyBody().strength(-1000))
-                        .force("link", d3.forceLink(data).distance(200))
+            const curr_nodes = [{id: "PSAP"}, {id:"NCSPA"}, {id: "RDT"}, {id: "ACOT"}, {id: "DPWS"}];
+
+            graph = ({
+                nodes: curr_nodes,
+                links: data
+              });
+
+            console.log(graph.nodes);
+            console.log(graph.links);
+
+            var force = d3.forceSimulation(graph.nodes)
+                        .force("charge", d3.forceManyBody().strength(-300))
+                        .force("link", d3.forceLink(graph.links).id(d => d.id).distance(200))
                     .force('center', d3.forceCenter(width / 2, height / 2))
-                        //.force('collide', d3.forceCollide(25))
                         .force("x", d3.forceX())
                         .force("y", d3.forceY())
-                        .alphaTarget(1)
+                    .alphaTarget(1)
                     .on('tick', ticked);
             
-            var link = g.selectAll(".link")
-                            .data(force.links())
-                          .enter().append("line")
-                            .attr("class", "link");
+            var link =  svg.append("g")
+                            .attr("stroke", "#999")
+                            .attr("stroke-opacity", 0.6)
+                        .selectAll("line")
+                        .data(graph.links)
+                        .join("line")
+                            .attr("stroke-width", d => 3);
 
-            var node = g.selectAll(".node")
-                            .data(force.nodes())
-                          .enter()
-                            .attr("class", "node")
-                            .on("mouseover", mouseover)
-                            .on("mouseout", mouseout)
-                            .call(force.drag);
+            var node = svg.append("g")
+                    .attr("stroke", "#fff")
+                    .attr("stroke-width", 1.5)
+                .selectAll("circle")
+                .data(graph.nodes)
+                .join("circle")
+                    .attr("r", 10)
+                    .attr("fill", '#0000FF')
+                .call(d3.drag()
+                    .on("start", dragstarted)
+                    .on("drag", dragged)
+                    .on("end", dragended));
 
-            node.append("circle")
-                    .attr("r", 8);
+            node.append("text")
+                    .attr("x", 30 + 4)
+                    .attr("y", "0.31em")
+                    .text(d => d.id)
+                    .clone(true).lower()
+                    .attr("fill", "none")
+                    .attr("stroke", "black")
+                    .attr("stroke-width", 3);
+
+            function ticked() {
+                   link
+                        .attr("x1", function(d) { return d.source.x; })
+                        .attr("y1", function(d) { return d.source.y; })
+                        .attr("x2", function(d) { return d.target.x; })
+                        .attr("y2", function(d) { return d.target.y; });
+                  
+                    node
+                        .attr("cx", d => d.x)
+                        .attr("cy", d => d.y);            
+                }
+
+                function dragstarted(d) {
+                    if (!d3.event.active) force.alphaTarget(0.3).restart();
+                    d.fx = d.x;
+                    d.fy = d.y;
+                } 
+               
+                function dragged(d) {
+                    d.fx = d3.event.x;
+                    d.fy = d3.event.y;
+                }
+              
+                function dragended(d) {
+                    if (!d3.event.active) force.alphaTarget(0);
+                    //d.fx = null;
+                    //d.fy = null;
+                }
+
+                function releasenode(d) {
+                      d.fx = null;
+                      d.fy = null;
+                }
             
+            // force.nodes(nodes);
+            // force.force("link").links(data);
         });
-
-        function tick() {
-            link
-                .attr("x1", function(d) { return d.source.x; })
-                .attr("y1", function(d) { return d.source.y; })
-                .attr("x2", function(d) { return d.target.x; })
-                .attr("y2", function(d) { return d.target.y; });
-          
-            node
-                .attr("transform", function(d) { return "translate(" + d.x + "," + d.y + ")"; });
-          }
         
         return node_link;
         

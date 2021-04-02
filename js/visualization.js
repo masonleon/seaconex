@@ -8,7 +8,7 @@
   myMap('#vis-map-1');  
   
   let nodeViz = network()
-  nodeViz('#vis-map1');
+  nodeViz('#vis-map-1');
 })());
 
 
