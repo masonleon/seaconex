@@ -132,6 +132,12 @@ h1, h2, h3 {
   line-height: 1.2
 }
 
+h4 {
+  margin-bottom: 1px;
+  margin-block-start: 5px;
+  margin-block-end: 5px;
+}
+
 /* Your text should be in a nice narrow column */
 .content-column {
   max-width: 650px;
