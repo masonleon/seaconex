@@ -9,7 +9,7 @@ function svgMap() {
       width = 960 - margin.left - margin.right,
       height = 600 - margin.top - margin.bottom;
 
-  function chart(selector, topology, terminals, edges) {
+  function chart(selector, data) {
 
     let projection = d3.geoMercator()
       .center([-40, 42])
@@ -29,93 +29,120 @@ function svgMap() {
           [0, 0, width + margin.left + margin.right,
             height + margin.top + margin.bottom].join(' '))
 
-    let path = d3.geoPath()
+    let pathCreator = d3.geoPath()
       .projection(projection);
 
     let g = svg.append("g");
 
-    // load and display the World
-    d3.json(topology)
-      .then(function (topology) {
+    let baseMap = g.selectAll("path")
+      .data(
+          topojson.feature(
+            data['topology_countries-110m'],
+            data['topology_countries-110m'].objects.countries
+          ).features
+      )
+      .enter()
+        .append("path")
+          .attr("d", pathCreator)
 
-      // load and display the cities
-      d3.json(terminals)
-        .then(function (data) {
 
-        const ports = g.selectAll("circle")
-          .data(data)
-          .enter()
-          .append("circle")
-          .attr("cx", function (d) {
-            return projection([d.terminal_lon, d.terminal_lat])[0];
-          })
-          .attr("cy", function (d) {
-            return projection([d.terminal_lon, d.terminal_lat])[1];
-          })
-          .attr("r", 3)
-          // .append("title")
-          // .text((d) => d.terminal_port)
-          .style("fill", "red")
-          .classed('bubble', true);
+    let terminals = g.selectAll("circle")
+      .data(data['master_schedules_terminal_call_info'].features)
+      .enter()
+        .append("path")
+          .attr( "d", pathCreator )
+          .attr( "fill", '#ff0000' )
+          .style("stroke", "blue")
+          .attr('class', 'point-terminal-facility')
+          // .attr('class', (d) => {'.'+d.properties.terminal_name})
 
-        // console.log("Is anything else executing?");
-
-        // g.append('line')
-        // .style("stroke", "lightgreen")
-        // .style("stroke-width", 3)
-        // .attr("x1", 71.8257)
-        // .attr("y1", 59.2836)
-        // .attr("x2", 472.37)
-        // .attr("y2", -60.6659);
-
-        g.selectAll("text")
-          .data(data)
-          .enter()
-          .append("text")
-          .text(function (d) {
-            return d.terminal_port;
-          })
-          .attr("x", function (d) {
-            return projection([d.terminal_lon, d.terminal_lat])[0] + 10;
-          })
-          .attr("y", function (d) {
-            return projection([d.terminal_lon, d.terminal_lat])[1] + 5;
-          })
-          .classed('port-names', true);
-      });
-
-      d3.json(edges)
-        .then(function (data) {
-
-          let link = [];
-
-          // Draw paths between ports along the given route
-          data.forEach(function (obj) {
-            topush = {
-              type: "LineString",
-              coordinates: obj.coordinates
-            }
-            link.push(topush)
-          });
-
-          g.selectAll("tradeRoutes")
-            .data(link)
-            .enter()
-            .append("path")
-            .attr("d", function (d) {
-              return path(d)
+    let terminal_labels = g.selectAll("text")
+      .data(data['master_schedules_terminal_call_info'].features)
+      .enter()
+        .append("path")
+        .append('text')
+         .text(function (d) {
+              console.log(d.properties.terminal_name)
+              return d.properties.terminal_name;
             })
-            .style("fill", "none")
-            .style("stroke", "#69b3a2")
-            .style("stroke-width", 2);
-        });
+          // .attr( "d", pathCreator )
+          // .attr( "fill", '#ff0000' )
+          // .style("stroke", "blue")
 
-      g.selectAll("path")
-        .data(topojson.feature(topology, topology.objects.countries).features)
-        .enter().append("path")
-        .attr("d", path);
 
-    });
+     // .on("mouseover",function(d) {
+     //        console.log("just had a mouseover", d3.select(d));
+     //        d3.select(this)
+     //          .classed("active",true)
+     //      })
+     //      .on("mouseout",function(d){
+     //        d3.select(this)
+     //          .classed("active",false)
+     //      })
+      // .style("opacity", .3)
+      // .append("text")
+      //   .text(function (d) {
+      //     console.log(d)
+      //     return d.properties.terminal_name;
+      //   })
+      //   // .attr("x", function (d) {
+      //   //   return projection([d.terminal_lon, d.terminal_lat])[0] + 10;
+      //   // })
+      //   // .attr("y", function (d) {
+      //   //   return projection([d.terminal_lon, d.terminal_lat])[1] + 5;
+      //   // })
+      //   .classed('port-names', true);
+
+    // //   // .append("title")
+    // //   // .text((d) => d.terminal_port)
+    //   .style("fill", "red")
+    //   .classed('bubble', true);
+    // .append( "path" )
+    // .attr( "fill", 'red' )
+    // // .attr( "stroke", "#999" )
+
+
+        // g.selectAll("text")
+        //   .data(data['master_schedules_terminal_call_info'].features)
+        //   .enter()
+        //   .append("text")
+        //   .text(function (d) {
+        //     return d.properties.terminal_name;
+        //   })
+        //   // .attr("x", function (d) {
+        //   //   return projection([d.terminal_lon, d.terminal_lat])[0] + 10;
+        //   // })
+        //   // .attr("y", function (d) {
+        //   //   return projection([d.terminal_lon, d.terminal_lat])[1] + 5;
+        //   // })
+        //   .classed('port-names', true);
+      // });
+
+
+      //     let link = [];
+      //
+      //     // Draw paths between ports along the given route
+      //     data.forEach(function (obj) {
+      //       topush = {
+      //         type: "LineString",
+      //         coordinates: obj.coordinates
+      //       }
+      //       link.push(topush)
+      //     });
+      //
+      //     g.selectAll("tradeRoutes")
+      //       .data(link)
+      //       .enter()
+      //       .append("path")
+      //       .attr("d", function (d) {
+      //         return pathCreator(d)
+      //       })
+      //       .style("fill", "none")
+      //       .style("stroke", "#69b3a2")
+      //       .style("stroke-width", 2);
+
+
+
 
     let zoom = d3.zoom()
       .scaleExtent([1, 20])

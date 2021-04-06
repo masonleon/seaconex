@@ -83,11 +83,16 @@
   height: 0;
 }
 
-path {
-  stroke: white;
-  stroke-width: .25px;
-  fill: grey;
+.point-terminal-facility {
+  stroke: blue;
+  fill: red
+
 }
+/*path {*/
+/*  stroke: white;*/
+/*  stroke-width: .25px;*/
+/*  fill: grey;*/
+/*}*/
 
 .port-names {
   font-size: small;
