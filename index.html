@@ -173,9 +173,118 @@ Trans-Atlantic
   <div class='flex-box'>
 
     <div id='filters-component'>
-      <h2>Filters</h2>
+      <h1>Filters</h1>
 
-      <h3>Origin/Destination</h3>
+
+      <b>View Ports or Terminal as Nodes?</b>
+      <br>
+      <input type="radio" id="nodes-terminal" name="node-setting" value="nodes-terminal" checked>
+      <label for="nodes-terminal">Terminal</label><br>
+      <input type="radio" id="nodes-port" name="node-setting" value="nodes-port">
+      <label for="nodes-port">Port</label><br>
+
+      <div id='filter-od'>
+        <h2>Origin/Destination</h2>
+      </div>
+
+      <h4>Origin</h4>
+      <form>
+        <select name = "origin-country">
+           <option value = "*" selected>(Select Origin Country)</option>
+           <option value = "USA">United States</option>
+           <option value = "Bermuda">Bermuda</option>
+           <option value = "UK">United Kingdom</option>
+        </select>
+      </form>
+      <form>
+        <select name = "origin-port">
+           <option value = "*" selected>(Select Origin Port)</option>
+           <option value = "Wilmington">Wilmington</option>
+           <option value = "Norfolk">Norfolk</option>
+        </select>
+      </form>
+      <form>
+        <select name = "origin-terminal">
+          <option value = "*" selected>(Select Origin Terminal)</option>
+          <option value = "NCSPA">NCSPA</option>
+          <option value = "XXX">XXX</option>
+        </select>
+      </form>
+
+      <h4>Destination</h4>
+      <form>
+        <select name = "destination-country">
+           <option value = "*" selected>(Select Destination Country)</option>
+           <option value = "USA">United States</option>
+           <option value = "Bermuda">Bermuda</option>
+           <option value = "UK">United Kingdom</option>
+        </select>
+      </form>
+      <form>
+        <select name = "destination-port">
+           <option value = "*" selected>(Select Destination Port)</option>
+           <option value = "Wilmington">Wilmington</option>
+           <option value = "Norfolk">Norfolk</option>
+        </select>
+      </form>
+      <form>
+        <select name = "destination-terminal">
+          <option value = "*" selected>(Select Destination Terminal)</option>
+          <option value = "NCSPA">NCSPA</option>
+          <option value = "XXX">XXX</option>
+        </select>
+      </form>
+
+      <br>
+
+      <b>Carriers</b>
+      <br>
+      <input type="checkbox" id="acl" name="selected-carrier" value="acl">
+      <label for="acl">ACL</label><br>
+      <input type="checkbox" id="icl" name="selected-carrier" value="icl">
+      <label for="icl">ICL</label><br>
+      <input type="checkbox" id="hlus" name="selected-carrier" value="hlus">
+      <label for="hlus">HLUS</label><br>
+      <input type="checkbox" id="bisl" name="selected-carrier" value="bisl">
+      <label for="bisl">BISL</label><br>
+      <input type="checkbox" id="sisl" name="selected-carrier" value="sisl">
+      <label for="sisl">SISL</label><br>
+      <input type="checkbox" id="bcl" name="selected-carrier" value="bcl">
+      <label for="bcl">BCL</label><br>
+
+
+
+      <br>
+      <b>Services</b>
+      <br>
+      <input type="checkbox" id="a" name="selected-service" value="a">
+      <label for="a">A</label><br>
+      <input type="checkbox" id="tac1" name="selected-service" value="tac1">
+      <label for="tac1">TAC1</label><br>
+      <input type="checkbox" id="p1" name="selected-service" value="p1">
+      <label for="p1">P1/AL3</label><br>
+      <input type="checkbox" id="bi" name="selected-service" value="bi">
+      <label for="bi">BI</label><br>
+      <input type="checkbox" id="si" name="selected-service" value="si">
+      <label for="si">SI</label><br>
+      <input type="checkbox" id="o" name="selected-service" value="o">
+      <label for="o">SI</label><br>
+
+      <br>
+      <b>Cargo Type</b>
+      <br>
+      <input type="checkbox" id="lolo" name="selected-cargo" value="lolo">
+      <label for="lolo">LoLo</label><br>
+      <input type="checkbox" id="roro" name="selected-cargo" value="roro">
+      <label for="roro">RoRo</label><br>
+
+      <br>
+      <b>Allow Transhipment?</b>
+      <br>
+      <input type="radio" id="transhipment-true" name="transhipment" value="transhipment-true" disabled>
+      <label for="transhipment-true">Yes</label><br>
+      <input type="radio" id="transhipment-false" name="transhipment" value="transhipment-false" checked>
+      <label for="transhipment-false">No</label><br>
 
     </div>
 
