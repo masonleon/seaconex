@@ -5,11 +5,18 @@ LABEL author="Mason Leon"
 # Installations
 USER root
 RUN apt update && \
-    apt-get update
+    apt-get update && \
+    apt install \
+      ghostscript \
+      python3-tk \
+        --assume-yes
+
     # sudo apt install --assume-yes \
 
 RUN conda install \
         -c conda-forge \
+        lxml \
+        camelot-py \
 #        nb_conda_kernels \
         python=3.7 \
         geopandas \
