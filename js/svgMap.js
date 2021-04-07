@@ -45,40 +45,30 @@ function svgMap() {
         .append("path")
           .attr("d", pathCreator)
 
-
     let terminals = g.selectAll("circle")
       .data(data['master_schedules_terminal_call_info'].features)
       .enter()
         .append("path")
           .attr( "d", pathCreator )
-          .attr( "fill", '#ff0000' )
-          .style("stroke", "blue")
+          // .attr( "fill", '#ff0000' )
+          // .style("stroke", "blue")
           .attr('class', 'point-terminal-facility')
-          // .attr('class', (d) => {'.'+d.properties.terminal_name})
 
-    let terminal_labels = g.selectAll("text")
-      .data(data['master_schedules_terminal_call_info'].features)
-      .enter()
-        .append("path")
-        .append('text')
-         .text(function (d) {
-              console.log(d.properties.terminal_name)
-              return d.properties.terminal_name;
-            })
+    // let terminal_labels = g.selectAll("text")
+    //   .data(data['master_schedules_terminal_call_info'].features)
+    //   .enter()
+    //     .append("path")
+    //     .append('text')
+    //      .text(function (d) {
+    //           console.log(d.properties.terminal_name)
+    //           return d.properties.terminal_name;
+    //         })
           // .attr( "d", pathCreator )
           // .attr( "fill", '#ff0000' )
           // .style("stroke", "blue")
 
 
-     // .on("mouseover",function(d) {
-     //        console.log("just had a mouseover", d3.select(d));
-     //        d3.select(this)
-     //          .classed("active",true)
-     //      })
-     //      .on("mouseout",function(d){
-     //        d3.select(this)
-     //          .classed("active",false)
-     //      })
+
       // .style("opacity", .3)
       // .append("text")
       //   .text(function (d) {
@@ -118,6 +108,62 @@ function svgMap() {
         //   .classed('port-names', true);
       // });
 
+    linkColor = () => {
+        let linkTypes = [
+            ...new Set(
+               d.properties
+                  .map(d => d.lane)
+            )
+        ];
+        const scale = d3.scaleOrdinal()
+          .range(linkTypes.length == 1 ? ['#616161'] : d3.schemeCategory10);
+
+        return d => scale(d.type);
+      }
+
+        // build the arrow.
+        svg.append("svg:defs").selectAll("marker")
+            .data(["end"])      // Different link/path types can be defined here
+          .enter().append("svg:marker")    // This section adds in the arrows
+            .attr("id", String)
+            .attr("viewBox", "0 -5 10 10")
+            .attr("refX", 15)
+            .attr("refY", -1.5)
+            .attr("markerWidth", 6)
+            .attr("markerHeight", 6)
+            .attr("orient", "auto")
+            .attr('fill', 'green')
+          .append("svg:path")
+            .attr("d", "M0,-5L10,0L0,5");
+
+
+      let masterScheduleTerminalCallEdges = g.selectAll('link')
+        .data(data['master_schedules_edges'].features)
+        .enter()
+
+          // .attr('viewBox', [0, 0, markerBoxWidth, markerBoxHeight])
+          // .attr('refX', refX)
+          // .attr('refY', refY)
+          // .attr('markerWidth', markerBoxWidth)
+          // .attr('markerHeight', markerBoxHeight)
+          .append("path")
+          .attr("d", pathCreator)
+          // .attr("fill", "none")
+          // .attr("stroke", 'red')
+          // .attr('marker-start', 'url(#arrow)')
+          // .attr('fill', 'none')
+          // .attr('stroke', 'green')
+          .attr('stroke', function (d){
+
+          })
+          .attr('marker-end', 'url(#end)')
+          .attr('fill', 'none');
+
+
+
+      // svg.selectAll(".link") .attr("marker-end", "url(#end)");
+          // .style("stroke", d => color(d.properties.vessel_name))
+          // .attr("stroke-width", 2);
 
       //     let link = [];
       //
