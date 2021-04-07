@@ -3,10 +3,11 @@
 ((() => {
 
   const topology = 'data/countries-110m.json';
-  const terminals = './data/processed/terminal.json';
-  const edges = './data/processed/edges.json';
+  const terminals = './data/interim/terminals.geojson';
+  // const edges = './data/processed/edges.json';
   const vessels = './data/raw/vessels.csv';
 
+  const searouteEdges = './data/searoute/data/out/searoutes.geojson';
 
   const masterSchedulesEdges = './data/interim/master_schedules_edges.geojson'
   const masterSchedulesTerminalCallInfo = './data/interim/master_schedules_terminal_call_info.geojson'
@@ -16,19 +17,23 @@
   //     []
   // ])
   Promise.all([
+    d3.json(terminals),
     d3.json(masterSchedulesEdges),
     d3.json(masterSchedulesTerminalCallInfo),
     d3.csv(vessels),
+    d3.json(searouteEdges),
     // d3.json(trajectory),
     d3.json(topology),
   ]).then(function(data) {
 
     return {
-      'master_schedules_edges': data[0],
-      'master_schedules_terminal_call_info': data[1],
-      'vessels': data[2],
+      'terminals': data[0],
+      'master_schedules_edges': data[1],
+      'master_schedules_terminal_call_info': data[2],
+      'vessels': data[3],
+      'searoute_edges': data[4],
       // 'timestamped_trajectory': data[2]
-      'topology_countries-110m': data[3],
+      'topology_countries-110m': data[5],
     }
 
 

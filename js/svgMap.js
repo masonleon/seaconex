@@ -46,12 +46,10 @@ function svgMap() {
           .attr("d", pathCreator)
 
     let terminals = g.selectAll("circle")
-      .data(data['master_schedules_terminal_call_info'].features)
+      .data(data['terminals'].features)
       .enter()
         .append("path")
           .attr( "d", pathCreator )
-          // .attr( "fill", '#ff0000' )
-          // .style("stroke", "blue")
           .attr('class', 'point-terminal-facility')
 
     // let terminal_labels = g.selectAll("text")
@@ -152,10 +150,27 @@ function svgMap() {
           // .attr("stroke", 'red')
           // .attr('marker-start', 'url(#arrow)')
           // .attr('fill', 'none')
-          // .attr('stroke', 'green')
-          .attr('stroke', function (d){
+          .attr('stroke', 'green')
+          .attr('marker-end', 'url(#end)')
+          .attr('fill', 'none');
 
-          })
+      // paths for idea shortest nautical path from EuroStat searoute
+      let searouteEdges = g.selectAll('link')
+        .data(data['searoute_edges'].features)
+        .enter()
+
+          // .attr('viewBox', [0, 0, markerBoxWidth, markerBoxHeight])
+          // .attr('refX', refX)
+          // .attr('refY', refY)
+          // .attr('markerWidth', markerBoxWidth)
+          // .attr('markerHeight', markerBoxHeight)
+          .append("path")
+          .attr("d", pathCreator)
+          // .attr("fill", "none")
+          // .attr("stroke", 'red')
+          // .attr('marker-start', 'url(#arrow)')
+          // .attr('fill', 'none')
+          .attr('stroke', 'red')
           .attr('marker-end', 'url(#end)')
           .attr('fill', 'none');
 
