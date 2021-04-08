@@ -12,7 +12,7 @@
 
   const searouteEdges = 'data/processed/searoutes.geojson';
 
-  const masterSchedulesEdges = './data/interim/master_schedules_edges.geojson'
+  const masterSchedulesEdges = './data/interim/master_schedules_edges2.geojson'
   const masterSchedulesTerminalCallInfo = './data/interim/master_schedules_terminal_call_info.geojson'
   const trajectory = './data/interim/timestamped-trajectory-icl-tac1.geojson'
 
@@ -61,6 +61,9 @@
     //
     // let visMap2 = leafletMap()
     // ('#vis-map-2', data);
+
+    let visDetails = detailPane()
+    ('#detail-pane', data);
   });
 
 
