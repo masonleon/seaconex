@@ -17,26 +17,48 @@ function network() {
       .style('background-color', '#ccc') // change the background color to light gray
       .attr('viewBox', [0, 0, width + margin.left + margin.right, height + margin.top + margin.bottom].join(' '));
 
-      var curr_nodes = [];
-      var curr_links = [];
+     let links = data['master_schedules_edges'].features
+      .map(edge => edge.properties)
+      .map((
+        {
+          terminal_call_facility_1: source,
+          terminal_call_facility_2: target,
+          ...rest
+        }
+        ) => (
+        {
+          source,
+          target,
+          ...rest
+        }
+      ));
 
-      data['master_schedules_edges'].features.forEach(function(link) {
-          if(curr_nodes.some( node => node['id'] === link.properties.source ) == false)
-            curr_nodes.push({id: link.properties.source})
+      console.log('links', links)
 
-          curr_links.push(link.properties)
+      let curr_nodes = [];
+      let curr_links = [];
+
+      links.forEach(link => {
+        if( curr_nodes.some( node => node['id'] === link.source ) === false ){
+          curr_nodes.push(
+            {
+              id: link.source
+            }
+          )
+        }
+        curr_links.push(link)
       });
 
-      var graph = ({
+      let graph = ({
         nodes: curr_nodes,
         links: curr_links
       });
 
-      var lanes = Array.from(new Set(curr_links.map(d => d.lane)))
-      var color = d3.scaleOrdinal(lanes, d3.schemeCategory10)
+      let lanes = Array.from(new Set(curr_links.map( d => d.lane)))
+      let color = d3.scaleOrdinal(lanes, d3.schemeCategory10)
 
-        console.log(graph.nodes);
-        console.log(graph.links);
+      console.log(graph.nodes);
+      console.log(graph.links);
 
       let force = d3.forceSimulation(graph.nodes)
           .force("charge", d3.forceManyBody().strength(-400))
@@ -46,20 +68,20 @@ function network() {
           .force("y", d3.forceY())
           .alphaTarget(1);
 
-    // Arrowheads for directional links
-    svg.append("defs").selectAll("marker")
-        .data(lanes)
-        .join("marker")
-          .attr("id", d => `arrow-${d}`)
-          .attr("viewBox", "0 -5 10 10")
-          .attr("refX", 15)
-          .attr("refY", -0.5)
-          .attr("markerWidth", 6)
-          .attr("markerHeight", 6)
-          .attr("orient", "auto")
-        .append("path")
-          .attr("fill", color)
-          .attr("d", "M0,-5L10,0L0,5");
+      // Arrowheads for directional links
+      svg.append("defs").selectAll("marker")
+          .data(lanes)
+          .join("marker")
+            .attr("id", d => `arrow-${d}`)
+            .attr("viewBox", "0 -5 10 10")
+            .attr("refX", 15)
+            .attr("refY", -0.5)
+            .attr("markerWidth", 6)
+            .attr("markerHeight", 6)
+            .attr("orient", "auto")
+          .append("path")
+            .attr("fill", color)
+            .attr("d", "M0,-5L10,0L0,5");
 
       let link = svg.append("g")
           .attr("fill", "none")
@@ -67,15 +89,20 @@ function network() {
         .selectAll("path")
         .data(graph.links)
         .join("path")
+          .attr('class', 'link-edge-network')
+          .attr('id', d => `${d.transport_edge_no}`)
           .attr("stroke", d => color(d.lane))
           .attr("marker-end", d => `url(${new URL(`#arrow-${d.lane}`, location)})`);
 
-        let node = svg.append("g")
-          .attr("stroke", "#fff")
-          .attr("stroke-width", 1.5)
-          .selectAll("circle")
-          .data(graph.nodes)
-          .join("circle")
+      let node = svg.append("g")
+        .attr("stroke", "#fff")
+        .attr("stroke-width", 1.5)
+        .selectAll("circle")
+        .data(graph.nodes)
+        .join("circle")
+          .attr('class', 'node-terminal-facility')
+          .attr('id', d => `${d.id}`)
+
           .attr("r", 4)
           .attr("fill", '#0000FF')
           .call(d3.drag()
@@ -89,7 +116,8 @@ function network() {
             .append("text")
           .attr("class", "label")
           .attr("fill", "black")
-          .text(function (d) {
+          .text(d => {
+            console.log(d)
             return d.id;
           });
 

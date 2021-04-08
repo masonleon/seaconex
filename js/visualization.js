@@ -52,8 +52,8 @@
     let visControls = filterControls()
     ('#filters-component', data)
 
-    // let nodeViz = network()
-    // ('#vis-network', data);
+    let nodeViz = network()
+    ('#vis-network', data);
 
     let visMap1 = svgMap()
     // //  ('#vis-map-1', topology, terminals, dataset);
@@ -61,6 +61,9 @@
     //
     // let visMap2 = leafletMap()
     // ('#vis-map-2', data);
+
+    let visDetails = detailPane()
+    ('#detail-pane', data);
   });
 
 
