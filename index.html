@@ -210,126 +210,71 @@ Trans-Atlantic
 <!--        </div>-->
 <!--      </div>-->
 
-      <div id='filter-network'>
-        <h3>Network Filters</h3>
-        <hr/>
+<!--      <div id='filter-network'>-->
+<!--        <h3>Network Filters</h3>-->
+<!--        <hr/>-->
 
-        <div id='filter-od'>
-          <h5>Origin/Destination</h5>
-          <h4>Origin</h4>
-          <form>
-            <select name="origin-country">
-               <option value="*"
-                       selected>
-                 (Select Origin Country)
-               </option>
-               <option value = "USA">
-                 United States
-               </option>
-               <option value = "Bermuda">
-                 Bermuda
-               </option>
-               <option value = "UK">
-                 United Kingdom
-               </option>
-            </select>
-          </form>
-          <form>
-            <select name = "origin-port">
-               <option value = "*" selected>(Select Origin Port)</option>
-               <option value = "Wilmington">Wilmington</option>
-               <option value = "Norfolk">Norfolk</option>
-            </select>
-          </form>
-          <form>
-            <select name = "origin-terminal">
-              <option value = "*" selected>(Select Origin Terminal)</option>
-              <option value = "NCSPA">NCSPA</option>
-              <option value = "XXX">XXX</option>
-            </select>
-          </form>
+<!--        <div id='filter-od'>-->
+<!--          <h5>Origin/Destination</h5>-->
+<!--          <h4>Origin</h4>-->
+<!--          <form>-->
+<!--            <select name="origin-country">-->
+<!--               <option value="*"-->
+<!--                       selected>-->
+<!--                 (Select Origin Country)-->
+<!--               </option>-->
+<!--               <option value = "USA">-->
+<!--                 United States-->
+<!--               </option>-->
+<!--               <option value = "Bermuda">-->
+<!--                 Bermuda-->
+<!--               </option>-->
+<!--               <option value = "UK">-->
+<!--                 United Kingdom-->
+<!--               </option>-->
+<!--            </select>-->
+<!--          </form>-->
+<!--          <form>-->
+<!--            <select name = "origin-port">-->
+<!--               <option value = "*" selected>(Select Origin Port)</option>-->
+<!--               <option value = "Wilmington">Wilmington</option>-->
+<!--               <option value = "Norfolk">Norfolk</option>-->
+<!--            </select>-->
+<!--          </form>-->
+<!--          <form>-->
+<!--            <select name = "origin-terminal">-->
+<!--              <option value = "*" selected>(Select Origin Terminal)</option>-->
+<!--              <option value = "NCSPA">NCSPA</option>-->
+<!--              <option value = "XXX">XXX</option>-->
+<!--            </select>-->
+<!--          </form>-->
 
-          <h4>Destination</h4>
-          <form>
-            <select name = "destination-country">
-               <option value = "*" selected>(Select Destination Country)</option>
-               <option value = "USA">United States</option>
-               <option value = "Bermuda">Bermuda</option>
-               <option value = "UK">United Kingdom</option>
-            </select>
-          </form>
-          <form>
-            <select name = "destination-port">
-               <option value = "*" selected>(Select Destination Port)</option>
-               <option value = "Wilmington">Wilmington</option>
-               <option value = "Norfolk">Norfolk</option>
-            </select>
-          </form>
-          <form>
-            <select name = "destination-terminal">
-              <option value = "*" selected>(Select Destination Terminal)</option>
-              <option value = "NCSPA">NCSPA</option>
-              <option value = "XXX">XXX</option>
-            </select>
-          </form>
+<!--          <h4>Destination</h4>-->
+<!--          <form>-->
+<!--            <select name = "destination-country">-->
+<!--               <option value = "*" selected>(Select Destination Country)</option>-->
+<!--               <option value = "USA">United States</option>-->
+<!--               <option value = "Bermuda">Bermuda</option>-->
+<!--               <option value = "UK">United Kingdom</option>-->
+<!--            </select>-->
+<!--          </form>-->
+<!--          <form>-->
+<!--            <select name = "destination-port">-->
+<!--               <option value = "*" selected>(Select Destination Port)</option>-->
+<!--               <option value = "Wilmington">Wilmington</option>-->
+<!--               <option value = "Norfolk">Norfolk</option>-->
+<!--            </select>-->
+<!--          </form>-->
+<!--          <form>-->
+<!--            <select name = "destination-terminal">-->
+<!--              <option value = "*" selected>(Select Destination Terminal)</option>-->
+<!--              <option value = "NCSPA">NCSPA</option>-->
+<!--              <option value = "XXX">XXX</option>-->
+<!--            </select>-->
+<!--          </form>-->
 
-          <br>
-        </div>
-
-        <div id='filter-carrier'>
-          <h5>Carriers</h5>
-          <br>
-          <input type="checkbox"
-                 id="acl"
-                 name="selected-carrier"
-                 value="acl">
-          <label for="acl">
-            ACL
-          </label>
-          <br>
-          <input type="checkbox"
-                 id="icl"
-                 name="selected-carrier"
-                 value="icl">
-          <label for="icl">
-            ICL
-          </label>
-          <br>
-          <input type="checkbox"
-                 id="hlus"
-                 name="selected-carrier"
-                 value="hlus">
-          <label for="hlus">
-            HLUS
-          </label>
-          <br>
-          <input type="checkbox"
-                 id="bisl"
-                 name="selected-carrier"
-                 value="bisl">
-          <label for="bisl">
-            BISL
-          </label>
-          <br>
-          <input type="checkbox"
-                 id="sisl"
-                 name="selected-carrier"
-                 value="sisl">
-          <label for="sisl">
-            SISL
-          </label>
-          <br>
-          <input type="checkbox"
-                 id="bcl"
-                 name="selected-carrier"
-                 value="bcl">
-          <label for="bcl">
-            BCL
-          </label>
-          <br>
-        </div>
-
-      </div>
+<!--          <br>-->
+<!--        </div>-->
 
 
 
@@ -660,6 +605,7 @@ Trans-Atlantic
 <script src='js/svgMap.js'></script>
 <script src='js/leafletMap.js'></script>
 <script src='js/network.js'></script>
+<script src='js/filterControls.js'></script>
 <script src='js/visualization.js'></script>
 
 </body>

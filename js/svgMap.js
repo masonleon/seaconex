@@ -205,21 +205,21 @@ function svgMap() {
 
 
 
-    let zoom = d3.zoom()
-      .scaleExtent([1, 20])
-      .translateExtent([[-500, -700], [1500, 1000]])
-      .on('zoom', function (event) {
-        g.selectAll('path')
-          .attr('transform', event.transform);
-        g.selectAll("circle")
-          .attr('transform', event.transform);
-        g.selectAll("text")
-          .attr('transform', event.transform);
-        g.selectAll("line")
-          .attr('transform', event.transform);
-      });
-
-    svg.call(zoom);
+    // let zoom = d3.zoom()
+    //   .scaleExtent([1, 20])
+    //   .translateExtent([[-500, -700], [1500, 1000]])
+    //   .on('zoom', function (event) {
+    //     g.selectAll('path')
+    //       .attr('transform', event.transform);
+    //     g.selectAll("circle")
+    //       .attr('transform', event.transform);
+    //     g.selectAll("text")
+    //       .attr('transform', event.transform);
+    //     g.selectAll("line")
+    //       .attr('transform', event.transform);
+    //   });
+    //
+    // svg.call(zoom);
 
     return chart;
   }
