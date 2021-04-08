@@ -128,8 +128,28 @@ tr:nth-child(even) {
 /* Style for selected marks (table rows) */
 tr.selected {
   background-color: pink;
-  color: red;
+}
 
+/* Recreate the D3 brush style... */
+tr.mouseover {
+  background-color: #d6d6d6;
+}
+
+/* ...but add a darker selected and brushed color. */
+tr.mouseover.selected{
+  background-color: #e08fa3;
+}
+
+/* Don't also do text drag selection */
+table.text-unselectable {
+  -webkit-touch-callout: none;
+  -webkit-user-select: none;
+  -khtml-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  -o-user-select: none;
+  user-select: none;
+  cursor: default;
 }
 
 /* The following are required from the project template https://github.com/NEU-CS-7250-S21-Staff/Project */

@@ -75,6 +75,7 @@ function table() {
 
                     // If this row WAS previously selected, remove it from our selected elements and let everyone know
                     else {
+                        console.log("it was selected! unselecting..");
                         d3.select(this)
                             .classed('selected', false);
 
