@@ -10,7 +10,7 @@
   const carriers = './data/processed/carrier.json';
 
 
-  const searouteEdges = './data/searoute/data/out/searoutes.geojson';
+  const searouteEdges = 'data/processed/searoutes.geojson';
 
   const masterSchedulesEdges = './data/interim/master_schedules_edges.geojson'
   const masterSchedulesTerminalCallInfo = './data/interim/master_schedules_terminal_call_info.geojson'
@@ -52,8 +52,8 @@
     let visControls = filterControls()
     ('#filters-component', data)
 
-    let nodeViz = network()
-    ('#vis-network', data);
+    // let nodeViz = network()
+    // ('#vis-network', data);
 
     let visMap1 = svgMap()
     // //  ('#vis-map-1', topology, terminals, dataset);

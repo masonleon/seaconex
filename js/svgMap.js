@@ -11,7 +11,9 @@ function svgMap() {
 
   function chart(selector, data) {
 
-    let projection = d3.geoMercator()
+    let projection = d3
+      .geoEquirectangular()
+      // .geoMercator()
       .center([-40, 42])
       .scale(470)
       .rotate([0, 0]);
@@ -49,7 +51,7 @@ function svgMap() {
       .data(data['terminals'].features)
       .enter()
         .append("path")
-          .attr( "d", pathCreator )
+          .attr( "d", pathCreator)
           .attr('class', 'point-terminal-facility')
 
     // let terminal_labels = g.selectAll("text")
@@ -106,18 +108,18 @@ function svgMap() {
         //   .classed('port-names', true);
       // });
 
-    linkColor = () => {
-        let linkTypes = [
-            ...new Set(
-               d.properties
-                  .map(d => d.lane)
-            )
-        ];
-        const scale = d3.scaleOrdinal()
-          .range(linkTypes.length == 1 ? ['#616161'] : d3.schemeCategory10);
-
-        return d => scale(d.type);
-      }
+    // linkColor = () => {
+    //     let linkTypes = [
+    //         ...new Set(
+    //            d.properties
+    //               .map(d => d.lane)
+    //         )
+    //     ];
+    //     const scale = d3.scaleOrdinal()
+    //       .range(linkTypes.length == 1 ? ['#616161'] : d3.schemeCategory10);
+    //
+    //     return d => scale(d.type);
+    //   }
 
         // build the arrow.
         svg.append("svg:defs").selectAll("marker")
@@ -145,7 +147,12 @@ function svgMap() {
           // .attr('markerWidth', markerBoxWidth)
           // .attr('markerHeight', markerBoxHeight)
           .append("path")
-          .attr("d", pathCreator)
+          // .attr("d", d => {
+          //   console.log(d.geometry.coordinates[0]);
+          //   linkArc(d.geometry.coordinates)
+          //   // pathCreator
+          // })
+          .attr("d", d => linkArc(d.geometry.coordinates))
           // .attr("fill", "none")
           // .attr("stroke", 'red')
           // .attr('marker-start', 'url(#arrow)')
@@ -222,6 +229,22 @@ function svgMap() {
     // svg.call(zoom);
 
     return chart;
+  }
+
+  function linkArc(d) {
+      const r = Math.hypot(d[1][0] - d[0][0], d[1][1] - d[0][1]);
+      console.log(r)
+    return `
+      M${d[0][0]},${d[0][1]}
+      A${r},${r} 0 0,1 ${d[1][0]},${d[1][1]}
+    `;
+  }
+
+  nodeColor = (d) => {
+    let nodeTypes = [...new Set(data['searoute_edges'].features.map( d => d.type))];
+    const scale = d3.scaleOrdinal()
+      .range(nodeTypes.length==1? ['#616161']:d3.schemeCategory10);
+    return d => scale(d.type);
   }
 
   chart.width = function (value) {
