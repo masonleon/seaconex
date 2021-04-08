@@ -266,6 +266,7 @@ function svgMap() {
   chart.updateSelection = function (selectedData) {
     if (!arguments.length) return;
     console.log("Updating SVG map with data selected in terminal table");
+    console.log("Selected Data:", selectedData)
   }
 
   return chart;

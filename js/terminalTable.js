@@ -12,7 +12,6 @@ function table() {
     dispatcher;
   
     function table(selector, data) {
-        console.log("Building table...")
 
         let svg = d3.select(selector)
             .append('table')
@@ -57,31 +56,26 @@ function table() {
                 // While the user is holding the mouse down, the selection/not selection is activated
                 // (Emulates click and drag)
                 if (mouseDown == true){
-                    console.log("holding mouse down..");
 
                     // If this row wasn't selected, then make it selected, and send dispatch to other charts so they select it too.
                     if (d3.select(this).classed("selected") == false){
-                        console.log("not selected");
                         d3.select(this).classed('selected', true);
-                        console.log("selected");
 
+                        // Get the name of our dispatcher's event
+                        let dispatchString = Object.getOwnPropertyNames(dispatcher._)[0];
 
-                        // // Get the name of our dispatcher's event
-                        // let dispatchString = Object.getOwnPropertyNames(dispatcher._)[0];
-
-                        // // Let other charts know
-                        // dispatcher.call(dispatchString, this, svg.selectAll('.selected').data());
+                        // Let other charts know
+                        dispatcher.call(dispatchString, this, svg.selectAll('.selected').data());
                     }
 
                     // If this row WAS previously selected, remove it from our selected elements and let everyone know
                     else {
-                        console.log("it was selected! unselecting..");
                         d3.select(this)
                             .classed('selected', false);
 
-                    //     // Get the name of our dispatcher's event & send selected data to other charts
-                    //     let dispatchString = Object.getOwnPropertyNames(dispatcher._)[0];
-                    //     dispatcher.call(dispatchString, this, svg.selectAll('.selected').data());
+                        // Get the name of our dispatcher's event & send selected data to other charts
+                        let dispatchString = Object.getOwnPropertyNames(dispatcher._)[0];
+                        dispatcher.call(dispatchString, this, svg.selectAll('.selected').data());
                     }
                 }
             });
@@ -110,7 +104,6 @@ function table() {
     // Gets or sets the dispatcher we use for selection events
     table.selectionDispatcher = function (_) {
         if (!arguments.length) return dispatcher;
-        console.log("in selection dispatch section");
         dispatcher = _;
         return table;
     };

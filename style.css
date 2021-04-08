@@ -141,7 +141,7 @@ tr.mouseover.selected{
 }
 
 /* Don't also do text drag selection */
-table.text-unselectable {
+table {
   -webkit-touch-callout: none;
   -webkit-user-select: none;
   -khtml-user-select: none;
