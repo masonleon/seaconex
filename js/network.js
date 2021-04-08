@@ -20,15 +20,30 @@ function network() {
     d3.json('./data/processed/edges.json')
       .then(function (data) {
 
-        const curr_nodes = [
-            {id: "PSAP"},
-            {id: "NCSPA"},
-            {id: "RDT"},
-            {id: "ACOT"},
-            {id: "DPWS"}
-          ];
+        // const curr_nodes = [
+        //     {id: "PSAP"},
+        //     {id: "NCSPA"},
+        //     {id: "RDT"},
+        //     {id: "ACOT"},
+        //     {id: "DPWS"}
+        //   ];
 
-        graph = ({
+        // console.log(curr_nodes);
+
+
+        var curr_nodes = [];
+
+
+        data.forEach(function(link) {
+          if(curr_nodes.some( node => node['id'] === link.source ) == false)
+            curr_nodes.push({id: link.source})
+          // if(curr_nodes.some( node => node['id'] === link.target ) == false)
+          //   curr_nodes.push({id: link.source})
+            // link.source = curr_nodes[link.source] || (curr_nodes[link.source] = {id: link.source});
+            // link.target = curr_nodes[link.target] || (curr_nodes[link.target] = {id: link.target});
+        });
+
+        var graph = ({
           nodes: curr_nodes,
           links: data
         });
