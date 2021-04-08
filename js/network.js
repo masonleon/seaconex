@@ -8,7 +8,7 @@ function network() {
       width = 960 - margin.left - margin.right,
       height = 600 - margin.top - margin.bottom;
 
-  function node_link(selector) {
+  function node_link(selector, data) {
     let svg = d3.select(selector)
       .append("svg")
       .attr("height", height)
@@ -17,41 +17,58 @@ function network() {
       .style('background-color', '#ccc') // change the background color to light gray
       .attr('viewBox', [0, 0, width + margin.left + margin.right, height + margin.top + margin.bottom].join(' '));
 
-    d3.json('./data/processed/edges.json')
-      .then(function (data) {
+      var curr_nodes = [];
+      var curr_links = [];
 
-        const curr_nodes = [
-            {id: "PSAP"},
-            {id: "NCSPA"},
-            {id: "RDT"},
-            {id: "ACOT"},
-            {id: "DPWS"}
-          ];
+      data['master_schedules_edges'].features.forEach(function(link) {
+          if(curr_nodes.some( node => node['id'] === link.properties.source ) == false)
+            curr_nodes.push({id: link.properties.source})
 
-        graph = ({
-          nodes: curr_nodes,
-          links: data
-        });
+          curr_links.push(link.properties)
+      });
+
+      var graph = ({
+        nodes: curr_nodes,
+        links: curr_links
+      });
+
+      var lanes = Array.from(new Set(curr_links.map(d => d.lane)))
+      var color = d3.scaleOrdinal(lanes, d3.schemeCategory10)
 
         console.log(graph.nodes);
         console.log(graph.links);
 
-        let force = d3.forceSimulation(graph.nodes)
-          .force("charge", d3.forceManyBody().strength(-300))
+      let force = d3.forceSimulation(graph.nodes)
+          .force("charge", d3.forceManyBody().strength(-400))
           .force("link", d3.forceLink(graph.links).id(d => d.id).distance(200))
           .force('center', d3.forceCenter(width / 2, height / 2))
           .force("x", d3.forceX())
           .force("y", d3.forceY())
-          .alphaTarget(1)
-          .on('tick', ticked);
+          .alphaTarget(1);
 
-        let link = svg.append("g")
-          .attr("stroke", "#999")
-          .attr("stroke-opacity", 0.6)
-          .selectAll("line")
-          .data(graph.links)
-          .join("line")
-          .attr("stroke-width", d => 3);
+    // Arrowheads for directional links
+    svg.append("defs").selectAll("marker")
+        .data(lanes)
+        .join("marker")
+          .attr("id", d => `arrow-${d}`)
+          .attr("viewBox", "0 -5 10 10")
+          .attr("refX", 15)
+          .attr("refY", -0.5)
+          .attr("markerWidth", 6)
+          .attr("markerHeight", 6)
+          .attr("orient", "auto")
+        .append("path")
+          .attr("fill", color)
+          .attr("d", "M0,-5L10,0L0,5");
+
+      let link = svg.append("g")
+          .attr("fill", "none")
+          .attr("stroke-width", 1.5)
+        .selectAll("path")
+        .data(graph.links)
+        .join("path")
+          .attr("stroke", d => color(d.lane))
+          .attr("marker-end", d => `url(${new URL(`#arrow-${d.lane}`, location)})`);
 
         let node = svg.append("g")
           .attr("stroke", "#fff")
@@ -59,7 +76,7 @@ function network() {
           .selectAll("circle")
           .data(graph.nodes)
           .join("circle")
-          .attr("r", 15)
+          .attr("r", 4)
           .attr("fill", '#0000FF')
           .call(d3.drag()
           .on("start", dragstarted)
@@ -81,20 +98,10 @@ function network() {
             return d.id;
           });
 
+       force.on('tick', ticked); 
+
         function ticked() {
-          link
-            .attr("x1", function (d) {
-              return d.source.x;
-            })
-            .attr("y1", function (d) {
-              return d.source.y;
-            })
-            .attr("x2", function (d) {
-              return d.target.x;
-            })
-            .attr("y2", function (d) {
-              return d.target.y;
-            });
+          link.attr("d", linkArc);
 
           node
             .attr("cx", d => d.x)
@@ -103,6 +110,15 @@ function network() {
           labels.attr("transform", function (d) {
             return "translate(" + (d.x + 17) + "," + (d.y + 5) + ")";
           });
+        }
+
+        // Function from Mike Bostock's Mobile patent suits to generate arc paths for links so they don't collide with each other.
+        function linkArc(d) {
+          const r = Math.hypot(d.target.x - d.source.x, d.target.y - d.source.y);
+          return `
+            M${d.source.x},${d.source.y}
+            A${r},${r} 0 0,1 ${d.target.x},${d.target.y}
+          `;
         }
 
         function dragstarted(d) {
@@ -131,12 +147,7 @@ function network() {
           d.fy = null;
         }
 
-        // force.nodes(nodes);
-        // force.force("link").links(data);
-      });
-
     return node_link;
-
   }
 
   return node_link
