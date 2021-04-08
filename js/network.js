@@ -35,8 +35,8 @@ function network() {
       var lanes = Array.from(new Set(curr_links.map(d => d.lane)))
       var color = d3.scaleOrdinal(lanes, d3.schemeCategory10)
 
-        console.log(graph.nodes);
-        console.log(graph.links);
+      console.log(graph.nodes);
+      console.log(graph.links);
 
       let force = d3.forceSimulation(graph.nodes)
           .force("charge", d3.forceManyBody().strength(-400))
@@ -112,13 +112,17 @@ function network() {
           });
         }
 
-        // Function from Mike Bostock's Mobile patent suits to generate arc paths for links so they don't collide with each other.
+// Function from Mike Bostock's Mobile patent suits and stackoverflow to generate arc paths for links so they don't collide with each other.
         function linkArc(d) {
-          const r = Math.hypot(d.target.x - d.source.x, d.target.y - d.source.y);
-          return `
-            M${d.source.x},${d.source.y}
-            A${r},${r} 0 0,1 ${d.target.x},${d.target.y}
-          `;
+          var dx = d.target.x - d.source.x,
+          dy = d.target.y - d.source.y,
+          dr = Math.sqrt(dx * dx + dy * dy);
+          if(d.lane == "E") { 
+            return "M" + d.source.x + "," + d.source.y + "A" + dr + "," + dr + " 0 0,1 " + d.target.x + "," + d.target.y;
+          }
+          else {
+            return "M" + d.source.x + "," + d.source.y + "A" + (dr * 0.3) + "," + (dr * 0.3) + " 0 0,1 " + d.target.x + "," + d.target.y;
+  }
         }
 
         function dragstarted(d) {
