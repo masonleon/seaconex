@@ -3,15 +3,10 @@
 ((() => {
 
   const topology = 'data/countries-110m.json';
-
   const terminals = './data/interim/terminals.geojson';
-
   const vessels = './data/raw/vessels.csv';
   const carriers = './data/processed/carrier.json';
-
-
   const searouteEdges = 'data/processed/searoutes.geojson';
-
   const masterSchedulesEdges = './data/interim/master_schedules_edges.geojson'
   const masterSchedulesTerminalCallInfo = './data/interim/master_schedules_terminal_call_info.geojson'
   const trajectory = './data/interim/timestamped-trajectory-icl-tac1.geojson'
@@ -47,7 +42,9 @@
     // d3.merge([data]).then(value => console.log(value));
     // console.log();
   }).then(data => {
-    console.log(data)
+
+    const dispatchStringGeneral = 'selectionUpdated';
+    const dispatchStringToTable = 'selectionUpdated.table';
 
     let visControls = filterControls()
     ('#filters-component', data)
@@ -56,11 +53,18 @@
     // ('#vis-network', data);
 
     let visMap1 = svgMap()
-    // //  ('#vis-map-1', topology, terminals, dataset);
+    // ('#vis-map-1', topology, terminals, dataset);
     ('#vis-map-1', data);
-    //
+    
     // let visMap2 = leafletMap()
     // ('#vis-map-2', data);
+
+    let terminalTable = table()
+    .selectionDispatcher(d3.dispatch(dispatchStringGeneral))
+      ('#terminalTable', data);
+
+
+    terminalTable.selectionDispatcher().on(dispatchStringGeneral, visMap1.updateSelection) 
   });
 
 

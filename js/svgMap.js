@@ -263,6 +263,11 @@ function svgMap() {
     return chart;
   };
 
+  chart.updateSelection = function (selectedData) {
+    if (!arguments.length) return;
+    console.log("Updating SVG map with data selected in terminal table");
+  }
+
   return chart;
 
 }

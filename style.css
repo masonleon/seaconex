@@ -125,6 +125,13 @@ tr:nth-child(even) {
   background-color: #f2f2f2;
 }
 
+/* Style for selected marks (table rows) */
+tr.selected {
+  background-color: pink;
+  color: red;
+
+}
+
 /* The following are required from the project template https://github.com/NEU-CS-7250-S21-Staff/Project */
 /* General formatting */
 body {
