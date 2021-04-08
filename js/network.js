@@ -8,7 +8,7 @@ function network() {
       width = 960 - margin.left - margin.right,
       height = 600 - margin.top - margin.bottom;
 
-  function node_link(selector) {
+  function node_link(selector, data) {
     let svg = d3.select(selector)
       .append("svg")
       .attr("height", height)
@@ -17,36 +17,20 @@ function network() {
       .style('background-color', '#ccc') // change the background color to light gray
       .attr('viewBox', [0, 0, width + margin.left + margin.right, height + margin.top + margin.bottom].join(' '));
 
-    d3.json('./data/processed/edges.json')
-      .then(function (data) {
+      var curr_nodes = [];
+      var curr_links = [];
 
-        // const curr_nodes = [
-        //     {id: "PSAP"},
-        //     {id: "NCSPA"},
-        //     {id: "RDT"},
-        //     {id: "ACOT"},
-        //     {id: "DPWS"}
-        //   ];
+      data['master_schedules_edges'].features.forEach(function(link) {
+          if(curr_nodes.some( node => node['id'] === link.properties.source ) == false)
+            curr_nodes.push({id: link.properties.source})
 
-        // console.log(curr_nodes);
+          curr_links.push(link.properties)
+      });
 
-
-        var curr_nodes = [];
-
-
-        data.forEach(function(link) {
-          if(curr_nodes.some( node => node['id'] === link.source ) == false)
-            curr_nodes.push({id: link.source})
-          // if(curr_nodes.some( node => node['id'] === link.target ) == false)
-          //   curr_nodes.push({id: link.source})
-            // link.source = curr_nodes[link.source] || (curr_nodes[link.source] = {id: link.source});
-            // link.target = curr_nodes[link.target] || (curr_nodes[link.target] = {id: link.target});
-        });
-
-        var graph = ({
-          nodes: curr_nodes,
-          links: data
-        });
+      var graph = ({
+        nodes: curr_nodes,
+        links: curr_links
+      });
 
         console.log(graph.nodes);
         console.log(graph.links);
@@ -145,10 +129,6 @@ function network() {
           d.fx = null;
           d.fy = null;
         }
-
-        // force.nodes(nodes);
-        // force.force("link").links(data);
-      });
 
     return node_link;
 
