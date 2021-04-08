@@ -39,18 +39,34 @@ function network() {
       let curr_links = [];
 
       links.forEach(link => {
-        if( curr_nodes.some( node => node['id'] === link.source ) === false ){
-          curr_nodes.push(
-            {
-              id: link.source
-            }
-          )
-        }
+        // if( curr_nodes.some( node => node['id'] === link.source ) === false ){
+        //   curr_nodes.push(
+        //     {
+        //       id: link.source
+        //     }
+        //   )
+        // }
         curr_links.push(link)
       });
 
+      let nodes = data['terminals'].features
+        .map(node => node.properties)
+        .map((
+          {
+            terminal: id,
+            ...rest
+          }
+          ) => (
+          {
+            id,
+            ...rest
+          }
+        ));
+
+
       let graph = ({
-        nodes: curr_nodes,
+        // nodes: curr_nodes,
+        nodes: nodes,
         links: curr_links
       });
 
@@ -91,6 +107,8 @@ function network() {
         .join("path")
           .attr('class', 'link-edge-network')
           .attr('id', d => `${d.transport_edge_no}`)
+          .attr('lane', d => `${d.lane}`)
+          .attr('carrier', d => `${d.carrier}`)
           .attr("stroke", d => color(d.lane))
           .attr("marker-end", d => `url(${new URL(`#arrow-${d.lane}`, location)})`);
 
