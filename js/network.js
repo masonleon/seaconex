@@ -112,7 +112,7 @@ function network() {
           });
         }
 
-// Function from Mike Bostock's Mobile patent suits and stackoverflow to generate arc paths for links so they don't collide with each other.
+// Function from Mike Bostock's Mobile patent suits and stackoverflowto generate arc paths for links so they don't collide with each other.
         function linkArc(d) {
           var dx = d.target.x - d.source.x,
           dy = d.target.y - d.source.y,

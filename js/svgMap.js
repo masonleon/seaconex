@@ -11,9 +11,7 @@ function svgMap() {
 
   function chart(selector, data) {
 
-    let projection = d3
-      .geoEquirectangular()
-      // .geoMercator()
+    let projection = d3.geoMercator()
       .center([-40, 42])
       .scale(470)
       .rotate([0, 0]);
@@ -51,7 +49,7 @@ function svgMap() {
       .data(data['terminals'].features)
       .enter()
         .append("path")
-          .attr( "d", pathCreator)
+          .attr( "d", pathCreator )
           .attr('class', 'point-terminal-facility')
 
     // let terminal_labels = g.selectAll("text")
@@ -108,18 +106,18 @@ function svgMap() {
         //   .classed('port-names', true);
       // });
 
-    // linkColor = () => {
-    //     let linkTypes = [
-    //         ...new Set(
-    //            d.properties
-    //               .map(d => d.lane)
-    //         )
-    //     ];
-    //     const scale = d3.scaleOrdinal()
-    //       .range(linkTypes.length == 1 ? ['#616161'] : d3.schemeCategory10);
-    //
-    //     return d => scale(d.type);
-    //   }
+    linkColor = () => {
+        let linkTypes = [
+            ...new Set(
+               d.properties
+                  .map(d => d.lane)
+            )
+        ];
+        const scale = d3.scaleOrdinal()
+          .range(linkTypes.length == 1 ? ['#616161'] : d3.schemeCategory10);
+
+        return d => scale(d.type);
+      }
 
         // build the arrow.
         svg.append("svg:defs").selectAll("marker")
@@ -137,29 +135,27 @@ function svgMap() {
             .attr("d", "M0,-5L10,0L0,5");
 
 
-      let masterScheduleTerminalCallEdges = g.selectAll('link')
-        .data(data['master_schedules_edges'].features)
-        .enter()
+      // let masterScheduleTerminalCallEdges = g.selectAll('link')
+      //   .data(data['master_schedules_edges'].features)
+      //   .enter()
 
           // .attr('viewBox', [0, 0, markerBoxWidth, markerBoxHeight])
           // .attr('refX', refX)
           // .attr('refY', refY)
           // .attr('markerWidth', markerBoxWidth)
           // .attr('markerHeight', markerBoxHeight)
-          .append("path")
-          // .attr("d", d => {
-          //   console.log(d.geometry.coordinates[0]);
-          //   linkArc(d.geometry.coordinates)
-          //   // pathCreator
-          // })
-          .attr("d", d => linkArc(d.geometry.coordinates))
+
+          // .append("path")
+          // .attr("d", pathCreator)
+
           // .attr("fill", "none")
           // .attr("stroke", 'red')
           // .attr('marker-start', 'url(#arrow)')
           // .attr('fill', 'none')
-          .attr('stroke', 'green')
-          .attr('marker-end', 'url(#end)')
-          .attr('fill', 'none');
+
+          // .attr('stroke', 'green')
+          // .attr('marker-end', 'url(#end)')
+          // .attr('fill', 'none');
 
       // paths for idea shortest nautical path from EuroStat searoute
       let searouteEdges = g.selectAll('link')
@@ -187,30 +183,6 @@ function svgMap() {
           // .style("stroke", d => color(d.properties.vessel_name))
           // .attr("stroke-width", 2);
 
-      //     let link = [];
-      //
-      //     // Draw paths between ports along the given route
-      //     data.forEach(function (obj) {
-      //       topush = {
-      //         type: "LineString",
-      //         coordinates: obj.coordinates
-      //       }
-      //       link.push(topush)
-      //     });
-      //
-      //     g.selectAll("tradeRoutes")
-      //       .data(link)
-      //       .enter()
-      //       .append("path")
-      //       .attr("d", function (d) {
-      //         return pathCreator(d)
-      //       })
-      //       .style("fill", "none")
-      //       .style("stroke", "#69b3a2")
-      //       .style("stroke-width", 2);
-
-
-
 
     // let zoom = d3.zoom()
     //   .scaleExtent([1, 20])
@@ -229,22 +201,6 @@ function svgMap() {
     // svg.call(zoom);
 
     return chart;
-  }
-
-  function linkArc(d) {
-      const r = Math.hypot(d[1][0] - d[0][0], d[1][1] - d[0][1]);
-      console.log(r)
-    return `
-      M${d[0][0]},${d[0][1]}
-      A${r},${r} 0 0,1 ${d[1][0]},${d[1][1]}
-    `;
-  }
-
-  nodeColor = (d) => {
-    let nodeTypes = [...new Set(data['searoute_edges'].features.map( d => d.type))];
-    const scale = d3.scaleOrdinal()
-      .range(nodeTypes.length==1? ['#616161']:d3.schemeCategory10);
-    return d => scale(d.type);
   }
 
   chart.width = function (value) {
