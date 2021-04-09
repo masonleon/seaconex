@@ -33,7 +33,7 @@ function carrierFilter() {
       .append('div')
         .html(d =>
           `
-            <img src="../img/logo-${d.carrier_nmfta_code}.png"
+            <img src="./img/logo-${d.carrier_nmfta_code}.png"
                  alt="${d.carrier_nmfta_code}Logo"
                  width="50px"
                  height="auto">
