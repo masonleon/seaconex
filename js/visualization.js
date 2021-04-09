@@ -41,16 +41,16 @@
       // 'timestamped_trajectory': data[6]
     }
 
-
-    // console.log(data[0])  // first row of cities
-    // console.log(d)  // first row of animals
-    // d3.merge([data]).then(value => console.log(value));
-    // console.log();
   }).then(data => {
     console.log(data)
 
-    let visControls = filterControls()
-    ('#filters-component', data)
+    // General event type for selections, used by d3-dispatch
+    // https://github.com/d3/d3-dispatch
+    const dispatchString = 'selectionUpdated';
+
+    let visControls = carrierFilter()
+      .selectionDispatcher(d3.dispatch(dispatchString))
+      ('#filters-component', data)
 
     let nodeViz = network()
     .selectionDispatcher(d3.dispatch(dispatchString))

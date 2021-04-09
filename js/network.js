@@ -36,7 +36,7 @@ function network() {
         }
       ));
 
-      console.log('links', links)
+      // console.log('links', links)
 
       // let curr_nodes = [];
       let curr_links = [];
@@ -76,8 +76,8 @@ function network() {
       let lanes = Array.from(new Set(curr_links.map( d => d.lane)))
       let color = d3.scaleOrdinal(lanes, d3.schemeCategory10)
 
-      console.log(graph.nodes);
-      console.log(graph.links);
+      // console.log(graph.nodes);
+      // console.log(graph.links);
 
       let force = d3.forceSimulation(graph.nodes)
           .force("charge", d3.forceManyBody().strength(-300))
@@ -189,7 +189,7 @@ function network() {
           .attr("class", "label")
           .attr("fill", "black")
           .text(d => {
-            console.log(d)
+            // console.log(d)
             return d.id;
           });
 
