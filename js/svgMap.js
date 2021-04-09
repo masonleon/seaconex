@@ -135,10 +135,52 @@ function svgMap() {
     return chart;
   };
 
+    // Gets or sets the dispatcher we use for selection events
+  chart.selectionDispatcher = function (_) {
+    if (!arguments.length) return dispatcher;
+    dispatcher = _;
+    return chart;
+  };
+
   chart.updateSelection = function (selectedData) {
     if (!arguments.length) return;
     console.log("Updating SVG map with data selected in terminal table");
     console.log("Selected Data:", selectedData)
+
+    // let edgeToDraw = [];
+    //
+    //
+    // let carrierTerms = {}
+    //
+    // k = data['master_schedules_edges'].features
+    //   .map((feature, i) => feature.properties.carrier)
+    //   .filter ((item, i, ar) => ar.indexOf(item) === i)
+    //   // .forEach(k => {
+    //   //   console.log(k)
+    //   //   if( !carrierTerms.hasOwnProperty(k)) {
+    //   //     carrierTerms[k].push({});
+    //   //   }})
+
+    // console.log(carrierTerms)
+
+
+
+    //
+    //     // paths for idea shortest nautical path from EuroStat searoute
+    // let searouteEdges = g.selectAll('link')
+    //   .data(data['searoute_edges'].features)
+    //   .enter()
+    //     .append("path")
+    //     .attr("d", pathCreator)
+    //     .attr('class', 'link-edge-searoute')
+    //     .attr('id', d => `${d.properties.route_name}`)
+    //     .attr('stroke', 'red')
+    //     // .attr('marker-end', 'url(#end)')
+    //     .attr('fill', 'none');
+
+
+
+
   }
 
   return chart;

@@ -39,6 +39,58 @@
 
   }).then(data => {
 
+    // let carrierTerms = {}
+    //
+    // k = data['master_schedules_edges'].features
+    //   .map((feature, i) => feature.properties.carrier)
+    //   .filter ((item, i, ar) => ar.indexOf(item) === i)
+    //   // .forEach(k => {
+    //   //   console.log(k)
+    //   //   if( !carrierTerms.hasOwnProperty(k)) {
+    //   //     carrierTerms[k].push({});
+    //   //   }})
+    //
+    // console.log(carrierTerms)
+
+
+    let carrierTerms = {}
+
+    // k = data['master_schedules_edges'].features
+    //   .filter(feature => feature.carrier)
+    //   .map((feature, i) => feature.properties.carrier)
+    //   .filter ((item, i, ar) => ar.indexOf(item) === i)
+
+    let res = [];
+    let l = data['master_schedules_edges'].features
+      .map(edge => edge.properties)
+      .forEach(e => {
+        t1 = {
+          carrier: e.carrier,
+          terminal: e.terminal_call_facility_1
+        };
+        t2 = {
+          carrier: e.carrier,
+          terminal: e.terminal_call_facility_2
+        };
+        if (res.some(carrier => carrier.terminal === t1.terminal) === false){
+          res.push(t1);
+        }
+        if (res.some(carrier => carrier.terminal === t2.terminal) === false){
+          res.push(t2);
+        }
+      });
+
+
+    const terminalsForCarrier = (res, carrier) => {
+      return res.filter(terminalCall => terminalCall.carrier === carrier)
+      .map((item, i) => item.terminal)
+      .filter((item, i, ar) => ar.indexOf(item) === i)
+    }
+
+
+    // console.log(terminalsForCarrier(res, 'ICL'));
+
+
     // General event type for selections, used by d3-dispatch
     // https://github.com/d3/d3-dispatch
     const dispatchString = 'selectionUpdated';
@@ -52,6 +104,7 @@
       ('#vis-network', data);
 
     let visMap1 = svgMap()
+      .selectionDispatcher(d3.dispatch(dispatchString))
       ('#vis-map-1', data);
 
     let visMap2 = leafletMap()
@@ -67,7 +120,7 @@
     let charts = [
       visControls,
       nodeViz,
-    // visMap1,
+      visMap1,
     // visMap2,
       visTerminalTable
     // visDetails

@@ -145,7 +145,6 @@ function terminalTable() {
 
     function selectElements(elements){
       selectableElements.classed('selected', function(d){
-
         return elements.includes(this);
       });
 
@@ -155,6 +154,9 @@ function terminalTable() {
       console.log(tbody.selectAll('.selected').data())
       // Let other charts know about our selection
       dispatcher.call(dispatchString, this, tbody.selectAll('.selected').data());
+      // dispatcher.call(dispatchString, this, tbody.selectAll('.selected').data().map(x => x.properties).map(r => r.terminal));
+
+      // d3.select('#table-terminals')
     }
 
     return chart;
@@ -177,7 +179,7 @@ function terminalTable() {
       selectableElements
         .classed('selected', d => {
                // console.log(d.properties)
-          console.log(d.properties)
+          // console.log(d.properties)
 
           selectedData.includes(d)}
     );
