@@ -1,4 +1,5 @@
-
+notebooks/tmp
+movingpandas
 # Created by https://www.toptal.com/developers/gitignore/api/macos,linux,windows,vscode,jetbrains,jetbrains+iml,jetbrains+all,python,jupyternotebooks,virtualenv,latex,yarn,microsoftoffice,node
 # Edit at https://www.toptal.com/developers/gitignore?templates=macos,linux,windows,vscode,jetbrains,jetbrains+iml,jetbrains+all,python,jupyternotebooks,virtualenv,latex,yarn,microsoftoffice,node
 

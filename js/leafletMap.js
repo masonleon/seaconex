@@ -109,6 +109,7 @@ function leafletMap() {
 
     console.log(color(vesselNames))
 
+
     let trajectories = g.selectAll('path')
       .data(data.features)
       .enter()

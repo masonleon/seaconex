@@ -9,7 +9,7 @@ function svgMap() {
       width = 960 - margin.left - margin.right,
       height = 600 - margin.top - margin.bottom;
 
-  function chart(selector, topology, terminals, edges) {
+  function chart(selector, data) {
 
     let projection = d3.geoMercator()
       .center([-40, 42])
@@ -29,93 +29,69 @@ function svgMap() {
           [0, 0, width + margin.left + margin.right,
             height + margin.top + margin.bottom].join(' '))
 
-    let path = d3.geoPath()
+    let pathCreator = d3.geoPath()
       .projection(projection);
 
     let g = svg.append("g");
 
-    // load and display the World
-    d3.json(topology)
-      .then(function (topology) {
+    let baseMap = g.selectAll("path")
+      .data(
+          topojson.feature(
+            data['topology_countries-110m'],
+            data['topology_countries-110m'].objects.countries
+          ).features
+      )
+      .enter()
+        .append("path")
+          .attr("d", pathCreator)
 
-      // load and display the cities
-      d3.json(terminals)
-        .then(function (data) {
+    let terminals = g.selectAll("circle")
+      .data(data['terminals'].features)
+      .enter()
+        .append("path")
+          .attr( "d", pathCreator )
+          .attr('class', 'point-terminal-facility')
+          .attr('id', d => `${d.properties.terminal}`)
 
-        const ports = g.selectAll("circle")
-          .data(data)
-          .enter()
-          .append("circle")
-          .attr("cx", function (d) {
-            return projection([d.terminal_lon, d.terminal_lat])[0];
-          })
-          .attr("cy", function (d) {
-            return projection([d.terminal_lon, d.terminal_lat])[1];
-          })
-          .attr("r", 3)
-          // .append("title")
-          // .text((d) => d.terminal_port)
-          .style("fill", "red")
-          .classed('bubble', true);
+    // let terminal_labels = g.selectAll("text")
+    //   .data(data['master_schedules_terminal_call_info'].features)
+    //   .enter()
+    //     .append("path")
+    //     .append('text')
+    //      .text(function (d) {
+    //           console.log(d.properties.terminal_name)
+    //           return d.properties.terminal_name;
+    //         })
+          // .attr( "d", pathCreator )
+          // .attr( "fill", '#ff0000' )
+          // .style("stroke", "blue")
 
-        // console.log("Is anything else executing?");
+    // // build the arrow.
+    // svg.append("svg:defs").selectAll("marker")
+    //     .data(["end"])      // Different link/path types can be defined here
+    //   .enter().append("svg:marker")    // This section adds in the arrows
+    //     .attr("id", String)
+    //     .attr("viewBox", "0 -5 10 10")
+    //     .attr("refX", 15)
+    //     .attr("refY", -1.5)
+    //     .attr("markerWidth", 6)
+    //     .attr("markerHeight", 6)
+    //     .attr("orient", "auto")
+    //     .attr('fill', 'green')
+    //   .append("svg:path")
+    //     .attr("d", "M0,-5L10,0L0,5");
 
-        // g.append('line')
-        // .style("stroke", "lightgreen")
-        // .style("stroke-width", 3)
-        // .attr("x1", 71.8257)
-        // .attr("y1", 59.2836)
-        // .attr("x2", 472.37)
-        // .attr("y2", -60.6659);
-
-        g.selectAll("text")
-          .data(data)
-          .enter()
-          .append("text")
-          .text(function (d) {
-            return d.terminal_port;
-          })
-          .attr("x", function (d) {
-            return projection([d.terminal_lon, d.terminal_lat])[0] + 10;
-          })
-          .attr("y", function (d) {
-            return projection([d.terminal_lon, d.terminal_lat])[1] + 5;
-          })
-          .classed('port-names', true);
-      });
-
-      d3.json(edges)
-        .then(function (data) {
-
-          let link = [];
-
-          // Draw paths between ports along the given route
-          data.forEach(function (obj) {
-            topush = {
-              type: "LineString",
-              coordinates: obj.coordinates
-            }
-            link.push(topush)
-          });
-
-          g.selectAll("tradeRoutes")
-            .data(link)
-            .enter()
-            .append("path")
-            .attr("d", function (d) {
-              return path(d)
-            })
-            .style("fill", "none")
-            .style("stroke", "#69b3a2")
-            .style("stroke-width", 2);
-        });
-
-      g.selectAll("path")
-        .data(topojson.feature(topology, topology.objects.countries).features)
-        .enter().append("path")
-        .attr("d", path);
-
-    });
+    // paths for idea shortest nautical path from EuroStat searoute
+    let searouteEdges = g.selectAll('link')
+      .data(data['searoute_edges'].features)
+      .enter()
+        .append("path")
+        .attr("d", pathCreator)
+        .attr('class', 'link-edge-searoute')
+        .attr('id', d => `${d.properties.route_name}`)
+        .attr('stroke', 'red')
+        // .attr('marker-end', 'url(#end)')
+        .attr('fill', 'none');
 
     let zoom = d3.zoom()
       .scaleExtent([1, 20])
@@ -136,6 +112,13 @@ function svgMap() {
     return chart;
   }
 
+  // nodeColor = (d) => {
+  //   let nodeTypes = [...new Set(data['searoute_edges'].features.map( d => d.type))];
+  //   const scale = d3.scaleOrdinal()
+  //     .range(nodeTypes.length==1? ['#616161']:d3.schemeCategory10);
+  //   return d => scale(d.type);
+  // }
+
   chart.width = function (value) {
     if (!arguments.length) {
       return width;
@@ -151,6 +134,12 @@ function svgMap() {
     height = value;
     return chart;
   };
+
+  chart.updateSelection = function (selectedData) {
+    if (!arguments.length) return;
+    console.log("Updating SVG map with data selected in terminal table");
+    console.log("Selected Data:", selectedData)
+  }
 
   return chart;
 

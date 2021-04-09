@@ -173,118 +173,79 @@ Trans-Atlantic
   <div class='flex-box'>
 
     <div id='filters-component'>
-      <h1>Filters</h1>
 
 
-      <b>View Ports or Terminal as Nodes?</b>
-      <br>
-      <input type="radio" id="nodes-terminal" name="node-setting" value="nodes-terminal" checked>
-      <label for="nodes-terminal">Terminal</label><br>
-      <input type="radio" id="nodes-port" name="node-setting" value="nodes-port">
-      <label for="nodes-port">Port</label><br>
+<!--      <div id='view-control'>-->
+<!--        <h3>View Controls</h3>-->
+<!--        <hr/>-->
 
-      <div id='filter-od'>
-        <h2>Origin/Destination</h2>
-      </div>
+<!--        <div id='toggle'>-->
+<!--          Map-->
+<!--          <label class="switch">-->
+<!--            <input type="checkbox">-->
+<!--            <span class="slider round"></span>-->
+<!--          </label>-->
+<!--          Network-->
+<!--        </div>-->
+<!--        <br>-->
 
-      <h4>Origin</h4>
-      <form>
-        <select name = "origin-country">
-           <option value = "*" selected>(Select Origin Country)</option>
-           <option value = "USA">United States</option>
-           <option value = "Bermuda">Bermuda</option>
-           <option value = "UK">United Kingdom</option>
-        </select>
-      </form>
-      <form>
-        <select name = "origin-port">
-           <option value = "*" selected>(Select Origin Port)</option>
-           <option value = "Wilmington">Wilmington</option>
-           <option value = "Norfolk">Norfolk</option>
-        </select>
-      </form>
-      <form>
-        <select name = "origin-terminal">
-          <option value = "*" selected>(Select Origin Terminal)</option>
-          <option value = "NCSPA">NCSPA</option>
-          <option value = "XXX">XXX</option>
-        </select>
-      </form>
+<!--        <div id='view-node'>-->
+<!--          <b>View Nodes as:</b>-->
+<!--          <br>-->
+<!--          <input type="radio"-->
+<!--                 id="nodes-terminal"-->
+<!--                 name="node-setting"-->
+<!--                 value="nodes-terminal" checked>-->
+<!--          <label for="nodes-terminal">-->
+<!--            Terminal-->
+<!--          </label>-->
+<!--          &lt;!&ndash;      <br>&ndash;&gt;-->
+<!--          <input type="radio"-->
+<!--                 id="nodes-port"-->
+<!--                 name="node-setting"-->
+<!--                 value="nodes-port">-->
+<!--          <label for="nodes-port">-->
+<!--            Port-->
+<!--          </label>-->
+<!--        </div>-->
+<!--      </div>-->
 
-      <h4>Destination</h4>
-      <form>
-        <select name = "destination-country">
-           <option value = "*" selected>(Select Destination Country)</option>
-           <option value = "USA">United States</option>
-           <option value = "Bermuda">Bermuda</option>
-           <option value = "UK">United Kingdom</option>
-        </select>
-      </form>
-      <form>
-        <select name = "destination-port">
-           <option value = "*" selected>(Select Destination Port)</option>
-           <option value = "Wilmington">Wilmington</option>
-           <option value = "Norfolk">Norfolk</option>
-        </select>
-      </form>
-      <form>
-        <select name = "destination-terminal">
-          <option value = "*" selected>(Select Destination Terminal)</option>
-          <option value = "NCSPA">NCSPA</option>
-          <option value = "XXX">XXX</option>
-        </select>
-      </form>
-
-      <br>
-
-      <b>Carriers</b>
-      <br>
-      <input type="checkbox" id="acl" name="selected-carrier" value="acl">
-      <label for="acl">ACL</label><br>
-      <input type="checkbox" id="icl" name="selected-carrier" value="icl">
-      <label for="icl">ICL</label><br>
-      <input type="checkbox" id="hlus" name="selected-carrier" value="hlus">
-      <label for="hlus">HLUS</label><br>
-      <input type="checkbox" id="bisl" name="selected-carrier" value="bisl">
-      <label for="bisl">BISL</label><br>
-      <input type="checkbox" id="sisl" name="selected-carrier" value="sisl">
-      <label for="sisl">SISL</label><br>
-      <input type="checkbox" id="bcl" name="selected-carrier" value="bcl">
-      <label for="bcl">BCL</label><br>
+<!--      <div id='filter-network'>-->
+<!--        <h3>Network Filters</h3>-->
+<!--        <hr/>-->
 
 
+<!--      <br>-->
+<!--      <b>Services</b>-->
+<!--      <br>-->
+<!--      <input type="checkbox" id="a" name="selected-service" value="a">-->
+<!--      <label for="a">A</label><br>-->
+<!--      <input type="checkbox" id="tac1" name="selected-service" value="tac1">-->
+<!--      <label for="tac1">TAC1</label><br>-->
+<!--      <input type="checkbox" id="p1" name="selected-service" value="p1">-->
+<!--      <label for="p1">P1/AL3</label><br>-->
+<!--      <input type="checkbox" id="bi" name="selected-service" value="bi">-->
+<!--      <label for="bi">BI</label><br>-->
+<!--      <input type="checkbox" id="si" name="selected-service" value="si">-->
+<!--      <label for="si">SI</label><br>-->
+<!--      <input type="checkbox" id="o" name="selected-service" value="o">-->
+<!--      <label for="o">O</label><br>-->
 
-      <br>
-      <b>Services</b>
-      <br>
-      <input type="checkbox" id="a" name="selected-service" value="a">
-      <label for="a">A</label><br>
-      <input type="checkbox" id="tac1" name="selected-service" value="tac1">
-      <label for="tac1">TAC1</label><br>
-      <input type="checkbox" id="p1" name="selected-service" value="p1">
-      <label for="p1">P1/AL3</label><br>
-      <input type="checkbox" id="bi" name="selected-service" value="bi">
-      <label for="bi">BI</label><br>
-      <input type="checkbox" id="si" name="selected-service" value="si">
-      <label for="si">SI</label><br>
-      <input type="checkbox" id="o" name="selected-service" value="o">
-      <label for="o">SI</label><br>
+<!--      <br>-->
+<!--      <b>Cargo Type</b>-->
+<!--      <br>-->
+<!--      <input type="checkbox" id="lolo" name="selected-cargo" value="lolo">-->
+<!--      <label for="lolo">LoLo</label><br>-->
+<!--      <input type="checkbox" id="roro" name="selected-cargo" value="roro">-->
+<!--      <label for="roro">RoRo</label><br>-->
 
-      <br>
-      <b>Cargo Type</b>
-      <br>
-      <input type="checkbox" id="lolo" name="selected-cargo" value="lolo">
-      <label for="lolo">LoLo</label><br>
-      <input type="checkbox" id="roro" name="selected-cargo" value="roro">
-      <label for="roro">RoRo</label><br>
-
-      <br>
-      <b>Allow Transhipment?</b>
-      <br>
-      <input type="radio" id="transhipment-true" name="transhipment" value="transhipment-true" disabled>
-      <label for="transhipment-true">Yes</label><br>
-      <input type="radio" id="transhipment-false" name="transhipment" value="transhipment-false" checked>
-      <label for="transhipment-false">No</label><br>
+<!--      <br>-->
+<!--      <b>Allow Transhipment?</b>-->
+<!--      <br>-->
+<!--      <input type="radio" id="transhipment-true" name="transhipment" value="transhipment-true" disabled>-->
+<!--      <label for="transhipment-true">Yes</label><br>-->
+<!--      <input type="radio" id="transhipment-false" name="transhipment" value="transhipment-false" checked>-->
+<!--      <label for="transhipment-false">No</label><br>-->
 
     </div>
 
@@ -297,14 +258,7 @@ Trans-Atlantic
       <div id='vis-map-2'></div>
 
       <div id='map-settings'>
-        <div id='toggle'>
-          Map
-          <label class="switch">
-            <input type="checkbox">
-            <span class="slider round"></span>
-          </label>
-          Network
-        </div>
+
         <div id='legend'>
           [Legend Placeholder]
         </div>
@@ -319,8 +273,8 @@ Trans-Atlantic
 
   </div>
 
-  <div id="treegraph">
-    [Treegraph]
+  <div id="container-table-terminals">
+    <div id="table-terminals"></div>
   </div>
 
 
@@ -431,7 +385,12 @@ Trans-Atlantic
       by Chris Heilmann
       is used to create the banner that links back to the source code repository.
     </li>
-
+    <li>
+      <a href='https://neu-cs-7250-s21-staff.github.io/Assignment--Brushing_and_Linking--Solution/'>
+        Assignment: Brushing & Linking in D3 Solution
+      </a>
+      by Cody Dunne
+    </li>
     <li>
       <a href='https://github.com/topojson/world-atlas'>
         Pre-built TopoJSON from Natural Earth
@@ -531,14 +490,20 @@ Trans-Atlantic
       <a href="http://bl.ocks.org/wrobstory/5762547">
         Bl.ocks.org: Choropleth with Vincent
       </a>
-      by Rob Story
+      by Rob Story 
     </li>
-    <!--    <li>-->
-    <!--      <a href="http://codepen.io/ryshackleton/pen/NpdNjJ/">-->
-    <!--        Codepen.io: D3 Earthquakes on Leaflet Map-->
-    <!--      </a>-->
-    <!--      by Ryan Shackleton-->
-    <!--    </li>-->
+    <li>
+      <a href="http://bl.ocks.org/ndobie/336055eed95f62350ec3">
+        Bl.ocks.org: Building a table with D3
+      </a>
+      by Nathan Dobie
+    </li>
+    <li>
+    <a href="http://codepen.io/ryshackleton/pen/NpdNjJ">
+      Codepen.io: D3 Earthquakes on Leaflet Map
+    </a>
+      by Ryan Shackleton
+    </li>
     <li>
       <a href="https://observablehq.com/@olemi/mapping-data-on-openstreetmap-using-leaflet">
         Observable: Mapping data on OpenStreetMap (using LeafLet) Bubble chart example
@@ -559,19 +524,28 @@ Trans-Atlantic
       to render the force-directed graph of ports and services
     </li>
     <li>
-      <a href="http://bl.ocks.org/mbostock/2706022">
-        Bl.ocks.org: Force directed graph with mouseover
+      <a href="https://observablehq.com/@d3/mobile-patent-suits">
+        Mobile Patent Suits
       </a>
       by Mike Bostock
-      to get unique nodes from edges
+      and
+      <a href="https://stackoverflow.com/a/44316580"></a>
+      for directional links in the node-link visualization without overlap.
     </li>
-<!--    <li>-->
-<!--      <a href="https://stackoverflow.com/a/13369282">-->
-<!--        Stack Overflow: Labels / text on the nodes of a D3 force directed graph-->
-<!--      </a>-->
-<!--      by Superboggly-->
-<!--      to add labels to nodes in the force directed layout-->
-<!--    </li>-->
+    <li>
+      <a href="https://bl.ocks.org/mbostock/1129492">
+        Bounded force layout
+      </a>
+      by Mike Bostock
+      so nodes don't go off screen
+    </li>
+    <li>
+     <a href="https://stackoverflow.com/a/13369282">
+       Stack Overflow: Labels / text on the nodes of a D3 force directed graph
+     </a>
+     by Superboggly
+     to add labels to nodes in the force directed layout
+    </li>
   </ul>
 </div>
 
@@ -580,7 +554,10 @@ Trans-Atlantic
 <script src='lib/topojson.v3.0.2/topojson.min.js'></script>
 <script src='js/svgMap.js'></script>
 <script src='js/leafletMap.js'></script>
+<script src='js/terminalTable.js'></script>
 <script src='js/network.js'></script>
+<!--<script src='js/detailPane.js'></script>-->
+<script src='js/carrierFilter.js'></script>
 <script src='js/visualization.js'></script>
 
 </body>
