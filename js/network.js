@@ -6,7 +6,10 @@ function network() {
         bottom: 35
       },
       width = 960 - margin.left - margin.right,
-      height = 600 - margin.top - margin.bottom;
+      height = 600 - margin.top - margin.bottom,
+      ourBrush = null,
+      selectableElements = d3.select(null),
+      dispatcher;
 
   function node_link(selector, data) {
     let svg = d3.select(selector)
@@ -35,7 +38,7 @@ function network() {
 
       // console.log('links', links)
 
-      let curr_nodes = [];
+      // let curr_nodes = [];
       let curr_links = [];
 
       links.forEach(link => {
@@ -77,8 +80,8 @@ function network() {
       // console.log(graph.links);
 
       let force = d3.forceSimulation(graph.nodes)
-          .force("charge", d3.forceManyBody().strength(-400))
-          .force("link", d3.forceLink(graph.links).id(d => d.id).distance(200))
+          .force("charge", d3.forceManyBody().strength(-300))
+          .force("link", d3.forceLink(graph.links).id(d => d.id).distance(100))
           .force('center', d3.forceCenter(width / 2, height / 2))
           .force("x", d3.forceX())
           .force("y", d3.forceY())
@@ -128,6 +131,57 @@ function network() {
           .on("drag", dragged)
           .on("end", dragended));
 
+        selectableElements = node;
+
+        svg.call(brush);
+
+    // Highlight points when brushed
+    function brush(g) {
+      const brush = d3.brush() // Create a 2D interactive brush
+        .on('start brush', highlight) // When the brush starts/continues do...
+        .on('end', brushEnd) // When the brush ends do...
+        .extent([
+          [-margin.left, -margin.bottom],
+          [width + margin.right, height + margin.top]
+        ]);
+        
+      ourBrush = brush;
+      
+      //set brush constraints to full width 
+      brushX=d3.scaleLinear().domain([0, width]).rangeRound([0, width]), 
+      brushY=d3.scaleLinear().domain([0, height]).rangeRound([0, height]);
+
+      g.call(brush); // Adds the brush to this element
+
+      // Highlight the selected circles
+      function highlight(event, d) {
+        if (event.selection === null) return;
+        const [
+          [x0, y0],
+          [x1, y1]
+        ] = event.selection;
+
+        // If within the bounds of the brush, select it
+        node.classed('selected', d =>
+          x0 <= brushX.invert(d.x) && brushX.invert(d.x) <= x1 && 
+          y0 <= brushY.invert(d.y) && brushY.invert(d.y) <= y1
+        );
+
+        // Get the name of our dispatcher's event
+        let dispatchString = Object.getOwnPropertyNames(dispatcher._)[0];
+
+        // Let other charts know about our selection
+        dispatcher.call(dispatchString, this, svg.selectAll('.selected').data());
+      }
+      
+      function brushEnd(event, d){
+        // We don't want infinite recursion
+        if(event.sourceEvent !== undefined && event.sourceEvent.type!='end'){
+          d3.select(this).call(brush.move, null);
+        }
+      }
+    }
+
         let labels = svg.selectAll("text.label")
           .data(graph.nodes)
           .enter()
@@ -150,21 +204,25 @@ function network() {
           link.attr("d", linkArc);
 
           node
-            .attr("cx", d => d.x)
-            .attr("cy", d => d.y);
+            .attr("cx", d => d.x = Math.max(10, Math.min(width - 10, d.x))) // Bounded force layout example from blocks
+            .attr("cy", d => d.y = Math.max(10, Math.min(height - 10, d.y)));
 
           labels.attr("transform", function (d) {
             return "translate(" + (d.x + 17) + "," + (d.y + 5) + ")";
           });
         }
 
-        // Function from Mike Bostock's Mobile patent suits to generate arc paths for links so they don't collide with each other.
+// Function from Mike Bostock's Mobile patent suits and stackoverflowto generate arc paths for links so they don't collide with each other.
         function linkArc(d) {
-          const r = Math.hypot(d.target.x - d.source.x, d.target.y - d.source.y);
-          return `
-            M${d.source.x},${d.source.y}
-            A${r},${r} 0 0,1 ${d.target.x},${d.target.y}
-          `;
+          var dx = d.target.x - d.source.x,
+          dy = d.target.y - d.source.y,
+          dr = Math.sqrt(dx * dx + dy * dy);
+          if(d.lane == "E") { 
+            return "M" + d.source.x + "," + d.source.y + "A" + dr + "," + dr + " 0 0,1 " + d.target.x + "," + d.target.y;
+          }
+          else {
+            return "M" + d.source.x + "," + d.source.y + "A" + (dr * 0.3) + "," + (dr * 0.3) + " 0 0,1 " + d.target.x + "," + d.target.y;
+  }
         }
 
         function dragstarted(d) {
@@ -195,6 +253,13 @@ function network() {
 
     return node_link;
   }
+
+  // Gets or sets the dispatcher we use for selection events
+  node_link.selectionDispatcher = function (_) {
+    if (!arguments.length) return dispatcher;
+    dispatcher = _;
+    return node_link;
+  };
 
   return node_link
 }

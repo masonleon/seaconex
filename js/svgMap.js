@@ -49,7 +49,7 @@ function svgMap() {
       .data(data['terminals'].features)
       .enter()
         .append("path")
-          .attr( "d", pathCreator)
+          .attr( "d", pathCreator )
           .attr('class', 'point-terminal-facility')
           .attr('id', d => `${d.properties.terminal}`)
 

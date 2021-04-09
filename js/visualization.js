@@ -9,10 +9,9 @@
   const vessels = './data/raw/vessels.csv';
   const carriers = './data/processed/carrier.json';
 
-
   const searouteEdges = 'data/processed/searoutes.geojson';
 
-  const masterSchedulesEdges = './data/interim/master_schedules_edges.geojson'
+  const masterSchedulesEdges = './data/interim/master_schedules_edges2.geojson'
   const masterSchedulesTerminalCallInfo = './data/interim/master_schedules_terminal_call_info.geojson'
   const trajectory = './data/interim/timestamped-trajectory-icl-tac1.geojson'
 
@@ -46,25 +45,28 @@
     const dispatchString = 'selectionUpdated';
 
     let visControls = carrierFilter()
-      .selectionDispatcher(d3.dispatch(dispatchString))
-      ('#filters-component', data)
+    .selectionDispatcher(d3.dispatch(dispatchString))
+    ('#filters-component', data)
 
     let nodeViz = network()
-      ('#vis-network', data);
+    .selectionDispatcher(d3.dispatch(dispatchString))
+    ('#vis-network', data);
 
     let visMap1 = svgMap()
-      ('#vis-map-1', data);
+    ('#vis-map-1', data);
 
     let visMap2 = leafletMap()
-      ('#vis-map-2', data);
+    ('#vis-map-2', data);
 
     // let visDetails = detailPane()
     //   ('#detail-pane', data);
 
     let charts = [
       visControls,
-      // nodeViz,
-      // visMap1
+      nodeViz,
+    // visMap1,
+    // visMap2,
+    // visDetails
     ];
 
     // When any chart selection is updated via brushing,
@@ -81,37 +83,9 @@
 
         // Where we actually tell one chart to listen to the other.
         charts[i]
-          .selectionDispatcher()
-          .on(pairUniqueString, charts[j].updateSelection);
+        .selectionDispatcher()
+        .on(pairUniqueString, charts[j].updateSelection);
       }
     }
-  });
-
-
-
-
-
-
-
-  function getMasterSchedule(data) {
-
-    // console.log("data.features:", data.features);
-    // let originTerminals = data.features
-    //   .filter(feature => feature.id === 'master_schedule')
-    //   .map((feature, i) => feature.properties.source_terminal)
-    //   .filter ((item, i, ar) => ar.indexOf(item) === i)
-
-    // console.log("Filtered:", originTerminals)
-
-  }
-
-
-  // d3.json(trajectory).then(data => {
-  //
-
-  //
-  //   // getMasterSchedule(data)
-  //
-  // })
-
+  })
 })());
