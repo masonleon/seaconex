@@ -16,9 +16,9 @@
   const masterSchedulesTerminalCallInfo = './data/interim/master_schedules_terminal_call_info.geojson'
   const trajectory = './data/interim/timestamped-trajectory-icl-tac1.geojson'
 
-  // let geoData = d3.merge([
-  //     []
-  // ])
+  // General event type for selections, used by d3-dispatch https://github.com/d3/d3-dispatch
+  const dispatchString = 'selectionUpdated';
+
   Promise.all([
     d3.json(terminals),
     d3.json(masterSchedulesEdges),
@@ -53,6 +53,7 @@
     ('#filters-component', data)
 
     let nodeViz = network()
+    .selectionDispatcher(d3.dispatch(dispatchString))
     ('#vis-network', data);
 
     let visMap1 = svgMap()
@@ -62,8 +63,8 @@
     // let visMap2 = leafletMap()
     // ('#vis-map-2', data);
 
-    let visDetails = detailPane()
-    ('#detail-pane', data);
+    // let visDetails = detailPane()
+    // ('#detail-pane', data);
   });
 
 

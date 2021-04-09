@@ -59,6 +59,13 @@
   margin-left: 5px;
 }
 
+/* Style for selected marks (circles) */
+circle.node-terminal-facility.selected {
+  fill: pink;
+  stroke: red;
+  opacity: .5;
+}
+
 /* Leaflet Map Legend*/
 .legend {
   line-height: 18px;
