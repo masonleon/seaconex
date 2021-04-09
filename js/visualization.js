@@ -12,6 +12,9 @@
   const masterSchedulesTerminalCallInfo = './data/interim/master_schedules_terminal_call_info.geojson'
   const trajectory = './data/interim/timestamped-trajectory-icl-tac1.geojson'
 
+  // // General event type for selections, used by d3-dispatch https://github.com/d3/d3-dispatch
+  // const dispatchString = 'selectionUpdated';
+
   Promise.all([
     d3.json(terminals),
     d3.json(masterSchedulesEdges),
