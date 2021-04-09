@@ -90,13 +90,13 @@ function leafletMap() {
     let pathCreator = d3.geoPath()
       .projection(projection);
 
-    let vesselNames = data.features
+    let vesselNames = data['timestamped_trajectory'].features
       .map((feature, i) => feature.properties.vessel_name)
       .filter ((item, i, ar) => ar.indexOf(item) === i)
 
     console.log(vesselNames)
 
-    let dates = data.features
+    let dates = data['timestamped_trajectory'].features
       .flatMap((c) => c.properties.times.map((x) => new Date(x)))
 
     let dateRange = {
@@ -111,7 +111,7 @@ function leafletMap() {
 
 
     let trajectories = g.selectAll('path')
-      .data(data.features)
+      .data(data['timestamped_trajectory'].features)
       .enter()
       .append("path")
       .attr("d", pathCreator)

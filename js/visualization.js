@@ -23,7 +23,7 @@
     d3.json(searouteEdges),
     d3.json(topology),
     d3.json(carriers),
-    // d3.json(trajectory)
+    d3.json(trajectory)
   ]).then(function(data) {
 
     return {
@@ -33,8 +33,8 @@
       'vessels': data[3],
       'searoute_edges': data[4],
       'topology_countries-110m': data[5],
-      'carriers': data[6]
-      // 'timestamped_trajectory': data[6]
+      'carriers': data[6],
+      'timestamped_trajectory': data[7]
     }
 
   }).then(data => {
@@ -54,8 +54,8 @@
     let visMap1 = svgMap()
       ('#vis-map-1', data);
 
-    // let visMap2 = leafletMap()
-    //   ('#vis-map-2', data);
+    let visMap2 = leafletMap()
+      ('#vis-map-2', data);
 
     let visTerminalTable = terminalTable()
       .selectionDispatcher(d3.dispatch(dispatchString))
