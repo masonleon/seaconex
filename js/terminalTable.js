@@ -1,47 +1,80 @@
 /* global D3 */
+// adapted from https://neu-cs-7250-s21-staff.github.io/Assignment--Brushing_and_Linking--Solution/
 
 // Initialize a carrier filter. Modeled after Mike Bostock's
 // Reusable Chart framework https://bost.ocks.org/mike/chart/
-function carrierFilter() {
+function terminalTable() {
 
-  let selectableElements = d3.select(null),
+  let margin = {
+        top: 60,
+        left: 50,
+        right: 30,
+        bottom: 35
+      },
+      width = 500 - margin.left - margin.right,
+      height = 500 - margin.top - margin.bottom,
+      selectableElements = d3.select(null),
       dispatcher;
 
   function chart(selector, data) {
 
-    let filterEl = d3.selectAll(selector)
+    let svg = d3.select(selector)
+      .append('table')
+      .attr('preserveAspectRatio', 'xMidYMid meet')
+      .attr('viewBox', [0, 0, width + margin.left + margin.right,
+        height + margin.top + margin.bottom].join(' '))
+      .classed('svg-content', true)
+      .style("cursor", "crosshair");
 
-    filterEl.append('div')
-      .attr('id', '#filter-carrier')
-      .html(
-        `
-          <h5>Carriers<h5>
-          <br>
-        `
-      );
+    // // Add table head and body elements
+    // svg.append('thead');
+    // svg.append('tbody');
+    //
+    // let thead = svg.select('thead');
+    // let tbody = svg.select('tbody');
 
-    let carrierSelector = filterEl;
+     // Add table head and body elements
 
-    carrierSelector.append('div')
-      .selectAll('div')
-      .data(data['carriers'])
+    let thead = svg.append('thead');
+    let tbody = svg.append('tbody');
+
+    let columns = Object.keys(data['terminals'].features[0].properties)
+
+    thead
+    // svg.select('thead')
+      .append('tr')
+      .selectAll('th')
+      .data(columns)
       .enter()
-      .append('div')
-        .attr('id', d => `${d.carrier_id}`)
-        .attr('class', 'carrier-selector')
-        .text(d => `${d.carrier_name}`)
-      .append('div')
-        .html(d =>
-          `
-            <img src="../img/logo-${d.carrier_nmfta_code}.png"
-                 alt="${d.carrier_nmfta_code}Logo"
-                 width="50px"
-                 height="auto">
-          `
-        );
+      .append('th')
+      .text(d => `${d}`);
 
-    selectableElements = d3.selectAll('.carrier-selector')
+    // Make one row (tr) for each line in data
+    let rows = tbody.selectAll('tr')
+      .data(data['terminals'].features)
+      .enter()
+      .append('tr')
 
+    // Cells code: http://bl.ocks.org/ndobie/336055eed95f62350ec3
+    // Create the cells for the data
+    let cells = rows.selectAll('td')
+      .data(row => {
+        return columns.map((d, i) => {
+          return {
+            i: d,
+            value: row.properties[d]
+          };
+        });
+      })
+    .enter()
+    .append('td')
+      .html(d => `${d.value}`);
+
+    selectableElements = rows;
+
+    // https://neu-cs-7250-s21-staff.github.io/Assignment--Brushing_and_Linking--Solution/
+    // Figure out brushing-like behavior using mousedown,
+    // mouseover, mouseout, and mouseup events
     let currentlyBrushing = false,
         startIndex = null,
         endIndex = null;
@@ -98,7 +131,7 @@ function carrierFilter() {
       return i;
     }
 
-    // Inclusive range [start, stop]
+     // Inclusive range [start, stop]
     function getElementsInRange(start, stop){
       // If we brushed up instead of down swap them for slice
       if (start > stop){
@@ -112,18 +145,16 @@ function carrierFilter() {
 
     function selectElements(elements){
       selectableElements.classed('selected', function(d){
+
         return elements.includes(this);
       });
 
       // Get the name of our dispatcher's event
       let dispatchString = Object.getOwnPropertyNames(dispatcher._)[0];
 
+      console.log(tbody.selectAll('.selected').data())
       // Let other charts know about our selection
-      dispatcher.call(
-          dispatchString,
-          this,
-          carrierSelector.selectAll('.selected').data()
-      );
+      dispatcher.call(dispatchString, this, tbody.selectAll('.selected').data());
     }
 
     return chart;
@@ -141,9 +172,14 @@ function carrierFilter() {
   chart.updateSelection = function (selectedData) {
     if (!arguments.length) return;
 
-    // Select an element if its datum was selected
-    selectableElements
-      .classed('selected', d => selectedData.includes(d)
+
+      // Select an element if its datum was selected
+      selectableElements
+        .classed('selected', d => {
+               // console.log(d.properties)
+          console.log(d.properties)
+
+          selectedData.includes(d)}
     );
 
   };

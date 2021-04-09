@@ -214,76 +214,6 @@ Trans-Atlantic
 <!--        <h3>Network Filters</h3>-->
 <!--        <hr/>-->
 
-<!--        <div id='filter-od'>-->
-<!--          <h5>Origin/Destination</h5>-->
-<!--          <h4>Origin</h4>-->
-<!--          <form>-->
-<!--            <select name="origin-country">-->
-<!--               <option value="*"-->
-<!--                       selected>-->
-<!--                 (Select Origin Country)-->
-<!--               </option>-->
-<!--               <option value = "USA">-->
-<!--                 United States-->
-<!--               </option>-->
-<!--               <option value = "Bermuda">-->
-<!--                 Bermuda-->
-<!--               </option>-->
-<!--               <option value = "UK">-->
-<!--                 United Kingdom-->
-<!--               </option>-->
-<!--            </select>-->
-<!--          </form>-->
-<!--          <form>-->
-<!--            <select name = "origin-port">-->
-<!--               <option value = "*" selected>(Select Origin Port)</option>-->
-<!--               <option value = "Wilmington">Wilmington</option>-->
-<!--               <option value = "Norfolk">Norfolk</option>-->
-<!--            </select>-->
-<!--          </form>-->
-<!--          <form>-->
-<!--            <select name = "origin-terminal">-->
-<!--              <option value = "*" selected>(Select Origin Terminal)</option>-->
-<!--              <option value = "NCSPA">NCSPA</option>-->
-<!--              <option value = "XXX">XXX</option>-->
-<!--            </select>-->
-<!--          </form>-->
-
-<!--          <h4>Destination</h4>-->
-<!--          <form>-->
-<!--            <select name = "destination-country">-->
-<!--               <option value = "*" selected>(Select Destination Country)</option>-->
-<!--               <option value = "USA">United States</option>-->
-<!--               <option value = "Bermuda">Bermuda</option>-->
-<!--               <option value = "UK">United Kingdom</option>-->
-<!--            </select>-->
-<!--          </form>-->
-<!--          <form>-->
-<!--            <select name = "destination-port">-->
-<!--               <option value = "*" selected>(Select Destination Port)</option>-->
-<!--               <option value = "Wilmington">Wilmington</option>-->
-<!--               <option value = "Norfolk">Norfolk</option>-->
-<!--            </select>-->
-<!--          </form>-->
-<!--          <form>-->
-<!--            <select name = "destination-terminal">-->
-<!--              <option value = "*" selected>(Select Destination Terminal)</option>-->
-<!--              <option value = "NCSPA">NCSPA</option>-->
-<!--              <option value = "XXX">XXX</option>-->
-<!--            </select>-->
-<!--          </form>-->
-
-<!--          <br>-->
-<!--        </div>-->
-
-
-
-
-
-
-
-
-
 
 <!--      <br>-->
 <!--      <b>Services</b>-->
@@ -343,8 +273,8 @@ Trans-Atlantic
 
   </div>
 
-  <div id="treegraph">
-    [Treegraph]
+  <div id="container-table-terminals">
+    <div id="table-terminals"></div>
   </div>
 
 
@@ -447,6 +377,12 @@ Trans-Atlantic
       </a>
       by Mike Bostock
       is used for manipulating the DOM to create visualizations.
+    </li>
+    <li>
+      <a href='https://neu-cs-7250-s21-staff.github.io/Assignment--Brushing_and_Linking--Solution/'>
+        Assignment: Brushing & Linking in D3 Solution
+      </a>
+      by Cody Dunne
     </li>
     <li>
       <a href='https://codepo8.github.io/css-fork-on-github-ribbon/#'>
@@ -555,7 +491,13 @@ Trans-Atlantic
       <a href="http://bl.ocks.org/wrobstory/5762547">
         Bl.ocks.org: Choropleth with Vincent
       </a>
-      by Rob Story
+      by Rob Story 
+    </li>
+    <li>
+      <a href="http://bl.ocks.org/ndobie/336055eed95f62350ec3">
+        Bl.ocks.org: Building a table with D3
+      </a>
+      by Nathan Dobie
     </li>
     <!--    <li>-->
     <!--      <a href="http://codepen.io/ryshackleton/pen/NpdNjJ/">-->
@@ -603,6 +545,7 @@ Trans-Atlantic
 <script src='lib/topojson.v3.0.2/topojson.min.js'></script>
 <script src='js/svgMap.js'></script>
 <script src='js/leafletMap.js'></script>
+<script src='js/terminalTable.js'></script>
 <script src='js/network.js'></script>
 <!--<script src='js/detailPane.js'></script>-->
 <script src='js/carrierFilter.js'></script>

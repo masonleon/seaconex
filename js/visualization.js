@@ -3,15 +3,12 @@
 ((() => {
 
   const topology = 'data/countries-110m.json';
-
   const terminals = './data/interim/terminals.geojson';
-
   const vessels = './data/raw/vessels.csv';
   const carriers = './data/processed/carrier.json';
 
   const searouteEdges = 'data/processed/searoutes.geojson';
-
-  const masterSchedulesEdges = './data/interim/master_schedules_edges2.geojson'
+  const masterSchedulesEdges = './data/interim/master_schedules_edges.geojson'
   const masterSchedulesTerminalCallInfo = './data/interim/master_schedules_terminal_call_info.geojson'
   const trajectory = './data/interim/timestamped-trajectory-icl-tac1.geojson'
 
@@ -38,25 +35,28 @@
     }
 
   }).then(data => {
-    console.log(data)
 
     // General event type for selections, used by d3-dispatch
     // https://github.com/d3/d3-dispatch
     const dispatchString = 'selectionUpdated';
 
     let visControls = carrierFilter()
-    .selectionDispatcher(d3.dispatch(dispatchString))
-    ('#filters-component', data)
+      .selectionDispatcher(d3.dispatch(dispatchString))
+      ('#filters-component', data)
 
     let nodeViz = network()
-    .selectionDispatcher(d3.dispatch(dispatchString))
-    ('#vis-network', data);
+      .selectionDispatcher(d3.dispatch(dispatchString))
+      ('#vis-network', data);
 
     let visMap1 = svgMap()
-    ('#vis-map-1', data);
+      ('#vis-map-1', data);
 
-    let visMap2 = leafletMap()
-    ('#vis-map-2', data);
+    // let visMap2 = leafletMap()
+    //   ('#vis-map-2', data);
+
+    let visTerminalTable = terminalTable()
+      .selectionDispatcher(d3.dispatch(dispatchString))
+      ('#table-terminals', data);
 
     // let visDetails = detailPane()
     //   ('#detail-pane', data);
@@ -66,9 +66,11 @@
       nodeViz,
     // visMap1,
     // visMap2,
+      visTerminalTable
     // visDetails
     ];
 
+    // https://neu-cs-7250-s21-staff.github.io/Assignment--Brushing_and_Linking--Solution/
     // When any chart selection is updated via brushing,
     // have all other charts to update their selections (linking)
     for (let i = 0; i < charts.length; i++) {
@@ -83,8 +85,8 @@
 
         // Where we actually tell one chart to listen to the other.
         charts[i]
-        .selectionDispatcher()
-        .on(pairUniqueString, charts[j].updateSelection);
+          .selectionDispatcher()
+          .on(pairUniqueString, charts[j].updateSelection);
       }
     }
   })
