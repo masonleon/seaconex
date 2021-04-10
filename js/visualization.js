@@ -26,6 +26,10 @@
     d3.json(trajectory)
   ]).then(function(data) {
 
+    let api = {
+      'carrierToTerminals' : mapCarrierTerminalsFromMasterSchedulesEdges(data[1].features)
+    }
+
     return {
       'terminals': data[0],
       'master_schedules_edges': data[1],
@@ -34,10 +38,13 @@
       'searoute_edges': data[4],
       'topology_countries-110m': data[5],
       'carriers': data[6],
-      'timestamped_trajectory': data[7]
+      'timestamped_trajectory': data[7],
+      'api': api
     }
 
   }).then(data => {
+
+    console.log(data.api);
 
     // let carrierTerms = {}
     //
@@ -53,42 +60,105 @@
     // console.log(carrierTerms)
 
 
-    let carrierTerms = {}
-
     // k = data['master_schedules_edges'].features
     //   .filter(feature => feature.carrier)
     //   .map((feature, i) => feature.properties.carrier)
     //   .filter ((item, i, ar) => ar.indexOf(item) === i)
 
-    let res = [];
-    let l = data['master_schedules_edges'].features
-      .map(edge => edge.properties)
-      .forEach(e => {
-        t1 = {
-          carrier: e.carrier,
-          terminal: e.terminal_call_facility_1
-        };
-        t2 = {
-          carrier: e.carrier,
-          terminal: e.terminal_call_facility_2
-        };
-        if (res.some(carrier => carrier.terminal === t1.terminal) === false){
-          res.push(t1);
-        }
-        if (res.some(carrier => carrier.terminal === t2.terminal) === false){
-          res.push(t2);
-        }
-      });
+
+    // const terminalsForCarrier = (carrier) => {
+    //
+    //   let res = [];
+    //   data['master_schedules_edges'].features
+    //     .map(edge => edge.properties)
+    //     .forEach(e => {
+    //       let t1 = {
+    //         carrier: e.carrier,
+    //         terminal: e.terminal_call_facility_1
+    //       };
+    //       let t2 = {
+    //         carrier: e.carrier,
+    //         terminal: e.terminal_call_facility_2
+    //       };
+    //       if (res.some(carrier => carrier.terminal === t1.terminal) === false){
+    //         res.push(t1);
+    //       }
+    //       if (res.some(carrier => carrier.terminal === t2.terminal) === false){
+    //         res.push(t2);
+    //       }
+    //     });
+    //
+    //   return res.filter(terminalCall => terminalCall.carrier === carrier)
+    //   .map((item, i) => item.terminal)
+    //   .filter((item, i, ar) => ar.indexOf(item) === i)
+    // }
+
+    // console.log(terminalsForCarrier('ICL'));
 
 
-    const terminalsForCarrier = (res, carrier) => {
-      return res.filter(terminalCall => terminalCall.carrier === carrier)
-      .map((item, i) => item.terminal)
-      .filter((item, i, ar) => ar.indexOf(item) === i)
+    // console.log(mapCarrierTerminalsFromMasterSchedulesEdges());
+    // console.log(mapCarrierTerminalsFromMasterSchedulesEdges()['ICL']);
+    //
+    // const mapTerminalTerminalsFromMasterSchedulesEdges = () => {
+    //
+    //   let res =[];
+    //   let hashMap = new Map();
+    //
+    //   data['master_schedules_edges'].features
+    //     .map(edge => edge.properties)
+    //     .forEach(e => {
+    //
+    //       let t1 = {
+    //         carrier: e.carrier,
+    //         terminal: e.terminal_call_facility_1
+    //       };
+    //       let t2 = {
+    //         carrier: e.carrier,
+    //         terminal: e.terminal_call_facility_2
+    //       };
+    //       if (res.some(carrier => carrier.terminal === t1.terminal) === false){
+    //         res.push(t1);
+    //       }
+    //       if (res.some(carrier => carrier.terminal === t2.terminal) === false){
+    //         res.push(t2);
+    //       }
+    //     });
+    //
+    //   let carriersArr = [...new Set(res.map(item => item.carrier))];
+    //
+    //   carriersArr.forEach(carrierKey => {
+    //
+    //     let terminalsArr = res
+    //       .filter(terminalCall => terminalCall.carrier === carrierKey)
+    //       .map((item, i) => item.terminal)
+    //       .filter((item, i, ar) => ar.indexOf(item) === i)
+    //
+    //     hashMap.set(carrierKey, terminalsArr)
+    //   })
+    //
+    //   return hashMap
+    // }
+    // console.log(mapCarrierTerminalsFromMasterSchedulesEdges());
+    // console.log(mapCarrierTerminalsFromMasterSchedulesEdges()['ICL']);
+
+
+    const getCarriersForSelectedGraphNodes = (selected) => {
+
+    }
+
+    const getTerminalsForSelectedCarriers = (selected) => {
+
+    }
+
+    const getGraphEdgesForSelectedCarriers = (selected) => {
+
+    }
+
+     const getSearouteEdgesForSelectedCarriers = (selected) => {
+
     }
 
 
-    // console.log(terminalsForCarrier(res, 'ICL'));
 
 
     // General event type for selections, used by d3-dispatch
@@ -147,3 +217,48 @@
     }
   })
 })());
+
+ /**
+     * Maps unique carriers to an array of the unique terminal id's it services
+     * @returns {Map<carrier, [terminals]>}
+     */
+ const mapCarrierTerminalsFromMasterSchedulesEdges = (masterSchedulesEdgesFeatures) => {
+
+      let res =[];
+      let hashMap = new Map();
+
+      // data['master_schedules_edges'].features
+      masterSchedulesEdgesFeatures
+        .map(edge => edge.properties)
+        .forEach(e => {
+
+          let t1 = {
+            carrier: e.carrier,
+            terminal: e.terminal_call_facility_1
+          };
+          let t2 = {
+            carrier: e.carrier,
+            terminal: e.terminal_call_facility_2
+          };
+          if (res.some(carrier => carrier.terminal === t1.terminal) === false){
+            res.push(t1);
+          }
+          if (res.some(carrier => carrier.terminal === t2.terminal) === false){
+            res.push(t2);
+          }
+        });
+
+      let carriersArr = [...new Set(res.map(item => item.carrier))];
+
+      carriersArr.forEach(carrierKey => {
+
+        let terminalsArr = res
+          .filter(terminalCall => terminalCall.carrier === carrierKey)
+          .map((item, i) => item.terminal)
+          .filter((item, i, ar) => ar.indexOf(item) === i)
+
+        hashMap.set(carrierKey, terminalsArr)
+      })
+
+      return hashMap
+    }
