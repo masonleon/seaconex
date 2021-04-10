@@ -7,36 +7,37 @@ function carrierFilter() {
   let selectableElements = d3.select(null),
       dispatcher;
 
+
   function chart(selector, data) {
 
     let filterEl = d3.selectAll(selector)
 
     filterEl.append('div')
-      .attr('id', '#filter-carrier')
+      .attr('id', 'filter-carrier')
       .html(
-        `
-          <h5>Carriers<h5>
-          <br>
-        `
+        `Carriers
+        <br>`
       );
 
     let carrierSelector = filterEl;
 
-    carrierSelector.append('div')
+    carrierSelector
       .selectAll('div')
       .data(data['carriers'])
       .enter()
       .append('div')
         .attr('id', d => `${d.carrier_id}`)
         .attr('class', 'carrier-selector')
-        .text(d => `${d.carrier_name}`)
+      // .append('div')
+      //   .text(d => `${d.carrier_name}`)
+      //   .attr('class', 'carrier-selector-text')
       .append('div')
         .html(d =>
-          `
+          `<div class="crop">
             <img src="./img/logo-${d.carrier_nmfta_code}.png"
                  alt="${d.carrier_nmfta_code}Logo"
-                 width="50px"
-                 height="auto">
+                 width="auto"
+                 height="25px"> </div>
           `
         );
 
