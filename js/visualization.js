@@ -26,11 +26,6 @@
     d3.json(trajectory)
   ]).then(function(data) {
 
-    let api = {
-      'carrierToTerminals' : mapCarrierTerminalsFromMasterSchedulesEdges(data[1].features),
-      'terminalToCarriers' : mapTerminalCarriersFromMasterSchedulesEdges(data[1].features)
-    }
-
     return {
       'terminals': data[0],
       'master_schedules_edges': data[1],
@@ -40,19 +35,17 @@
       'topology_countries-110m': data[5],
       'carriers': data[6],
       'timestamped_trajectory': data[7],
-      'api': api
+      'api_callback_lookup': {
+        'carrierToTerminals' : mapCarrierTerminalsFromMasterSchedulesEdges(data[1].features),
+        'terminalToCarriers' : mapTerminalCarriersFromMasterSchedulesEdges(data[1].features)
+      },
+      'network': dataNetworkVis(data[1].features, data[0].features)
     }
 
   }).then(data => {
 
-    console.log(data.api);
-
-
-
-
-
-
-
+    // console.log(data.api);
+    console.log(data);
 
     // General event type for selections, used by d3-dispatch
     // https://github.com/d3/d3-dispatch
@@ -111,92 +104,139 @@
   })
 })());
 
- /**
+
+/**
+ * For callback API
+ *
  * Maps unique carrier to an array of the unique terminal id's it services
  * @returns {Map<carrier, [terminals]>}
- */
- const mapCarrierTerminalsFromMasterSchedulesEdges = (masterSchedulesEdgesFeatures) => {
+*/
+const mapCarrierTerminalsFromMasterSchedulesEdges = (masterSchedulesEdgesFeatures) => {
+  let res =[];
+  let hashMap = new Map();
 
-      let res =[];
-      let hashMap = new Map();
+  masterSchedulesEdgesFeatures
+    .map(edge => edge.properties)
+    .forEach(e => {
 
-      masterSchedulesEdgesFeatures
-        .map(edge => edge.properties)
-        .forEach(e => {
+      let t1 = {
+        carrier: e.carrier,
+        terminal: e.terminal_call_facility_1
+      };
+      let t2 = {
+        carrier: e.carrier,
+        terminal: e.terminal_call_facility_2
+      };
+      if (res.some(carrier => carrier.terminal === t1.terminal) === false){
+        res.push(t1);
+      }
+      if (res.some(carrier => carrier.terminal === t2.terminal) === false){
+        res.push(t2);
+      }
+    });
 
-          let t1 = {
-            carrier: e.carrier,
-            terminal: e.terminal_call_facility_1
-          };
-          let t2 = {
-            carrier: e.carrier,
-            terminal: e.terminal_call_facility_2
-          };
-          if (res.some(carrier => carrier.terminal === t1.terminal) === false){
-            res.push(t1);
-          }
-          if (res.some(carrier => carrier.terminal === t2.terminal) === false){
-            res.push(t2);
-          }
-        });
+  let carriersArr = [...new Set(res.map(item => item.carrier))];
 
-      let carriersArr = [...new Set(res.map(item => item.carrier))];
+  carriersArr.forEach(carrierKey => {
 
-      carriersArr.forEach(carrierKey => {
+    let terminalsArr = res
+      .filter(terminalCall => terminalCall.carrier === carrierKey)
+      .map((item, i) => item.terminal)
+      .filter((item, i, ar) => ar.indexOf(item) === i)
 
-        let terminalsArr = res
-          .filter(terminalCall => terminalCall.carrier === carrierKey)
-          .map((item, i) => item.terminal)
-          .filter((item, i, ar) => ar.indexOf(item) === i)
+    hashMap.set(carrierKey, terminalsArr)
+  })
 
-        hashMap.set(carrierKey, terminalsArr)
-      })
+  return hashMap;
+}
 
-      return hashMap
-    }
-
- /**
+/**
+ * For callback API
+ *
  * Maps unique terminal to an array of the unique carrier id's that service it
  * @returns {Map<carrier, [terminals]>}
- */
- const mapTerminalCarriersFromMasterSchedulesEdges = (masterSchedulesEdgesFeatures) => {
+*/
+const mapTerminalCarriersFromMasterSchedulesEdges = (masterSchedulesEdgesFeatures) => {
+  let res =[];
+  let hashMap = new Map();
 
-      let res =[];
-      let hashMap = new Map();
+  masterSchedulesEdgesFeatures
+    .map(edge => edge.properties)
+    .forEach(e => {
 
-      masterSchedulesEdgesFeatures
-        .map(edge => edge.properties)
-        .forEach(e => {
+      let t1 = {
+        carrier: e.carrier,
+        terminal: e.terminal_call_facility_1
+      };
+      let t2 = {
+        carrier: e.carrier,
+        terminal: e.terminal_call_facility_2
+      };
+      if (res.some(carrier => carrier.terminal === t1.terminal) === false){
+        res.push(t1);
+      }
+      if (res.some(carrier => carrier.terminal === t2.terminal) === false){
+        res.push(t2);
+      }
+    });
 
-          let t1 = {
-            carrier: e.carrier,
-            terminal: e.terminal_call_facility_1
-          };
-          let t2 = {
-            carrier: e.carrier,
-            terminal: e.terminal_call_facility_2
-          };
-          if (res.some(carrier => carrier.terminal === t1.terminal) === false){
-            res.push(t1);
-          }
-          if (res.some(carrier => carrier.terminal === t2.terminal) === false){
-            res.push(t2);
-          }
-        });
+  let terminalsArr = [...new Set(res.map(item => item.terminal))];
 
-      let terminalsArr = [...new Set(res.map(item => item.terminal))];
+  terminalsArr.forEach(terminalKey => {
 
-      terminalsArr.forEach(terminalKey => {
+    let carriersArr = res
+      .filter(terminalCall => terminalCall.terminal === terminalKey)
+      .map((item, i) => item.carrier)
+      .filter((item, i, ar) => ar.indexOf(item) === i)
 
-        let carriersArr = res
-          .filter(terminalCall => terminalCall.terminal === terminalKey)
-          .map((item, i) => item.carrier)
-          .filter((item, i, ar) => ar.indexOf(item) === i)
+    hashMap.set(terminalKey, carriersArr)
+  })
 
-        hashMap.set(terminalKey, carriersArr)
-      })
+  return hashMap;
+}
 
-      return hashMap
-    }
+
+/**
+*
+*
+*/
+const dataNetworkVis = (masterSchedulesEdgesFeatures, terminalsFeatures) => {
+  let hashMap = new Map();
+
+  let links = masterSchedulesEdgesFeatures
+    .map(edge => edge.properties)
+    .map((
+        {
+          terminal_call_facility_1: source,
+          terminal_call_facility_2: target,
+          ...rest
+        }
+    ) => (
+        {
+          source,
+          target,
+          ...rest
+        }
+    ));
+  hashMap.set('links', links);
+
+  let nodes = terminalsFeatures
+    .map(node => node.properties)
+    .map((
+        {
+          terminal: terminal,
+          ...rest
+        }
+    ) => (
+        {
+          terminal,
+          ...rest
+        }
+    ));
+  hashMap.set('nodes', nodes);
+
+
+  return hashMap;
+}
 
 
