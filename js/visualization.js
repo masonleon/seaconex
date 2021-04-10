@@ -97,7 +97,7 @@
 
     let visControls = carrierFilter()
       .selectionDispatcher(d3.dispatch(dispatchString))
-      ('#filters-component', data)
+      ('#filters-carriers-component', data)
 
     let nodeViz = network()
       .selectionDispatcher(d3.dispatch(dispatchString))
