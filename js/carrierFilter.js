@@ -7,17 +7,15 @@ function carrierFilter() {
   let selectableElements = d3.select(null),
       dispatcher;
 
+
   function chart(selector, data) {
 
     let filterEl = d3.selectAll(selector)
 
     filterEl.append('div')
-      .attr('id', '#filter-carrier')
+      .attr('id', 'filter-carrier')
       .html(
-        `
-          <h5>Carriers<h5>
-          <br>
-        `
+        `<h5>Carriers<h5>`
       );
 
     let carrierSelector = filterEl;
