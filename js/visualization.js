@@ -27,7 +27,8 @@
   ]).then(function(data) {
 
     let api = {
-      'carrierToTerminals' : mapCarrierTerminalsFromMasterSchedulesEdges(data[1].features)
+      'carrierToTerminals' : mapCarrierTerminalsFromMasterSchedulesEdges(data[1].features),
+      'terminalToCarriers' : mapTerminalCarriersFromMasterSchedulesEdges(data[1].features)
     }
 
     return {
@@ -46,117 +47,9 @@
 
     console.log(data.api);
 
-    // let carrierTerms = {}
-    //
-    // k = data['master_schedules_edges'].features
-    //   .map((feature, i) => feature.properties.carrier)
-    //   .filter ((item, i, ar) => ar.indexOf(item) === i)
-    //   // .forEach(k => {
-    //   //   console.log(k)
-    //   //   if( !carrierTerms.hasOwnProperty(k)) {
-    //   //     carrierTerms[k].push({});
-    //   //   }})
-    //
-    // console.log(carrierTerms)
 
 
-    // k = data['master_schedules_edges'].features
-    //   .filter(feature => feature.carrier)
-    //   .map((feature, i) => feature.properties.carrier)
-    //   .filter ((item, i, ar) => ar.indexOf(item) === i)
 
-
-    // const terminalsForCarrier = (carrier) => {
-    //
-    //   let res = [];
-    //   data['master_schedules_edges'].features
-    //     .map(edge => edge.properties)
-    //     .forEach(e => {
-    //       let t1 = {
-    //         carrier: e.carrier,
-    //         terminal: e.terminal_call_facility_1
-    //       };
-    //       let t2 = {
-    //         carrier: e.carrier,
-    //         terminal: e.terminal_call_facility_2
-    //       };
-    //       if (res.some(carrier => carrier.terminal === t1.terminal) === false){
-    //         res.push(t1);
-    //       }
-    //       if (res.some(carrier => carrier.terminal === t2.terminal) === false){
-    //         res.push(t2);
-    //       }
-    //     });
-    //
-    //   return res.filter(terminalCall => terminalCall.carrier === carrier)
-    //   .map((item, i) => item.terminal)
-    //   .filter((item, i, ar) => ar.indexOf(item) === i)
-    // }
-
-    // console.log(terminalsForCarrier('ICL'));
-
-
-    // console.log(mapCarrierTerminalsFromMasterSchedulesEdges());
-    // console.log(mapCarrierTerminalsFromMasterSchedulesEdges()['ICL']);
-    //
-    // const mapTerminalTerminalsFromMasterSchedulesEdges = () => {
-    //
-    //   let res =[];
-    //   let hashMap = new Map();
-    //
-    //   data['master_schedules_edges'].features
-    //     .map(edge => edge.properties)
-    //     .forEach(e => {
-    //
-    //       let t1 = {
-    //         carrier: e.carrier,
-    //         terminal: e.terminal_call_facility_1
-    //       };
-    //       let t2 = {
-    //         carrier: e.carrier,
-    //         terminal: e.terminal_call_facility_2
-    //       };
-    //       if (res.some(carrier => carrier.terminal === t1.terminal) === false){
-    //         res.push(t1);
-    //       }
-    //       if (res.some(carrier => carrier.terminal === t2.terminal) === false){
-    //         res.push(t2);
-    //       }
-    //     });
-    //
-    //   let carriersArr = [...new Set(res.map(item => item.carrier))];
-    //
-    //   carriersArr.forEach(carrierKey => {
-    //
-    //     let terminalsArr = res
-    //       .filter(terminalCall => terminalCall.carrier === carrierKey)
-    //       .map((item, i) => item.terminal)
-    //       .filter((item, i, ar) => ar.indexOf(item) === i)
-    //
-    //     hashMap.set(carrierKey, terminalsArr)
-    //   })
-    //
-    //   return hashMap
-    // }
-    // console.log(mapCarrierTerminalsFromMasterSchedulesEdges());
-    // console.log(mapCarrierTerminalsFromMasterSchedulesEdges()['ICL']);
-
-
-    const getCarriersForSelectedGraphNodes = (selected) => {
-
-    }
-
-    const getTerminalsForSelectedCarriers = (selected) => {
-
-    }
-
-    const getGraphEdgesForSelectedCarriers = (selected) => {
-
-    }
-
-     const getSearouteEdgesForSelectedCarriers = (selected) => {
-
-    }
 
 
 
@@ -219,15 +112,14 @@
 })());
 
  /**
-     * Maps unique carriers to an array of the unique terminal id's it services
-     * @returns {Map<carrier, [terminals]>}
-     */
+ * Maps unique carrier to an array of the unique terminal id's it services
+ * @returns {Map<carrier, [terminals]>}
+ */
  const mapCarrierTerminalsFromMasterSchedulesEdges = (masterSchedulesEdgesFeatures) => {
 
       let res =[];
       let hashMap = new Map();
 
-      // data['master_schedules_edges'].features
       masterSchedulesEdgesFeatures
         .map(edge => edge.properties)
         .forEach(e => {
@@ -262,3 +154,49 @@
 
       return hashMap
     }
+
+ /**
+ * Maps unique terminal to an array of the unique carrier id's that service it
+ * @returns {Map<carrier, [terminals]>}
+ */
+ const mapTerminalCarriersFromMasterSchedulesEdges = (masterSchedulesEdgesFeatures) => {
+
+      let res =[];
+      let hashMap = new Map();
+
+      masterSchedulesEdgesFeatures
+        .map(edge => edge.properties)
+        .forEach(e => {
+
+          let t1 = {
+            carrier: e.carrier,
+            terminal: e.terminal_call_facility_1
+          };
+          let t2 = {
+            carrier: e.carrier,
+            terminal: e.terminal_call_facility_2
+          };
+          if (res.some(carrier => carrier.terminal === t1.terminal) === false){
+            res.push(t1);
+          }
+          if (res.some(carrier => carrier.terminal === t2.terminal) === false){
+            res.push(t2);
+          }
+        });
+
+      let terminalsArr = [...new Set(res.map(item => item.terminal))];
+
+      terminalsArr.forEach(terminalKey => {
+
+        let carriersArr = res
+          .filter(terminalCall => terminalCall.terminal === terminalKey)
+          .map((item, i) => item.carrier)
+          .filter((item, i, ar) => ar.indexOf(item) === i)
+
+        hashMap.set(terminalKey, carriersArr)
+      })
+
+      return hashMap
+    }
+
+

@@ -61,12 +61,12 @@ function network() {
     .map(node => node.properties)
     .map((
         {
-          terminal: id,
+          terminal: terminal,
           ...rest
         }
     ) => (
         {
-          id,
+          terminal,
           ...rest
         }
     ));
@@ -85,7 +85,7 @@ function network() {
 
     let force = d3.forceSimulation(graph.nodes)
     .force("charge", d3.forceManyBody().strength(-300))
-    .force("link", d3.forceLink(graph.links).id(d => d.id).distance(100))
+    .force("link", d3.forceLink(graph.links).id(d => d.terminal).distance(100))
     .force('center', d3.forceCenter(width / 2, height / 2))
     .force("x", d3.forceX())
     .force("y", d3.forceY())
@@ -126,7 +126,7 @@ function network() {
     .data(graph.nodes)
     .join("circle")
     .attr('class', 'node-terminal-facility')
-    .attr('id', d => `${d.id}`)
+    .attr('terminal', d => `${d.terminal}`)
 
     .attr("r", 4)
     .attr("fill", '#0000FF')
@@ -202,12 +202,12 @@ function network() {
     .attr("fill", "black")
     .text(d => {
       // console.log(d)
-      return d.id;
+      return d.terminal;
     });
 
     node.append("title")
     .text(function (d) {
-      return d.id;
+      return d.terminal;
     });
 
     force.on('tick', ticked);
