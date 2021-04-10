@@ -15,12 +15,13 @@ function carrierFilter() {
     filterEl.append('div')
       .attr('id', 'filter-carrier')
       .html(
-        `<h5>Carriers<h5>`
+        `Carriers
+        <br>`
       );
 
     let carrierSelector = filterEl;
 
-    carrierSelector.append('div')
+    carrierSelector
       .selectAll('div')
       .data(data['carriers'])
       .enter()
