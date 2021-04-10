@@ -197,8 +197,10 @@ const mapTerminalCarriersFromMasterSchedulesEdges = (masterSchedulesEdgesFeature
 
 
 /**
+* For network vis
 *
-*
+* Maps graph nodes and links for force-directed visualization
+* @returns {Map<>}
 */
 const dataNetworkVis = (masterSchedulesEdgesFeatures, terminalsFeatures) => {
   let hashMap = new Map();
