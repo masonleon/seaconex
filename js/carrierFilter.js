@@ -28,14 +28,16 @@ function carrierFilter() {
       .append('div')
         .attr('id', d => `${d.carrier_id}`)
         .attr('class', 'carrier-selector')
-        .text(d => `${d.carrier_name}`)
+      // .append('div')
+      //   .text(d => `${d.carrier_name}`)
+      //   .attr('class', 'carrier-selector-text')
       .append('div')
         .html(d =>
-          `
+          `<div class="crop">
             <img src="./img/logo-${d.carrier_nmfta_code}.png"
                  alt="${d.carrier_nmfta_code}Logo"
-                 width="50px"
-                 height="auto">
+                 width="auto"
+                 height="25px"> </div>
           `
         );
 

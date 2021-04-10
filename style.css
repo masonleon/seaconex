@@ -112,11 +112,23 @@ circle.node-terminal-facility.selected {
   padding: 0px;
 }
 
+.crop {
+  width: auto;
+  height: auto;
+  overflow: hidden;
+}
 
+.crop img {
+  width: 30px;
+  height: 25px;
+  margin: 0px 0 0 0px;
+}
+
+/* 
 .carrier-selector.div > div { 
   flex: 50%;
-
-}
+  display:flex;
+} */
 
 /* Carrier Name + Logo */
 .carrier-selector {
@@ -125,7 +137,7 @@ circle.node-terminal-facility.selected {
   color: white;
   text-align: center;
   margin:0 0 5px 5px;
-  width:50%;
+  width:20%;
   flex: 50%; 
   -webkit-user-select: none;
   -khtml-user-select: none;
@@ -134,11 +146,12 @@ circle.node-terminal-facility.selected {
   -o-user-select: none;
   user-select: none;
   cursor: default;
-  padding-bottom: 10px;
+  padding-bottom: 5px;
   padding-top: 5px;
   border-top: #68AB9A 1px dotted;
-  flex: 1 1 100px;
+  flex: 1 1 25px;
 }
+
 
 /* Style for selected marks (table rows, filters) */
 .selected {
