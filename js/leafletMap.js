@@ -8,12 +8,14 @@ function leafletMap() {
 
     // let container = d3.select('#center-component'),
     let container = d3.select('#vis-map-1'),
-        width = container.node()
+        width = container
+          .node()
           .getBoundingClientRect()
-            .width,
-        height = container.node()
+          .width,
+        height = container
+          .node()
           .getBoundingClientRect()
-            .height
+          .height
         // width = 960,
         // height = 400
 
@@ -54,8 +56,17 @@ function leafletMap() {
       // 'Esri_WorldImagery': esriWorldImageryLayer,
     };
 
+    let controlOptions = {
+      collapsed:false
+    };
+
+    //https://gis.stackexchange.com/questions/64385/making-leaflet-control-open-by-default
     L.control
-      .layers(baseMaps, overlayMaps)
+      .layers(
+        baseMaps,
+        overlayMaps,
+        controlOptions
+      )
       .addTo(map);
 
     L.svg({

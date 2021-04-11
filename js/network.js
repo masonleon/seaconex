@@ -112,6 +112,7 @@ function network() {
       );
 
     selectableElements = node;
+
     // console.log(selectableElements.data())
 
     // console.log(selectableElements.nodes())
@@ -265,36 +266,14 @@ function network() {
   chart.updateSelection = function (selectedData) {
     if (!arguments.length) return;
 
-    console.log(selectableElements)
-    // console.log(selectedData)
+    console.log(selectableElements.data())
 
-    // console.log(selectableElements.classed('node-terminal-facility'))
-    // d3.selectAll('node-terminal-facility')
-
-    // let filtered = selectableElements.find(item => item.terminal === 'AET')
-
-    // console.log(selectableElements.filter(item => selectedData.map(t => t.terminal).includes(item.terminal) ))
-
-    // let selected = selectableElements
-    //   .filter(item => selectedData
-    //     .map(t => t.terminal)
-    //     .includes(item.terminal))
-      // .forEach(d => {
-
-        // d.attr('class', 'selected')
-      // })
-// console.log(
     selectableElements
       .filter(item => selectedData
         .map(t => t.terminal)
-        .includes(item.terminal))
-      // .data()
-      // .enter()
-      .datum()
-      // .attr('class','selected')
-    .classed('selected', d => {
-        console.log(selected.includes(d))
-      });
+        .includes(item.terminal)
+      )
+      .classed('selected', d => d);
 // )
     // // Select an element if its datum was selected
     // selectableElements
@@ -306,15 +285,6 @@ function network() {
     //   });
 
 
-    // //     // console.log(selectableElements.data().includes(d))
-    // //     console.log(d.terminal)
-    // //     // d3.selectAll('.node-terminal-facility')
-    // //     //   .filter(item => item.terminal === 'PNCT')
-    // //     //   .attr('class','selected')
-    // //
-    // //     // d3.select('circle.node-terminal-facility').data().find(item => item.terminal === 'AET').attr('class', 'selected')
-    // //     // console.log(selectedData.includes(`${d.terminal}`))
-    // //     // selectedData.includes(`${d.terminal}`)
   };
 
   return chart

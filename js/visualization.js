@@ -36,11 +36,57 @@
       'carriers': data[6],
       'timestamped_trajectory': data[7],
       'api_callback_lookup': {
+
         'carrierToTerminals' : mapCarrierTerminalsFromMasterSchedulesEdges(data[1].features),
-        'terminalToCarriers' : mapTerminalCarriersFromMasterSchedulesEdges(data[1].features)
+        // 'serviceToTerminals' : '',
+        // 'edgeToTerminals' : '',
+
+        'terminalToCarriers' : mapTerminalCarriersFromMasterSchedulesEdges(data[1].features),
+        // 'terminalToServices' : '',
+        // 'terminalToEdges' : '',
+        //
+        // // 'serviceToCarriers': '',
+        // // 'serviceTo'
+        // // {
+        // //   'carrier' : '',
+        // //
+        // // }
+        // //
+        // // 'carrier' : {
+        // //   'mapCarrierTerminalsFromMasterSchedulesEdges(data
+        // // }[1].features),
+        // 'serviceToTerminals' : '',
+        // 'edgeToTerminals' : '',
+
+        'terminalToCarriers' : mapTerminalCarriersFromMasterSchedulesEdges(data[1].features),
+        // 'terminalToServices' : '',
+        // 'terminalToEdges' : '',
+        //
+        // 'serviceToCarriers': '',
+        // 'serviceTo'
+
+
       },
-      'network': dataNetworkVis(data[1].features, data[0].features)
+      'network': dataNetworkVis(data[1].features, data[0].features),
+      // 'api': makeIdCallbackApi(data[6])
     }
+
+    // let api = [
+    //   {
+    //     'carrier' : '',
+    //     'lookup' : {
+    //       'terminals': [],
+    //       'services': [],
+    //       'trades' : [],
+    //       'vessels' : [],
+    //       'transport_edges' : [],
+    //       'ports_unlocode' : [],
+    //       'ports_wpi': []
+    //     }
+    //
+    //   }
+    // ]
+
 
   }).then(data => {
 
@@ -103,6 +149,56 @@
     }
   })
 })());
+
+// const makeIdCallbackApi = (carriers) => {
+//
+//   // let hashMap = new Map();
+//   let hash = {};
+//
+//   carriers
+//     .map(carrier => carrier.carrier_id)
+//     .forEach(e => {
+//       console.log(e)
+//
+//       let record = {
+//         carrier: e
+//       };
+//
+//       if(!hash[carrier]===record.e)){
+//
+//       }
+//
+//
+//
+//       // if (res.some(carrier => carrier.terminal === t1.terminal) === false){
+//       //   res.push(t1);
+//       // }
+//       // if (res.some(carrier => carrier.terminal === t2.terminal) === false){
+//       //   res.push(t2);
+//       // }
+//
+//
+//     });
+//
+//   // let carriersArr = [...new Set(res.map(item => item.carrier))];
+//   //
+//   // carriersArr.forEach(carrierKey => {
+//   //
+//   //   let terminalsArr = res
+//   //     .filter(terminalCall => terminalCall.carrier === carrierKey)
+//   //     .map((item, i) => item.terminal)
+//   //     .filter((item, i, ar) => ar.indexOf(item) === i)
+//   //
+//   //   hashMap.set(carrierKey, terminalsArr)
+//   // })
+//
+//   console.log(hashMap.get({carrier:'ICL'}))
+//
+//
+//
+//   return hashMap
+//
+// }
 
 
 /**
@@ -194,6 +290,8 @@ const mapTerminalCarriersFromMasterSchedulesEdges = (masterSchedulesEdgesFeature
 
   return hashMap;
 }
+
+
 
 
 /**

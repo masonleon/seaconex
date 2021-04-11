@@ -122,7 +122,6 @@ function carrierFilter() {
       // Get the name of our dispatcher's event
       let dispatchString = Object.getOwnPropertyNames(dispatcher._)[0];
 
-
       let selectedCarrierArr = Array.from(
           new Set(
               carrierSelector
@@ -132,6 +131,8 @@ function carrierFilter() {
           )
       )
 
+      // console.log(selectedCarrierArr)
+
       let result = [];
 
       selectedCarrierArr
@@ -140,21 +141,16 @@ function carrierFilter() {
             .api_callback_lookup
             .carrierToTerminals
             .get(carrier)
+
+          if (terminals) {
             // console.log(terminals)
-          terminals
-            .forEach(terminal => {
-              result.push({terminal:terminal})
-            })
+            terminals
+              .forEach(terminal =>
+                result.push({terminal:terminal}))
+          }
         })
 
       console.log(result)
-
-      // let terminals = data
-      //     .api_callback_lookup
-      //     .carrierToTerminals
-          // .get(selectedCarriers)
-
-      // console.log(terminals)
 
       // Let other charts know about our selection
       dispatcher.call(
