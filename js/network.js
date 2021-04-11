@@ -1,29 +1,37 @@
-function network() {
-  let margin = {
-        top: 100,
-        left: 40,
-        right: 20,
-        bottom: 35
-      },
-      width = 960 - margin.left - margin.right,
-      height = 600 - margin.top - margin.bottom,
-      ourBrush = null,
-      selectableElements = d3.select(null),
-      dispatcher;
+/* global D3 */
 
+// Initialize a force directed network vis. Modeled after Mike Bostock's
+// Reusable Chart framework https://bost.ocks.org/mike/chart/
+function network() {
+    // Based on Mike Bostock's margin convention
+  // https://bl.ocks.org/mbostock/3019563
+  let margin = {
+      top: 100,
+      left: 40,
+      right: 20,
+      bottom: 35
+    },
+    width = 960 - margin.left - margin.right,
+    height = 600 - margin.top - margin.bottom,
+    ourBrush = null,
+    selectableElements = d3.select(null),
+    dispatcher;
+
+  // Create the chart by adding an svg to the div with the id
+  // specified by the selector using the given data
   function chart(selector, data) {
     let svg = d3.select(selector)
       .append("svg")
-      .attr("height", height)
-      .attr('preserveAspectRatio',
-          'xMidYMid meet') // this will scale your visualization according to the size of its parent element and the page.
-      .attr('width',
-          width) // this is now required by Chrome to ensure the SVG shows up at all
-      .style('background-color',
-          '#ccc') // change the background color to light gray
-      .attr('viewBox', [0, 0, width + margin.left + margin.right,
-        height + margin.top + margin.bottom].join(' '))
-      .style("cursor", "crosshair");
+        .attr("height", height)
+        .attr('preserveAspectRatio',
+            'xMidYMid meet') // this will scale your visualization according to the size of its parent element and the page.
+        .attr('width',
+            width) // this is now required by Chrome to ensure the SVG shows up at all
+        .style('background-color',
+            '#ccc') // change the background color to light gray
+        .attr('viewBox', [0, 0, width + margin.left + margin.right,
+          height + margin.top + margin.bottom].join(' '))
+        .style("cursor", "crosshair");
 
     let links = data['network'].get('links')
     let nodes = data['network'].get('nodes')
@@ -54,6 +62,9 @@ function network() {
       .force("y", d3.forceY())
       .alphaTarget(1);
 
+    force.on('tick', ticked);
+
+
     // Arrowheads for directional links
     svg.append("defs").selectAll("marker")
       .data(lanes)
@@ -81,7 +92,7 @@ function network() {
       .attr('carrier', d => `${d.carrier}`)
       .attr("stroke", d => color(d.lane))
       .attr("marker-end", d => `url(${new URL(`#arrow-${d.lane}`, location)})`)
-      // .style("opacity", 0);
+      .style("opacity", 0);
 
     let node = svg.append("g")
       .attr("stroke", "#fff")
@@ -91,17 +102,34 @@ function network() {
       .join("circle")
       .attr('class', 'node-terminal-facility')
       .attr('terminal', d => `${d.terminal}`)
-
       .attr("r", 4)
       .attr("fill", '#0000FF')
       .call(
-          d3.drag()
-            .on("start", dragstarted)
-            .on("drag", dragged)
-            .on("end", dragended)
+        d3.drag()
+          .on("start", dragstarted)
+          .on("drag", dragged)
+          .on("end", dragended)
       );
 
     selectableElements = node;
+    // console.log(selectableElements.data())
+
+    // console.log(selectableElements.nodes())
+
+    let labels = svg.selectAll("text.label")
+      .data(graph.nodes)
+      .enter()
+      .append("text")
+      .attr("class", "label")
+      .attr("fill", "black")
+      .text(d => {
+        return d.terminal;
+      });
+
+    // node.append("title")
+    //   .text(function (d) {
+    //     return d.terminal;
+    //   });
 
     svg.call(brush);
 
@@ -117,7 +145,7 @@ function network() {
 
       ourBrush = brush;
 
-      //set brush constraints to full width 
+      //set brush constraints to full width
       const brushX = d3.scaleLinear()
               .domain([0, width])
               .rangeRound([0, width]),
@@ -149,35 +177,22 @@ function network() {
         let dispatchString = Object.getOwnPropertyNames(dispatcher._)[0];
 
         // Let other charts know about our selection
-        dispatcher.call(dispatchString, this,
-            svg.selectAll('.selected').data());
+        dispatcher.call(
+            dispatchString,
+            this,
+            svg.selectAll('.selected').data()
+        );
       }
 
       function brushEnd(event, d) {
         // We don't want infinite recursion
-        if (event.sourceEvent !== undefined && event.sourceEvent.type
-            !== 'end') {
-          d3.select(this).call(brush.move, null);
+        if (event.sourceEvent !== undefined &&
+            event.sourceEvent.type !== 'end') {
+          d3.select(this)
+            .call(brush.move, null);
         }
       }
     }
-
-    let labels = svg.selectAll("text.label")
-      .data(graph.nodes)
-      .enter()
-      .append("text")
-      .attr("class", "label")
-      .attr("fill", "black")
-      .text(d => {
-        return d.terminal;
-      });
-
-    node.append("title")
-      .text(function (d) {
-        return d.terminal;
-      });
-
-    force.on('tick', ticked);
 
     function ticked() {
       link.attr("d", linkArc);
@@ -193,7 +208,7 @@ function network() {
       });
     }
 
-// Function from Mike Bostock's Mobile patent suits and stackoverflowto generate arc paths for links so they don't collide with each other.
+    // Function from Mike Bostock's Mobile patent suits and stackoverflowto generate arc paths for links so they don't collide with each other.
     function linkArc(d) {
       let dx = d.target.x - d.source.x,
           dy = d.target.y - d.source.y,
@@ -243,6 +258,63 @@ function network() {
     }
     dispatcher = _;
     return chart;
+  };
+
+  // Given selected data from another visualization
+  // select the relevant elements here (linking)
+  chart.updateSelection = function (selectedData) {
+    if (!arguments.length) return;
+
+    console.log(selectableElements)
+    // console.log(selectedData)
+
+    // console.log(selectableElements.classed('node-terminal-facility'))
+    // d3.selectAll('node-terminal-facility')
+
+    // let filtered = selectableElements.find(item => item.terminal === 'AET')
+
+    // console.log(selectableElements.filter(item => selectedData.map(t => t.terminal).includes(item.terminal) ))
+
+    // let selected = selectableElements
+    //   .filter(item => selectedData
+    //     .map(t => t.terminal)
+    //     .includes(item.terminal))
+      // .forEach(d => {
+
+        // d.attr('class', 'selected')
+      // })
+// console.log(
+    selectableElements
+      .filter(item => selectedData
+        .map(t => t.terminal)
+        .includes(item.terminal))
+      // .data()
+      // .enter()
+      .datum()
+      // .attr('class','selected')
+    .classed('selected', d => {
+        console.log(selected.includes(d))
+      });
+// )
+    // // Select an element if its datum was selected
+    // selectableElements
+    //   // .filter(item => selectedData
+    //   //   .map(t => t.terminal)
+    //   //   .includes(item.terminal))
+    //   .classed('selected', d => {
+    //     console.log(selected.includes(d.terminal))
+    //   });
+
+
+    // //     // console.log(selectableElements.data().includes(d))
+    // //     console.log(d.terminal)
+    // //     // d3.selectAll('.node-terminal-facility')
+    // //     //   .filter(item => item.terminal === 'PNCT')
+    // //     //   .attr('class','selected')
+    // //
+    // //     // d3.select('circle.node-terminal-facility').data().find(item => item.terminal === 'AET').attr('class', 'selected')
+    // //     // console.log(selectedData.includes(`${d.terminal}`))
+    // //     // selectedData.includes(`${d.terminal}`)
   };
 
   return chart

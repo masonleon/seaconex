@@ -26,32 +26,32 @@ function leafletMap() {
 
 
     let esriWorldImageryLayer = L.tileLayer(
-        'https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}', {
-        attribution: 'Esri, Maxar, GeoEye, Earthstar Geographics, CNES/Airbus DS, USDA, USGS, AeroGRID, IGN, and the GIS User Community '
-      });
+      'https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}', {
+      attribution: 'Esri, Maxar, GeoEye, Earthstar Geographics, CNES/Airbus DS, USDA, USGS, AeroGRID, IGN, and the GIS User Community '
+    });
 
     let noaaEncLayer = L.tileLayer(
-        'https://tileservice.charts.noaa.gov/tiles/50000_1/{z}/{x}/{y}.png', {
-        attribution: 'NOAA'
-      });
+      'https://tileservice.charts.noaa.gov/tiles/50000_1/{z}/{x}/{y}.png', {
+      attribution: 'NOAA'
+    });
 
     map = L.map(selector.slice(1), {
-        center: [30, 0],
-        zoom: 3,
-        layers: [
-          esriWorldImageryLayer,
-          // noaaEncLayer
-        ],
-      });
+      center: [30, 0],
+      zoom: 3,
+      layers: [
+        esriWorldImageryLayer,
+        // noaaEncLayer
+      ],
+    });
 
     let baseMaps = {
-        // 'Noaa_EncTileService': noaaEncLayer,
-        'Esri_WorldImagery': esriWorldImageryLayer,
+      // 'Noaa_EncTileService': noaaEncLayer,
+      'Esri_WorldImagery': esriWorldImageryLayer,
     };
 
     let overlayMaps = {
-        'Noaa_EncTileService': noaaEncLayer,
-        // 'Esri_WorldImagery': esriWorldImageryLayer,
+      'Noaa_EncTileService': noaaEncLayer,
+      // 'Esri_WorldImagery': esriWorldImageryLayer,
     };
 
     L.control
@@ -77,14 +77,14 @@ function leafletMap() {
 
     // Use Leaflets projection API for drawing svg path (creates a stream of projected points)
     let projectPoint = function(x, y) {
-        let point = map.latLngToLayerPoint(new L.LatLng(y, x));
-        this.stream.point(point.x, point.y);
+      let point = map.latLngToLayerPoint(new L.LatLng(y, x));
+      this.stream.point(point.x, point.y);
     }
 
     // Use d3's custom geo transform method to implement the above
     let projection = d3.geoTransform({
-        point: projectPoint
-      });
+      point: projectPoint
+    });
 
     // creates geopath from projected points (SVG)
     let pathCreator = d3.geoPath()
@@ -130,22 +130,22 @@ function leafletMap() {
       .control({position: 'bottomright'});
 
     legend.onAdd = () => {
-        let div = d3
-          .select(document.createElement("div"))
-          .classed('legend', true)
-          .text('ICL Vessels Trajectories between ' + dateRange.min + ' - ' + dateRange.max)
+      let div = d3
+        .select(document.createElement("div"))
+        .classed('legend', true)
+        .text('ICL Vessels Trajectories between ' + dateRange.min + ' - ' + dateRange.max)
 
-        let p = div.selectAll('p')
-           .data(vesselNames)
-           .enter()
-           .append('p')
+      let p = div.selectAll('p')
+       .data(vesselNames)
+       .enter()
+       .append('p')
 
-        p.append('span')
-          .classed('legend-item', true)
-          .style('background-color', d => color(d));
+      p.append('span')
+        .classed('legend-item', true)
+        .style('background-color', d => color(d));
 
-        p.append('span')
-          .text(d => d);
+      p.append('span')
+        .text(d => d);
 
       return div.node();
     };

@@ -7,26 +7,29 @@ function carrierFilter() {
   let selectableElements = d3.select(null),
       dispatcher;
 
-
   function chart(selector, data) {
 
     let filterEl = d3.selectAll(selector)
 
-    filterEl.append('div')
-      .attr('id', 'filter-carrier')
-      .html(
-        `Carriers
-        <br>`
-      );
+    // filterEl.append('div')
+    //   .attr('id', 'filter-carrier')
+    //   .html(
+    //     `Carriers
+    //     <br>`
+    //   );
 
     let carrierSelector = filterEl;
+
+    console.log(data['carriers'])
 
     carrierSelector
       .selectAll('div')
       .data(data['carriers'])
       .enter()
       .append('div')
-        .attr('id', d => `${d.carrier_id}`)
+        .attr('id', d => {
+          `${d.carrier_id}`
+        })
         .attr('class', 'carrier-selector')
       // .append('div')
       //   .text(d => `${d.carrier_name}`)
@@ -119,11 +122,46 @@ function carrierFilter() {
       // Get the name of our dispatcher's event
       let dispatchString = Object.getOwnPropertyNames(dispatcher._)[0];
 
+
+      let selectedCarrierArr = Array.from(
+          new Set(
+              carrierSelector
+                .selectAll('.selected')
+                .data()
+                .map(d => d.carrier_id)
+          )
+      )
+
+      let result = [];
+
+      selectedCarrierArr
+        .forEach(carrier => {
+          let terminals = data
+            .api_callback_lookup
+            .carrierToTerminals
+            .get(carrier)
+            // console.log(terminals)
+          terminals
+            .forEach(terminal => {
+              result.push({terminal:terminal})
+            })
+        })
+
+      console.log(result)
+
+      // let terminals = data
+      //     .api_callback_lookup
+      //     .carrierToTerminals
+          // .get(selectedCarriers)
+
+      // console.log(terminals)
+
       // Let other charts know about our selection
       dispatcher.call(
           dispatchString,
           this,
-          carrierSelector.selectAll('.selected').data()
+          // carrierSelector.selectAll('.selected').data()
+          result
       );
     }
 
@@ -146,7 +184,6 @@ function carrierFilter() {
     selectableElements
       .classed('selected', d => selectedData.includes(d)
     );
-
   };
 
   return chart;
