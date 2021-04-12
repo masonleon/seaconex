@@ -69,7 +69,7 @@ def find_vessel_info_by_service(service, vessels):
     return [mmsi_list, type_list]
 
 
-def build_geojson_carriers(carriers, edges, vessels):
+def build_json_carriers(carriers, edges, vessels):
     # print("terminals:", terminals)
     # print("edges:", edges)
 
@@ -89,12 +89,8 @@ def build_geojson_carriers(carriers, edges, vessels):
                   }
         lookups[carrier_id] = lookup
 
-
-    print("\n\nAfter initializing, lookups are:", lookups)
-
     # Go through each edge and add info
     for edge_id, edge_info in edges.items():
-        print("Edge:", edge_id, edge_info)
         carrier_id = edge_info['carrier']
         port_call_unlocode_1 = edge_info['port_call_unlocode_1']
         port_call_unlocode_2 = edge_info['port_call_unlocode_2']
@@ -135,7 +131,6 @@ def build_geojson_carriers(carriers, edges, vessels):
 
 
     # format into list
-    print("\n\n\nResulting list:", list(lookups.values()))
     return list(lookups.values())
 
 
@@ -150,9 +145,7 @@ def build_geojson_carriers(carriers, edges, vessels):
  #            'transport_edge_no' :[],
  #            'vessel_type': []
  #        }
-def build_geojson_services(carriers, services, vessels, terminals):
-    # print("terminals:", terminals)
-    print("services:", services)
+def build_json_services(carriers, services, vessels, terminals):
 
     # Initialize services
     lookups = {}
@@ -170,12 +163,9 @@ def build_geojson_services(carriers, services, vessels, terminals):
                   }
         lookups[service_id] = lookup
 
-    print("\n\nAfter initializing, service lookups are:", lookups)
-
     # Go through each edge and add info
     for edge_id, edge_info in services.items():
         service_id = edge_info['service']
-        print("Edge:", service_id, edge_id, edge_info)
         carrier_id = edge_info['carrier']
         port_call_unlocode_1 = edge_info['port_call_unlocode_1']
         port_call_unlocode_2 = edge_info['port_call_unlocode_2']
@@ -214,7 +204,588 @@ def build_geojson_services(carriers, services, vessels, terminals):
             lookups[service_id]['lookup']['transport_edge_no'].append(transport_edge_no)
 
     # format into list
-    print("\n\n\nResulting list:", list(lookups.values()))
+    return list(lookups.values())
+
+
+"""
+LOOKUP:
+            'service': [],
+            'port_unlocode': [],
+            'carrier': [],
+            'trade' : [],
+            'vessel_mmsi' : [],
+            'transport_edge_no' :[],
+            'vessel_type': []
+"""
+def build_json_terminals(carriers, services, vessels, terminals):
+
+    # Initialize terminals
+    lookups = {}
+    for terminal_id, terminal_info in terminals.items():
+        lookup = {'terminal': terminal_id,
+                    'lookup': {
+                      'service': [],
+                      'port_unlocode': [],
+                      'carrier': [],
+                      'trade': [],
+                      'vessel_mmsi': [],
+                      'transport_edge_no': [],
+                      'vessel_type': []}
+                  }
+        lookups[terminal_id] = lookup
+
+
+    # Go through each edge and add info
+    for edge_id, edge_info in services.items():
+        service_id = edge_info['service']
+        carrier_id = edge_info['carrier']
+        port_call_unlocode_1 = edge_info['port_call_unlocode_1']
+        port_call_unlocode_2 = edge_info['port_call_unlocode_2']
+        terminal_id_a = edge_info['terminal_call_facility_1']
+        terminal_id_b = edge_info['terminal_call_facility_2']
+        service = edge_info['service']
+        trade = edge_info['trade']
+        [vessel_mmsi_list, vessel_type_list] = find_vessel_info_by_service(service, vessels)
+        transport_edge_no = edge_id
+
+        if port_call_unlocode_1 not in lookups[terminal_id_a]['lookup']['port_unlocode']:
+            lookups[terminal_id_a]['lookup']['port_unlocode'].append(port_call_unlocode_1)
+        if port_call_unlocode_2 not in lookups[terminal_id_a]['lookup']['port_unlocode']:
+            lookups[terminal_id_a]['lookup']['port_unlocode'].append(port_call_unlocode_2)
+
+        if carrier_id not in lookups[terminal_id_a]['lookup']['carrier']:
+            lookups[terminal_id_a]['lookup']['carrier'].append(carrier_id)
+
+        if trade not in lookups[terminal_id_a]['lookup']['trade']:
+            lookups[terminal_id_a]['lookup']['trade'].append(trade)
+
+        if service_id not in lookups[terminal_id_a]['lookup']['service']:
+            lookups[terminal_id_a]['lookup']['service'].append(service_id)
+
+        for vessel_mmsi in vessel_mmsi_list:
+
+            if vessel_mmsi not in lookups[terminal_id_a]['lookup']['vessel_mmsi']:
+                lookups[terminal_id_a]['lookup']['vessel_mmsi'].append(vessel_mmsi)
+
+        for vessel_type in vessel_type_list:
+            if vessel_type not in lookups[terminal_id_a]['lookup']['vessel_type']:
+                lookups[terminal_id_a]['lookup']['vessel_type'].append(vessel_type)
+
+        if transport_edge_no not in lookups[terminal_id_a]['lookup']['transport_edge_no']:
+            lookups[terminal_id_a]['lookup']['transport_edge_no'].append(transport_edge_no)
+
+
+        # Now do second terminal
+        if port_call_unlocode_1 not in lookups[terminal_id_b]['lookup']['port_unlocode']:
+            lookups[terminal_id_b]['lookup']['port_unlocode'].append(port_call_unlocode_1)
+        if port_call_unlocode_2 not in lookups[terminal_id_b]['lookup']['port_unlocode']:
+            lookups[terminal_id_b]['lookup']['port_unlocode'].append(port_call_unlocode_2)
+
+        if carrier_id not in lookups[terminal_id_b]['lookup']['carrier']:
+            lookups[terminal_id_b]['lookup']['carrier'].append(carrier_id)
+
+        if trade not in lookups[terminal_id_b]['lookup']['trade']:
+            lookups[terminal_id_b]['lookup']['trade'].append(trade)
+
+        for vessel_mmsi in vessel_mmsi_list:
+
+            if vessel_mmsi not in lookups[terminal_id_b]['lookup']['vessel_mmsi']:
+                lookups[terminal_id_b]['lookup']['vessel_mmsi'].append(vessel_mmsi)
+
+        for vessel_type in vessel_type_list:
+            if vessel_type not in lookups[terminal_id_b]['lookup']['vessel_type']:
+                lookups[terminal_id_b]['lookup']['vessel_type'].append(vessel_type)
+
+        if transport_edge_no not in lookups[terminal_id_b]['lookup']['transport_edge_no']:
+            lookups[terminal_id_b]['lookup']['transport_edge_no'].append(transport_edge_no)
+
+    # format into list
+    return list(lookups.values())
+
+
+"""
+            'service': [],
+            'terminal': [],
+            'carrier': [],
+            'trade' : [],
+            'vessel_mmsi' : [],
+            'transport_edge_no' :[],
+            'vessel_type': []
+"""
+def build_json_port_unlocode(carriers, services, vessels, terminals):
+
+    # Initialize ports
+    lookups = {}
+    for _, terminal_info in terminals.items():
+        port_unlocode = terminal_info['port_unlocode']
+        lookup = {'port_unlocode': port_unlocode,
+                    'lookup': {
+                      'service': [],
+                      'terminal': [],
+                      'carrier': [],
+                      'trade': [],
+                      'vessel_mmsi': [],
+                      'transport_edge_no': [],
+                      'vessel_type': []}
+                  }
+        lookups[port_unlocode] = lookup
+
+    # Go through each edge and add info
+    for edge_id, edge_info in services.items():
+        service_id = edge_info['service']
+        carrier_id = edge_info['carrier']
+        port_call_unlocode_1 = edge_info['port_call_unlocode_1']
+        port_call_unlocode_2 = edge_info['port_call_unlocode_2']
+        terminal_id_a = edge_info['terminal_call_facility_1']
+        terminal_id_b = edge_info['terminal_call_facility_2']
+        service = edge_info['service']
+        trade = edge_info['trade']
+        [vessel_mmsi_list, vessel_type_list] = find_vessel_info_by_service(service, vessels)
+        transport_edge_no = edge_id
+
+        if terminal_id_a not in lookups[port_call_unlocode_1]['lookup']['terminal']:
+            lookups[port_call_unlocode_1]['lookup']['terminal'].append(terminal_id_a)
+        if terminal_id_b not in lookups[port_call_unlocode_1]['lookup']['terminal']:
+            lookups[port_call_unlocode_1]['lookup']['terminal'].append(terminal_id_b)
+
+        if carrier_id not in lookups[port_call_unlocode_1]['lookup']['carrier']:
+            lookups[port_call_unlocode_1]['lookup']['carrier'].append(carrier_id)
+
+        if trade not in lookups[port_call_unlocode_1]['lookup']['trade']:
+            lookups[port_call_unlocode_1]['lookup']['trade'].append(trade)
+
+        if service_id not in lookups[port_call_unlocode_1]['lookup']['service']:
+            lookups[port_call_unlocode_1]['lookup']['service'].append(service_id)
+
+        for vessel_mmsi in vessel_mmsi_list:
+
+            if vessel_mmsi not in lookups[port_call_unlocode_1]['lookup']['vessel_mmsi']:
+                lookups[port_call_unlocode_1]['lookup']['vessel_mmsi'].append(vessel_mmsi)
+
+        for vessel_type in vessel_type_list:
+            if vessel_type not in lookups[port_call_unlocode_1]['lookup']['vessel_type']:
+                lookups[port_call_unlocode_1]['lookup']['vessel_type'].append(vessel_type)
+
+        if transport_edge_no not in lookups[port_call_unlocode_1]['lookup']['transport_edge_no']:
+            lookups[port_call_unlocode_1]['lookup']['transport_edge_no'].append(transport_edge_no)
+
+
+        # Now do second terminal
+        if terminal_id_a not in lookups[port_call_unlocode_2]['lookup']['terminal']:
+            lookups[port_call_unlocode_2]['lookup']['terminal'].append(terminal_id_a)
+        if terminal_id_b not in lookups[port_call_unlocode_2]['lookup']['terminal']:
+            lookups[port_call_unlocode_2]['lookup']['terminal'].append(terminal_id_b)
+        if carrier_id not in lookups[port_call_unlocode_2]['lookup']['carrier']:
+            lookups[port_call_unlocode_2]['lookup']['carrier'].append(carrier_id)
+        if trade not in lookups[port_call_unlocode_2]['lookup']['trade']:
+            lookups[port_call_unlocode_2]['lookup']['trade'].append(trade)
+        for vessel_mmsi in vessel_mmsi_list:
+            if vessel_mmsi not in lookups[port_call_unlocode_2]['lookup']['vessel_mmsi']:
+                lookups[port_call_unlocode_2]['lookup']['vessel_mmsi'].append(vessel_mmsi)
+        for vessel_type in vessel_type_list:
+            if vessel_type not in lookups[port_call_unlocode_2]['lookup']['vessel_type']:
+                lookups[port_call_unlocode_2]['lookup']['vessel_type'].append(vessel_type)
+        if transport_edge_no not in lookups[port_call_unlocode_2]['lookup']['transport_edge_no']:
+            lookups[port_call_unlocode_2]['lookup']['transport_edge_no'].append(transport_edge_no)
+
+    # format into list
+    # print("\n\n\nResulting list:", list(lookups.values()))
+    return list(lookups.values())
+
+
+"""
+            'service': [],
+            'terminal': [],
+            'carrier': [],
+            'trade' : [],
+            'vessel_mmsi' : [],
+            'transport_edge_no' :[],
+            'vessel_type': []
+"""
+def build_json_port_unlocode(carriers, services, vessels, terminals):
+
+    # Initialize ports
+    lookups = {}
+    for _, terminal_info in terminals.items():
+        port_unlocode = terminal_info['port_unlocode']
+        lookup = {'port_unlocode': port_unlocode,
+                    'lookup': {
+                      'service': [],
+                      'terminal': [],
+                      'carrier': [],
+                      'trade': [],
+                      'vessel_mmsi': [],
+                      'transport_edge_no': [],
+                      'vessel_type': []}
+                  }
+        lookups[port_unlocode] = lookup
+
+    # Go through each edge and add info
+    for edge_id, edge_info in services.items():
+        service_id = edge_info['service']
+        carrier_id = edge_info['carrier']
+        port_call_unlocode_1 = edge_info['port_call_unlocode_1']
+        port_call_unlocode_2 = edge_info['port_call_unlocode_2']
+        terminal_id_a = edge_info['terminal_call_facility_1']
+        terminal_id_b = edge_info['terminal_call_facility_2']
+        service = edge_info['service']
+        trade = edge_info['trade']
+        [vessel_mmsi_list, vessel_type_list] = find_vessel_info_by_service(service, vessels)
+        transport_edge_no = edge_id
+
+        if terminal_id_a not in lookups[port_call_unlocode_1]['lookup']['terminal']:
+            lookups[port_call_unlocode_1]['lookup']['terminal'].append(terminal_id_a)
+        if terminal_id_b not in lookups[port_call_unlocode_1]['lookup']['terminal']:
+            lookups[port_call_unlocode_1]['lookup']['terminal'].append(terminal_id_b)
+
+        if carrier_id not in lookups[port_call_unlocode_1]['lookup']['carrier']:
+            lookups[port_call_unlocode_1]['lookup']['carrier'].append(carrier_id)
+
+        if trade not in lookups[port_call_unlocode_1]['lookup']['trade']:
+            lookups[port_call_unlocode_1]['lookup']['trade'].append(trade)
+
+        if service_id not in lookups[port_call_unlocode_1]['lookup']['service']:
+            lookups[port_call_unlocode_1]['lookup']['service'].append(service_id)
+
+        for vessel_mmsi in vessel_mmsi_list:
+
+            if vessel_mmsi not in lookups[port_call_unlocode_1]['lookup']['vessel_mmsi']:
+                lookups[port_call_unlocode_1]['lookup']['vessel_mmsi'].append(vessel_mmsi)
+
+        for vessel_type in vessel_type_list:
+            if vessel_type not in lookups[port_call_unlocode_1]['lookup']['vessel_type']:
+                lookups[port_call_unlocode_1]['lookup']['vessel_type'].append(vessel_type)
+
+        if transport_edge_no not in lookups[port_call_unlocode_1]['lookup']['transport_edge_no']:
+            lookups[port_call_unlocode_1]['lookup']['transport_edge_no'].append(transport_edge_no)
+
+
+        # Now do second terminal
+        if terminal_id_a not in lookups[port_call_unlocode_2]['lookup']['terminal']:
+            lookups[port_call_unlocode_2]['lookup']['terminal'].append(terminal_id_a)
+        if terminal_id_b not in lookups[port_call_unlocode_2]['lookup']['terminal']:
+            lookups[port_call_unlocode_2]['lookup']['terminal'].append(terminal_id_b)
+        if carrier_id not in lookups[port_call_unlocode_2]['lookup']['carrier']:
+            lookups[port_call_unlocode_2]['lookup']['carrier'].append(carrier_id)
+        if trade not in lookups[port_call_unlocode_2]['lookup']['trade']:
+            lookups[port_call_unlocode_2]['lookup']['trade'].append(trade)
+        for vessel_mmsi in vessel_mmsi_list:
+            if vessel_mmsi not in lookups[port_call_unlocode_2]['lookup']['vessel_mmsi']:
+                lookups[port_call_unlocode_2]['lookup']['vessel_mmsi'].append(vessel_mmsi)
+        for vessel_type in vessel_type_list:
+            if vessel_type not in lookups[port_call_unlocode_2]['lookup']['vessel_type']:
+                lookups[port_call_unlocode_2]['lookup']['vessel_type'].append(vessel_type)
+        if transport_edge_no not in lookups[port_call_unlocode_2]['lookup']['transport_edge_no']:
+            lookups[port_call_unlocode_2]['lookup']['transport_edge_no'].append(transport_edge_no)
+
+    # format into list
+    # print("\n\n\nResulting list:", list(lookups.values()))
+    return list(lookups.values())
+
+
+"""
+            'service': [],
+            'terminal': [],
+            'carrier': [],
+            'port_unlocode' : [],
+            'vessel_mmsi' : [],
+            'transport_edge_no' :[],
+            'vessel_type': []
+"""
+def build_json_trade(carriers, services, vessels, terminals):
+
+    # Initialize ports
+    lookups = {}
+    for _, service_info in services.items():
+        trade = service_info['trade']
+        lookup = {'trade': trade,
+                    'lookup': {
+                      'service': [],
+                      'terminal': [],
+                      'carrier': [],
+                      'port_unlocode': [],
+                      'vessel_mmsi': [],
+                      'transport_edge_no': [],
+                      'vessel_type': []}
+                  }
+        lookups[trade] = lookup
+
+    # Go through each edge and add info
+    for edge_id, edge_info in services.items():
+        service_id = edge_info['service']
+        carrier_id = edge_info['carrier']
+        port_call_unlocode_1 = edge_info['port_call_unlocode_1']
+        port_call_unlocode_2 = edge_info['port_call_unlocode_2']
+        terminal_id_a = edge_info['terminal_call_facility_1']
+        terminal_id_b = edge_info['terminal_call_facility_2']
+        service = edge_info['service']
+        trade = edge_info['trade']
+        [vessel_mmsi_list, vessel_type_list] = find_vessel_info_by_service(service, vessels)
+        transport_edge_no = edge_id
+
+        if terminal_id_a not in lookups[trade]['lookup']['terminal']:
+            lookups[trade]['lookup']['terminal'].append(terminal_id_a)
+        if terminal_id_b not in lookups[trade]['lookup']['terminal']:
+            lookups[trade]['lookup']['terminal'].append(terminal_id_b)
+
+        if port_call_unlocode_1 not in lookups[trade]['lookup']['port_unlocode']:
+            lookups[trade]['lookup']['port_unlocode'].append(port_call_unlocode_1)
+        if port_call_unlocode_2 not in lookups[trade]['lookup']['port_unlocode']:
+            lookups[trade]['lookup']['port_unlocode'].append(port_call_unlocode_2)
+
+        if carrier_id not in lookups[trade]['lookup']['carrier']:
+            lookups[trade]['lookup']['carrier'].append(carrier_id)
+
+        # if trade not in lookups[trade]['lookup']['trade']:
+        #     lookups[trade]['lookup']['trade'].append(trade)
+
+        if service_id not in lookups[trade]['lookup']['service']:
+            lookups[trade]['lookup']['service'].append(service_id)
+
+        for vessel_mmsi in vessel_mmsi_list:
+
+            if vessel_mmsi not in lookups[trade]['lookup']['vessel_mmsi']:
+                lookups[trade]['lookup']['vessel_mmsi'].append(vessel_mmsi)
+
+        for vessel_type in vessel_type_list:
+            if vessel_type not in lookups[trade]['lookup']['vessel_type']:
+                lookups[trade]['lookup']['vessel_type'].append(vessel_type)
+
+        if transport_edge_no not in lookups[trade]['lookup']['transport_edge_no']:
+            lookups[trade]['lookup']['transport_edge_no'].append(transport_edge_no)
+
+    # format into list
+    # print("\n\n\nResulting list:", list(lookups.values()))
+    return list(lookups.values())
+
+
+
+"""
+            'service': [],
+            'terminal': [],
+            'carrier': [],
+            'port_unlocode' : [],
+            'trade' : [],
+            'transport_edge_no' :[],
+            'vessel_type': []
+"""
+def build_json_vessel_mmsi(carriers, services, vessels, terminals):
+
+    # Initialize ports
+    lookups = {}
+    for vessel in vessels:
+        vessel_mmsi = vessel['vessel_mmsi']
+        lookup = {'vessel_mmsi': vessel_mmsi,
+                    'lookup': {
+                      'service': [],
+                      'terminal': [],
+                      'carrier': [],
+                      'port_unlocode': [],
+                      'trade': [],
+                      'transport_edge_no': [],
+                      'vessel_type': []}
+                  }
+        lookups[vessel_mmsi] = lookup
+
+    # Go through each edge and add info
+    for edge_id, edge_info in services.items():
+        service_id = edge_info['service']
+        carrier_id = edge_info['carrier']
+        port_call_unlocode_1 = edge_info['port_call_unlocode_1']
+        port_call_unlocode_2 = edge_info['port_call_unlocode_2']
+        terminal_id_a = edge_info['terminal_call_facility_1']
+        terminal_id_b = edge_info['terminal_call_facility_2']
+        service = edge_info['service']
+        trade = edge_info['trade']
+        [vessel_mmsi_list, vessel_type_list] = find_vessel_info_by_service(service, vessels)
+        transport_edge_no = edge_id
+
+        for vessel_mmsi in vessel_mmsi_list:
+            if terminal_id_a not in lookups[vessel_mmsi]['lookup']['terminal']:
+                lookups[vessel_mmsi]['lookup']['terminal'].append(terminal_id_a)
+            if terminal_id_b not in lookups[vessel_mmsi]['lookup']['terminal']:
+                lookups[vessel_mmsi]['lookup']['terminal'].append(terminal_id_b)
+
+            if port_call_unlocode_1 not in lookups[vessel_mmsi]['lookup']['port_unlocode']:
+                lookups[vessel_mmsi]['lookup']['port_unlocode'].append(port_call_unlocode_1)
+            if port_call_unlocode_2 not in lookups[vessel_mmsi]['lookup']['port_unlocode']:
+                lookups[vessel_mmsi]['lookup']['port_unlocode'].append(port_call_unlocode_2)
+
+            if carrier_id not in lookups[vessel_mmsi]['lookup']['carrier']:
+                lookups[vessel_mmsi]['lookup']['carrier'].append(carrier_id)
+
+            if trade not in lookups[vessel_mmsi]['lookup']['trade']:
+                lookups[vessel_mmsi]['lookup']['trade'].append(trade)
+
+            if service_id not in lookups[vessel_mmsi]['lookup']['service']:
+                lookups[vessel_mmsi]['lookup']['service'].append(service_id)
+
+            # for vessel_mmsi in vessel_mmsi_list:
+            #
+            #     if vessel_mmsi not in lookups[trade]['lookup']['vessel_mmsi']:
+            #         lookups[trade]['lookup']['vessel_mmsi'].append(vessel_mmsi)
+
+            for vessel_type in vessel_type_list:
+                if vessel_type not in lookups[vessel_mmsi]['lookup']['vessel_type']:
+                    lookups[vessel_mmsi]['lookup']['vessel_type'].append(vessel_type)
+
+            if transport_edge_no not in lookups[vessel_mmsi]['lookup']['transport_edge_no']:
+                lookups[vessel_mmsi]['lookup']['transport_edge_no'].append(transport_edge_no)
+
+    # format into list
+    # print("\n\n\nResulting list:", list(lookups.values()))
+    return list(lookups.values())
+
+"""
+            'service': [],
+            'terminal': [],
+            'carrier': [],
+            'port_unlocode' : [],
+            'trade' : [],
+            'vessel_mmsi' :[],
+            'vessel_type': []
+"""
+def build_json_transport_edge_no(carriers, services, vessels, terminals):
+
+    # Initialize
+    lookups = {}
+    for transport_edge_no, _ in services.items():
+        lookup = {'transport_edge_no': transport_edge_no,
+                    'lookup': {
+                      'service': [],
+                      'terminal': [],
+                      'carrier': [],
+                      'port_unlocode': [],
+                      'trade': [],
+                      'vessel_mmsi': [],
+                      'vessel_type': []}
+                  }
+        lookups[transport_edge_no] = lookup
+
+    # Go through each edge and add info
+    for edge_id, edge_info in services.items():
+        service_id = edge_info['service']
+        carrier_id = edge_info['carrier']
+        port_call_unlocode_1 = edge_info['port_call_unlocode_1']
+        port_call_unlocode_2 = edge_info['port_call_unlocode_2']
+        terminal_id_a = edge_info['terminal_call_facility_1']
+        terminal_id_b = edge_info['terminal_call_facility_2']
+        service = edge_info['service']
+        trade = edge_info['trade']
+        [vessel_mmsi_list, vessel_type_list] = find_vessel_info_by_service(service, vessels)
+        transport_edge_no = edge_id
+
+        if terminal_id_a not in lookups[transport_edge_no]['lookup']['terminal']:
+            lookups[transport_edge_no]['lookup']['terminal'].append(terminal_id_a)
+        if terminal_id_b not in lookups[transport_edge_no]['lookup']['terminal']:
+            lookups[transport_edge_no]['lookup']['terminal'].append(terminal_id_b)
+
+        if port_call_unlocode_1 not in lookups[transport_edge_no]['lookup']['port_unlocode']:
+            lookups[transport_edge_no]['lookup']['port_unlocode'].append(port_call_unlocode_1)
+        if port_call_unlocode_2 not in lookups[transport_edge_no]['lookup']['port_unlocode']:
+            lookups[transport_edge_no]['lookup']['port_unlocode'].append(port_call_unlocode_2)
+
+        if carrier_id not in lookups[transport_edge_no]['lookup']['carrier']:
+            lookups[transport_edge_no]['lookup']['carrier'].append(carrier_id)
+
+        if trade not in lookups[transport_edge_no]['lookup']['trade']:
+            lookups[transport_edge_no]['lookup']['trade'].append(trade)
+
+        if service_id not in lookups[transport_edge_no]['lookup']['service']:
+            lookups[transport_edge_no]['lookup']['service'].append(service_id)
+
+        for vessel_mmsi in vessel_mmsi_list:
+
+            if vessel_mmsi not in lookups[transport_edge_no]['lookup']['vessel_mmsi']:
+                lookups[transport_edge_no]['lookup']['vessel_mmsi'].append(vessel_mmsi)
+
+        for vessel_type in vessel_type_list:
+            if vessel_type not in lookups[transport_edge_no]['lookup']['vessel_type']:
+                lookups[transport_edge_no]['lookup']['vessel_type'].append(vessel_type)
+
+        # if transport_edge_no not in lookups[vessel_mmsi]['lookup']['transport_edge_no']:
+        #     lookups[vessel_mmsi]['lookup']['transport_edge_no'].append(transport_edge_no)
+
+    # format into list
+    # print("\n\n\nResulting list:", list(lookups.values()))
+    return list(lookups.values())
+
+
+"""
+            'service': [],
+            'terminal': [],
+            'carrier': [],
+            'port_unlocode' : [],
+            'trade' : [],
+            'transport_edge_no' :[],
+            'vessel_mmsi': []
+"""
+def build_json_vessel_type(carriers, services, vessels, terminals):
+
+    # Initialize
+    lookups = {}
+    for vessel in vessels:
+        vessel_type = vessel['vessel_type']
+
+        lookup = {'vessel_type': vessel_type,
+                      'lookup': {
+                      'service': [],
+                      'terminal': [],
+                      'carrier': [],
+                      'port_unlocode': [],
+                      'trade': [],
+                      'vessel_mmsi': [],
+                      'transport_edge_no': []}
+                  }
+        lookups[vessel_type] = lookup
+
+    # Go through each edge and add info
+    for edge_id, edge_info in services.items():
+        service_id = edge_info['service']
+        carrier_id = edge_info['carrier']
+        port_call_unlocode_1 = edge_info['port_call_unlocode_1']
+        port_call_unlocode_2 = edge_info['port_call_unlocode_2']
+        terminal_id_a = edge_info['terminal_call_facility_1']
+        terminal_id_b = edge_info['terminal_call_facility_2']
+        service = edge_info['service']
+        trade = edge_info['trade']
+        [vessel_mmsi_list, vessel_type_list] = find_vessel_info_by_service(service, vessels)
+        transport_edge_no = edge_id
+
+        for vessel_type in vessel_type_list:
+            if terminal_id_a not in lookups[vessel_type]['lookup']['terminal']:
+                lookups[vessel_type]['lookup']['terminal'].append(terminal_id_a)
+            if terminal_id_b not in lookups[vessel_type]['lookup']['terminal']:
+                lookups[vessel_type]['lookup']['terminal'].append(terminal_id_b)
+
+            if port_call_unlocode_1 not in lookups[vessel_type]['lookup']['port_unlocode']:
+                lookups[vessel_type]['lookup']['port_unlocode'].append(port_call_unlocode_1)
+            if port_call_unlocode_2 not in lookups[vessel_type]['lookup']['port_unlocode']:
+                lookups[vessel_type]['lookup']['port_unlocode'].append(port_call_unlocode_2)
+
+            if carrier_id not in lookups[vessel_type]['lookup']['carrier']:
+                lookups[vessel_type]['lookup']['carrier'].append(carrier_id)
+
+            if trade not in lookups[vessel_type]['lookup']['trade']:
+                lookups[vessel_type]['lookup']['trade'].append(trade)
+
+            if service_id not in lookups[vessel_type]['lookup']['service']:
+                lookups[vessel_type]['lookup']['service'].append(service_id)
+
+            for vessel_mmsi in vessel_mmsi_list:
+
+                if vessel_mmsi not in lookups[vessel_type]['lookup']['vessel_mmsi']:
+                    lookups[vessel_type]['lookup']['vessel_mmsi'].append(vessel_mmsi)
+            #
+            # for vessel_type in vessel_type_list:
+            #     if vessel_type not in lookups[transport_edge_no]['lookup']['vessel_type']:
+            #         lookups[transport_edge_no]['lookup']['vessel_type'].append(vessel_type)
+
+            if transport_edge_no not in lookups[vessel_type]['lookup']['transport_edge_no']:
+                lookups[vessel_type]['lookup']['transport_edge_no'].append(transport_edge_no)
+
+    # format into list
+    # print("\n\n\nResulting list:", list(lookups.values()))
     return list(lookups.values())
 
 
@@ -222,16 +793,42 @@ terminal_location = "../data/interim/terminals.geojson"
 carrier_location = "../data/processed/carriers.json"
 edge_location = "../data/interim/master_schedules_edges.geojson"
 vessel_location = "../data/processed/vessels.json"
-output_location_carriers = "../data/processed/lookups-carriers.json"
+
 output_location_services = "../data/processed/lookups-services.json"
+output_location_carriers = "../data/processed/lookups-carriers.json"
+output_location_terminals = "../data/processed/lookups-terminals.json"
+output_location_port_unlocode = "../data/processed/lookups-port_unlocode.json"
+output_location_trade = "../data/processed/lookups-trade.json"
+output_location_vessel_mmsi = "../data/processed/lookups-vessel_mmsi.json"
+output_location_transport_edge_no = "../data/processed/lookups-transport_edge_no.json"
+output_location_vessel_type = "../data/processed/lookups-vessel_type.json"
 
 terminals = load_terminals(terminal_location)
 carriers = load_carriers(carrier_location)
 edges = load_edges(edge_location)
 vessels = load_vessels(vessel_location)
 
-lookups = build_geojson_carriers(carriers, edges, vessels)
-dump_to_file(output_location_carriers, lookups)
 
-service_lookups = build_geojson_services(carriers, edges, vessels, terminals)
+carrier_lookups = build_json_carriers(carriers, edges, vessels)
+dump_to_file(output_location_carriers, carrier_lookups)
+
+service_lookups = build_json_services(carriers, edges, vessels, terminals)
 dump_to_file(output_location_services, service_lookups)
+
+terminals_lookups = build_json_terminals(carriers, edges, vessels, terminals)
+dump_to_file(output_location_terminals, terminals_lookups)
+
+port_unlocode_lookups = build_json_port_unlocode(carriers, edges, vessels, terminals)
+dump_to_file(output_location_port_unlocode, port_unlocode_lookups)
+
+trade_lookups = build_json_trade(carriers, edges, vessels, terminals)
+dump_to_file(output_location_trade, trade_lookups)
+
+vessel_mmsi_lookups = build_json_vessel_mmsi(carriers, edges, vessels, terminals)
+dump_to_file(output_location_vessel_mmsi, vessel_mmsi_lookups)
+
+transport_edge_no_lookups = build_json_transport_edge_no(carriers, edges, vessels, terminals)
+dump_to_file(output_location_transport_edge_no, transport_edge_no_lookups)
+
+vessel_type_lookups = build_json_vessel_type(carriers, edges, vessels, terminals)
+dump_to_file(output_location_vessel_type, vessel_type_lookups)
