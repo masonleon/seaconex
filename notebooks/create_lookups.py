@@ -794,14 +794,15 @@ carrier_location = "../data/processed/carriers.json"
 edge_location = "../data/interim/master_schedules_edges.geojson"
 vessel_location = "../data/processed/vessels.json"
 
-output_location_services = "../data/processed/lookups-services.json"
-output_location_carriers = "../data/processed/lookups-carriers.json"
-output_location_terminals = "../data/processed/lookups-terminals.json"
-output_location_port_unlocode = "../data/processed/lookups-port_unlocode.json"
-output_location_trade = "../data/processed/lookups-trade.json"
-output_location_vessel_mmsi = "../data/processed/lookups-vessel_mmsi.json"
-output_location_transport_edge_no = "../data/processed/lookups-transport_edge_no.json"
-output_location_vessel_type = "../data/processed/lookups-vessel_type.json"
+# output_location_services = "../data/processed/lookups-services.json"
+# output_location_carriers = "../data/processed/lookups-carriers.json"
+# output_location_terminals = "../data/processed/lookups-terminals.json"
+# output_location_port_unlocode = "../data/processed/lookups-port_unlocode.json"
+# output_location_trade = "../data/processed/lookups-trade.json"
+# output_location_vessel_mmsi = "../data/processed/lookups-vessel_mmsi.json"
+# output_location_transport_edge_no = "../data/processed/lookups-transport_edge_no.json"
+# output_location_vessel_type = "../data/processed/lookups-vessel_type.json"
+output_location = "../data/processed/lookups.json"
 
 terminals = load_terminals(terminal_location)
 carriers = load_carriers(carrier_location)
@@ -810,25 +811,20 @@ vessels = load_vessels(vessel_location)
 
 
 carrier_lookups = build_json_carriers(carriers, edges, vessels)
-dump_to_file(output_location_carriers, carrier_lookups)
-
 service_lookups = build_json_services(carriers, edges, vessels, terminals)
-dump_to_file(output_location_services, service_lookups)
-
 terminals_lookups = build_json_terminals(carriers, edges, vessels, terminals)
-dump_to_file(output_location_terminals, terminals_lookups)
-
 port_unlocode_lookups = build_json_port_unlocode(carriers, edges, vessels, terminals)
-dump_to_file(output_location_port_unlocode, port_unlocode_lookups)
-
 trade_lookups = build_json_trade(carriers, edges, vessels, terminals)
-dump_to_file(output_location_trade, trade_lookups)
-
 vessel_mmsi_lookups = build_json_vessel_mmsi(carriers, edges, vessels, terminals)
-dump_to_file(output_location_vessel_mmsi, vessel_mmsi_lookups)
-
 transport_edge_no_lookups = build_json_transport_edge_no(carriers, edges, vessels, terminals)
-dump_to_file(output_location_transport_edge_no, transport_edge_no_lookups)
-
 vessel_type_lookups = build_json_vessel_type(carriers, edges, vessels, terminals)
-dump_to_file(output_location_vessel_type, vessel_type_lookups)
+
+lookups = {"carrier": carrier_lookups,
+"service": service_lookups,
+"terminal": terminals_lookups,
+"port_unlocode": port_unlocode_lookups,
+"trade": trade_lookups,
+"vessel_mmsi": vessel_mmsi_lookups,
+"transport_edge_no": transport_edge_no_lookups,
+"vessel_type": vessel_type_lookups}
+dump_to_file(lookups, output_location)
