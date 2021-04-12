@@ -3,9 +3,9 @@
 ((() => {
 
   const topology = 'data/countries-110m.json';
-  const terminals = './data/interim/terminals.geojson';
-  const vessels = './data/raw/vessels.csv';
-  const carriers = './data/processed/carrier.json';
+  const terminals = './data/processed/terminals.geojson';
+  const vessels = './data/processed/vessels.json';
+  const carriers = './data/processed/carriers.json';
 
   const searouteEdges = 'data/processed/searoutes.geojson';
   const masterSchedulesEdges = './data/interim/master_schedules_edges.geojson'
@@ -19,7 +19,7 @@
     d3.json(terminals),
     d3.json(masterSchedulesEdges),
     d3.json(masterSchedulesTerminalCallInfo),
-    d3.csv(vessels),
+    d3.json(vessels),
     d3.json(searouteEdges),
     d3.json(topology),
     d3.json(carriers),
@@ -73,15 +73,13 @@
 
     // let api = [
     //   {
-    //     'carrier' : '',
+    //     'carrier' : 'ICL',
     //     'lookup' : {
     //       'terminals': [],
     //       'services': [],
     //       'trades' : [],
-    //       'vessels' : [],
+    //       'vessels' : ["Independent Pursuit", "Independent Vision", "Independent Quest", "Independent Horizon"],
     //       'transport_edges' : [],
-    //       'ports_unlocode' : [],
-    //       'ports_wpi': []
     //     }
     //
     //   }
@@ -292,8 +290,6 @@ const mapTerminalCarriersFromMasterSchedulesEdges = (masterSchedulesEdgesFeature
 }
 
 
-
-
 /**
 * For network vis
 *
@@ -307,15 +303,29 @@ const dataNetworkVis = (masterSchedulesEdgesFeatures, terminalsFeatures) => {
     .map(edge => edge.properties)
     .map((
         {
+          transport_edge_no: transport_edge_no,
           terminal_call_facility_1: source,
           terminal_call_facility_2: target,
-          ...rest
+          carrier: carrier,
+          lane: lane,
+          trade: trade,
+          service: service,
+          transport_connection: transport_connection,
+          transport_type: transport_type
+          // ...rest
         }
     ) => (
         {
+          transport_edge_no,
           source,
           target,
-          ...rest
+          carrier,
+          lane,
+          trade,
+          service,
+          transport_connection,
+          transport_type
+          // ...rest
         }
     ));
   hashMap.set('links', links);

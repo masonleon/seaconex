@@ -268,21 +268,13 @@ function network() {
 
     console.log(selectableElements.data())
 
+    // Select a node if its datum was selected
     selectableElements
       .filter(item => selectedData
         .map(t => t.terminal)
         .includes(item.terminal)
       )
       .classed('selected', d => d);
-// )
-    // // Select an element if its datum was selected
-    // selectableElements
-    //   // .filter(item => selectedData
-    //   //   .map(t => t.terminal)
-    //   //   .includes(item.terminal))
-    //   .classed('selected', d => {
-    //     console.log(selected.includes(d.terminal))
-    //   });
 
 
   };

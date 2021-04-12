@@ -143,7 +143,6 @@ function carrierFilter() {
             .get(carrier)
 
           if (terminals) {
-            // console.log(terminals)
             terminals
               .forEach(terminal =>
                 result.push({terminal:terminal}))
@@ -156,7 +155,6 @@ function carrierFilter() {
       dispatcher.call(
           dispatchString,
           this,
-          // carrierSelector.selectAll('.selected').data()
           result
       );
     }
