@@ -151,7 +151,7 @@ function terminalTable() {
       // Get the name of our dispatcher's event
       let dispatchString = Object.getOwnPropertyNames(dispatcher._)[0];
 
-      console.log(tbody.selectAll('.selected').data())
+      // console.log(tbody.selectAll('.selected').data())
       // Let other charts know about our selection
       dispatcher.call(dispatchString, this, tbody.selectAll('.selected').data());
       // dispatcher.call(dispatchString, this, tbody.selectAll('.selected').data().map(x => x.properties).map(r => r.terminal));
@@ -178,10 +178,11 @@ function terminalTable() {
       // Select an element if its datum was selected
       selectableElements
         .classed('selected', d => {
-               // console.log(d.properties)
+          // console.log(d.properties)
           // console.log(d.properties)
 
-          selectedData.includes(d)}
+          selectedData.includes(d)
+        }
     );
 
   };
