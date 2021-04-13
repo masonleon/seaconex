@@ -6,7 +6,6 @@
   const terminals = './data/processed/terminals.geojson';
   const vessels = './data/processed/vessels.json';
   const carriers = './data/processed/carriers.json';
-
   const searouteEdges = 'data/processed/searoutes.geojson';
   const masterSchedulesEdges = './data/interim/master_schedules_edges.geojson'
   const masterSchedulesTerminalCallInfo = './data/interim/master_schedules_terminal_call_info.geojson'
@@ -68,23 +67,7 @@
 
       },
       'network': dataNetworkVis(data[1].features, data[0].features),
-      // 'api': makeIdCallbackApi(data[6])
     }
-
-    // let api = [
-    //   {
-    //     'carrier' : 'ICL',
-    //     'lookup' : {
-    //       'terminals': [],
-    //       'services': [],
-    //       'trades' : [],
-    //       'vessels' : ["Independent Pursuit", "Independent Vision", "Independent Quest", "Independent Horizon"],
-    //       'transport_edges' : [],
-    //     }
-    //
-    //   }
-    // ]
-
 
   }).then(data => {
 

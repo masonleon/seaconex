@@ -62,7 +62,7 @@ function network() {
       .force("y", d3.forceY())
       .alphaTarget(1);
 
-    force.on('tick', ticked);
+    // force.on('tick', ticked);
 
 
     // Arrowheads for directional links
@@ -87,12 +87,16 @@ function network() {
       .data(graph.links)
       .join("path")
       .attr('class', 'link-edge-network')
+      .attr("d", d => {
+        console.log([[d.source.x, d.source.y],[d.target.x, d.target.y]])
+        return d3.line().curve(d3.curveBasis)([[d.source.x, d.source.y],[d.target.x, d.target.y]])
+      })
       .attr('id', d => `${d.transport_edge_no}`)
       .attr('lane', d => `${d.lane}`)
       .attr('carrier', d => `${d.carrier}`)
       .attr("stroke", d => color(d.lane))
       .attr("marker-end", d => `url(${new URL(`#arrow-${d.lane}`, location)})`)
-      .style("opacity", 0);
+      .style("opacity", 0.2);
 
     let node = svg.append("g")
       .attr("stroke", "#fff")
@@ -195,19 +199,26 @@ function network() {
       }
     }
 
-    function ticked() {
-      link.attr("d", linkArc);
-
-      node
-        .attr("cx", d =>
-            d.x = Math.max(10, Math.min(width - 10, d.x))) // Bounded force layout example from blocks
-        .attr("cy", d =>
-            d.y = Math.max(10, Math.min(height - 10, d.y)));
-
-      labels.attr("transform", function (d) {
-        return "translate(" + (d.x + 17) + "," + (d.y + 5) + ")";
-      });
-    }
+    // function ticked() {
+    //   // link.attr("d", linkArc);
+    //   link.attr("d", d => {
+    //     // console.log(d)
+    //     d3.line().curve(d3.curveBasis)(d)
+    //   }
+    //
+    //   );
+    //
+    //
+    //   node
+    //     .attr("cx", d =>
+    //         d.x = Math.max(10, Math.min(width - 10, d.x))) // Bounded force layout example from blocks
+    //     .attr("cy", d =>
+    //         d.y = Math.max(10, Math.min(height - 10, d.y)));
+    //
+    //   labels.attr("transform", function (d) {
+    //     return "translate(" + (d.x + 17) + "," + (d.y + 5) + ")";
+    //   });
+    // }
 
     // Function from Mike Bostock's Mobile patent suits and stackoverflowto generate arc paths for links so they don't collide with each other.
     function linkArc(d) {
@@ -274,7 +285,10 @@ function network() {
         .map(t => t.terminal)
         .includes(item.terminal)
       )
-      .classed('selected', d => d);
+      .classed('selected', d => d)
+
+    d3.selectAll('.link-edge-network')
+      .style("opacity", 1)
 
 
   };
