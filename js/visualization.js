@@ -33,8 +33,9 @@
       'topology_countries-110m': data[5],
       'carriers': data[6],
       'timestamped_trajectory': data[7],
-      'api_callback_lookup': data[8],
       'network': dataNetworkVis(data[1].features, data[0].features),
+      'api_callback_lookup': data[8],
+
     }
 
   }).then(data => {
