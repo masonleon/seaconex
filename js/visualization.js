@@ -6,14 +6,11 @@
   const terminals = './data/processed/terminals.geojson';
   const vessels = './data/processed/vessels.json';
   const carriers = './data/processed/carriers.json';
-
   const searouteEdges = 'data/processed/searoutes.geojson';
   const masterSchedulesEdges = './data/interim/master_schedules_edges.geojson'
   const masterSchedulesTerminalCallInfo = './data/interim/master_schedules_terminal_call_info.geojson'
   const trajectory = './data/interim/timestamped-trajectory-icl-tac1.geojson'
-
-  // // General event type for selections, used by d3-dispatch https://github.com/d3/d3-dispatch
-  // const dispatchString = 'selectionUpdated';
+  const lookups = './data/processed/lookups.json'
 
   Promise.all([
     d3.json(terminals),
@@ -23,7 +20,8 @@
     d3.json(searouteEdges),
     d3.json(topology),
     d3.json(carriers),
-    d3.json(trajectory)
+    d3.json(trajectory),
+    d3.json(lookups)
   ]).then(function(data) {
 
     return {
@@ -35,56 +33,9 @@
       'topology_countries-110m': data[5],
       'carriers': data[6],
       'timestamped_trajectory': data[7],
-      'api_callback_lookup': {
-
-        'carrierToTerminals' : mapCarrierTerminalsFromMasterSchedulesEdges(data[1].features),
-        // 'serviceToTerminals' : '',
-        // 'edgeToTerminals' : '',
-
-        'terminalToCarriers' : mapTerminalCarriersFromMasterSchedulesEdges(data[1].features),
-        // 'terminalToServices' : '',
-        // 'terminalToEdges' : '',
-        //
-        // // 'serviceToCarriers': '',
-        // // 'serviceTo'
-        // // {
-        // //   'carrier' : '',
-        // //
-        // // }
-        // //
-        // // 'carrier' : {
-        // //   'mapCarrierTerminalsFromMasterSchedulesEdges(data
-        // // }[1].features),
-        // 'serviceToTerminals' : '',
-        // 'edgeToTerminals' : '',
-
-        'terminalToCarriers' : mapTerminalCarriersFromMasterSchedulesEdges(data[1].features),
-        // 'terminalToServices' : '',
-        // 'terminalToEdges' : '',
-        //
-        // 'serviceToCarriers': '',
-        // 'serviceTo'
-
-
-      },
+      'api_callback_lookup': data[8],
       'network': dataNetworkVis(data[1].features, data[0].features),
-      // 'api': makeIdCallbackApi(data[6])
     }
-
-    // let api = [
-    //   {
-    //     'carrier' : 'ICL',
-    //     'lookup' : {
-    //       'terminals': [],
-    //       'services': [],
-    //       'trades' : [],
-    //       'vessels' : ["Independent Pursuit", "Independent Vision", "Independent Quest", "Independent Horizon"],
-    //       'transport_edges' : [],
-    //     }
-    //
-    //   }
-    // ]
-
 
   }).then(data => {
 
@@ -147,148 +98,6 @@
     }
   })
 })());
-
-// const makeIdCallbackApi = (carriers) => {
-//
-//   // let hashMap = new Map();
-//   let hash = {};
-//
-//   carriers
-//     .map(carrier => carrier.carrier_id)
-//     .forEach(e => {
-//       console.log(e)
-//
-//       let record = {
-//         carrier: e
-//       };
-//
-//       if(!hash[carrier]===record.e)){
-//
-//       }
-//
-//
-//
-//       // if (res.some(carrier => carrier.terminal === t1.terminal) === false){
-//       //   res.push(t1);
-//       // }
-//       // if (res.some(carrier => carrier.terminal === t2.terminal) === false){
-//       //   res.push(t2);
-//       // }
-//
-//
-//     });
-//
-//   // let carriersArr = [...new Set(res.map(item => item.carrier))];
-//   //
-//   // carriersArr.forEach(carrierKey => {
-//   //
-//   //   let terminalsArr = res
-//   //     .filter(terminalCall => terminalCall.carrier === carrierKey)
-//   //     .map((item, i) => item.terminal)
-//   //     .filter((item, i, ar) => ar.indexOf(item) === i)
-//   //
-//   //   hashMap.set(carrierKey, terminalsArr)
-//   // })
-//
-//   console.log(hashMap.get({carrier:'ICL'}))
-//
-//
-//
-//   return hashMap
-//
-// }
-
-
-/**
- * For callback API
- *
- * Maps unique carrier to an array of the unique terminal id's it services
- * @returns {Map<carrier, [terminals]>}
-*/
-const mapCarrierTerminalsFromMasterSchedulesEdges = (masterSchedulesEdgesFeatures) => {
-  let res =[];
-  let hashMap = new Map();
-
-  masterSchedulesEdgesFeatures
-    .map(edge => edge.properties)
-    .forEach(e => {
-
-      let t1 = {
-        carrier: e.carrier,
-        terminal: e.terminal_call_facility_1
-      };
-      let t2 = {
-        carrier: e.carrier,
-        terminal: e.terminal_call_facility_2
-      };
-      if (res.some(carrier => carrier.terminal === t1.terminal) === false){
-        res.push(t1);
-      }
-      if (res.some(carrier => carrier.terminal === t2.terminal) === false){
-        res.push(t2);
-      }
-    });
-
-  let carriersArr = [...new Set(res.map(item => item.carrier))];
-
-  carriersArr.forEach(carrierKey => {
-
-    let terminalsArr = res
-      .filter(terminalCall => terminalCall.carrier === carrierKey)
-      .map((item, i) => item.terminal)
-      .filter((item, i, ar) => ar.indexOf(item) === i)
-
-    hashMap.set(carrierKey, terminalsArr)
-  })
-
-  return hashMap;
-}
-
-/**
- * For callback API
- *
- * Maps unique terminal to an array of the unique carrier id's that service it
- * @returns {Map<carrier, [terminals]>}
-*/
-const mapTerminalCarriersFromMasterSchedulesEdges = (masterSchedulesEdgesFeatures) => {
-  let res =[];
-  let hashMap = new Map();
-
-  masterSchedulesEdgesFeatures
-    .map(edge => edge.properties)
-    .forEach(e => {
-
-      let t1 = {
-        carrier: e.carrier,
-        terminal: e.terminal_call_facility_1
-      };
-      let t2 = {
-        carrier: e.carrier,
-        terminal: e.terminal_call_facility_2
-      };
-      if (res.some(carrier => carrier.terminal === t1.terminal) === false){
-        res.push(t1);
-      }
-      if (res.some(carrier => carrier.terminal === t2.terminal) === false){
-        res.push(t2);
-      }
-    });
-
-  let terminalsArr = [...new Set(res.map(item => item.terminal))];
-
-  terminalsArr.forEach(terminalKey => {
-
-    let carriersArr = res
-      .filter(terminalCall => terminalCall.terminal === terminalKey)
-      .map((item, i) => item.carrier)
-      .filter((item, i, ar) => ar.indexOf(item) === i)
-
-    hashMap.set(terminalKey, carriersArr)
-  })
-
-  return hashMap;
-}
-
 
 /**
 * For network vis

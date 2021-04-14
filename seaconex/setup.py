@@ -2,7 +2,7 @@
 
 from setuptools import setup, find_packages
 
-INSTALL_REQUIRES = ['requests']
+INSTALL_REQUIRES = ['requests', 'geopandas', 'shapely']
 
 setup(
     name='seaconex',

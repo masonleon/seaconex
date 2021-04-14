@@ -87,12 +87,20 @@ function network() {
       .data(graph.links)
       .join("path")
       .attr('class', 'link-edge-network')
+      // .attr("d", d => {
+      //   console.log([[d.source.x, d.source.y],[d.target.x, d.target.y]])
+      //   return d3.line().curve(d3.curveBasis)([[d.source.x, d.source.y],[d.target.x, d.target.y]])
+      // })
+     .attr("d", d => {
+        // console.log([[d.source.x, d.source.y],[d.target.x, d.target.y]])
+        return linkArc(d)
+      })
       .attr('id', d => `${d.transport_edge_no}`)
       .attr('lane', d => `${d.lane}`)
       .attr('carrier', d => `${d.carrier}`)
       .attr("stroke", d => color(d.lane))
       .attr("marker-end", d => `url(${new URL(`#arrow-${d.lane}`, location)})`)
-      .style("opacity", 0);
+      .style("opacity", 0.2);
 
     let node = svg.append("g")
       .attr("stroke", "#fff")
@@ -196,7 +204,13 @@ function network() {
     }
 
     function ticked() {
-      link.attr("d", linkArc);
+      link.attr("d", linkArc)
+      // link.attr("d", d => {
+        // console.log(d)
+        // d3.line().curve(d3.curveBasis)(d)
+      // }
+      // );
+
 
       node
         .attr("cx", d =>
@@ -215,11 +229,9 @@ function network() {
           dy = d.target.y - d.source.y,
           dr = Math.sqrt(dx * dx + dy * dy);
       if (d.lane === "E") {
-        return "M" + d.source.x + "," + d.source.y + "A" + dr + "," + dr
-            + " 0 0,1 " + d.target.x + "," + d.target.y;
+        return "M" + d.source.x + "," + d.source.y + "A" + dr + "," + dr + " 0 0,1 " + d.target.x + "," + d.target.y;
       } else {
-        return "M" + d.source.x + "," + d.source.y + "A" + (dr * 0.3) + ","
-            + (dr * 0.3) + " 0 0,1 " + d.target.x + "," + d.target.y;
+        return "M" + d.target.x + "," + d.target.y + "A" + dr + ","+ dr + " 0 0,1 " + d.source.x + "," + d.source.y;
       }
     }
 
@@ -266,17 +278,48 @@ function network() {
   chart.updateSelection = function (selectedData) {
     if (!arguments.length) return;
 
-    console.log(selectableElements.data())
+    // console.log(selectableElements.data())
+    console.log(selectedData)
+
+    // Deselect everything
+    selectableElements
+      .classed('selected', false);
+
+    d3.selectAll('.link-edge-network')
+      .style("opacity", 0.2)
+
 
     // Select a node if its datum was selected
     selectableElements
       .filter(item => selectedData
-        .map(t => t.terminal)
+        .map(selected =>
+            selected.lookup.terminal
+        )
+        .reduce((prev, curr) =>
+            prev.concat(curr), []
+        )
+        .filter((item, i, arr) =>
+            arr.indexOf(item) === i
+        )
         .includes(item.terminal)
       )
-      .classed('selected', d => d);
+      .classed('selected', d => d)
 
-
+    // Select the edges
+    d3.selectAll('.link-edge-network')
+      .filter(item => selectedData
+          .map(selected =>
+              selected.lookup.transport_edge_no
+          )
+          .reduce((prev, curr) =>
+              prev.concat(curr), []
+          )
+          .filter((item, i, arr) =>
+              arr.indexOf(item) === i
+          )
+          .includes(item.transport_edge_no)
+        )
+      .style("opacity", 1)
   };
 
   return chart

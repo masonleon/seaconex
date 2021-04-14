@@ -131,25 +131,24 @@ function carrierFilter() {
           )
       )
 
-      // console.log(selectedCarrierArr)
-
       let result = [];
 
       selectedCarrierArr
-        .forEach(carrier => {
-          let terminals = data
-            .api_callback_lookup
-            .carrierToTerminals
-            .get(carrier)
+        .map(carrier => {
+          console.log(carrier)
 
-          if (terminals) {
-            terminals
-              .forEach(terminal =>
-                result.push({terminal:terminal}))
-          }
+          let lookup_record = data
+            .api_callback_lookup
+            .carrier
+            .find(record =>
+                record.carrier === carrier
+            )
+
+          result.push(lookup_record)
         })
 
-      console.log(result)
+      // console.log(selectedCarrierArr)
+      // console.log(result)
 
       // Let other charts know about our selection
       dispatcher.call(
