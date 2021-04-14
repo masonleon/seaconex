@@ -278,20 +278,48 @@ function network() {
   chart.updateSelection = function (selectedData) {
     if (!arguments.length) return;
 
-    console.log(selectableElements.data())
+    // console.log(selectableElements.data())
+    console.log(selectedData)
+
+    // Deselect everything
+    selectableElements
+      .classed('selected', false);
+
+    d3.selectAll('.link-edge-network')
+      .style("opacity", 0.2)
+
 
     // Select a node if its datum was selected
     selectableElements
       .filter(item => selectedData
-        .map(t => t.terminal)
+        .map(selected =>
+            selected.lookup.terminal
+        )
+        .reduce((prev, curr) =>
+            prev.concat(curr), []
+        )
+        .filter((item, i, arr) =>
+            arr.indexOf(item) === i
+        )
         .includes(item.terminal)
       )
       .classed('selected', d => d)
 
+    // Select the edges
     d3.selectAll('.link-edge-network')
+      .filter(item => selectedData
+          .map(selected =>
+              selected.lookup.transport_edge_no
+          )
+          .reduce((prev, curr) =>
+              prev.concat(curr), []
+          )
+          .filter((item, i, arr) =>
+              arr.indexOf(item) === i
+          )
+          .includes(item.transport_edge_no)
+        )
       .style("opacity", 1)
-
-
   };
 
   return chart
