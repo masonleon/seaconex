@@ -29,53 +29,6 @@ def get_all_smdg_tcl(
     with open(smdg_tcl_in_path, 'wb') as f:
       f.write(r.content)
 
-  # df_smdg = pd.read_csv(
-  #     smdg_tcl_in_path,
-  #     sep=','
-  # ).drop(
-  #     # columns=[
-  #     #   'Latitude (DMS)',
-  #     #   'Longitude (DMS)',
-  #     #   'Last change',
-  #     #   'Valid from',
-  #     #   'Valid until',
-  #     # ]
-  # ).rename(
-  #     # columns={
-  #     #   'UNLOCODE': 'port_unlocode',
-  #     #   'Alternative UNLOCODEs': 'port_unlocode_alt',
-  #     #   'Terminal Code': 'terminal',
-  #     #   'Latitude': 'latitude',
-  #     #   'Longitude': 'longitude',
-  #     #   'Terminal Facility Name': 'terminal_name',
-  #     #   'Terminal Company Name': 'terminal_operator',
-  #     #   'Terminal Website': 'terminal_website',
-  #     #   'Terminal Address': 'terminal_address',
-  #     #   'Remarks': 'remarks'
-  #     # }
-  # ).fillna("")
-
-  # gdf_smdg = gpd.GeoDataFrame(
-  #     df_smdg,
-  #     # crs='EPSG:3857',
-  #     epsg=4326,
-  #     geometry=gpd.points_from_xy(
-  #         # df_smdg.longitude,
-  #         # df_smdg.latitude
-  #         df_smdg.Longitude,
-  #         df_smdg.Latitude
-  #     )
-  # ).drop(
-  #     # columns=[
-  #     #   'latitude',
-  #     #   'longitude'
-  #     # ]
-  #     columns=[
-  #       'Latitude',
-  #       'Longitude'
-  #     ]
-  # )
-
   gdf_smdg_tcl = smdg_tcl_to_gpd(smdg_tcl_in_path)
 
   gdf_to_geo_file(
@@ -146,24 +99,4 @@ def nga_wpi_to_gpd(nga_wpi_in_path):
       gdf_nga_wpi = gpd.GeoDataFrame.from_features(src, crs=crs).fillna("")
       return gdf_nga_wpi
 
-
-  # df_nga_wpi = pd.read_csv(
-  #     nga_wpi_in_path,
-  #     sep=','
-  # ).fillna("")
-  #
-  # gdf_nga_wpi = gpd.GeoDataFrame(
-  #     df_nga_wpi,
-  #     crs='EPSG:3857',
-  #     # crs=3857,
-  #     geometry=gpd.points_from_xy(
-  #         df_nga_wpi.Longitude,
-  #         df_nga_wpi.Latitude
-  #     )
-  # ).drop(
-  #     columns=[
-  #       'Latitude',
-  #       'Longitude'
-  #     ]
-  # )
 

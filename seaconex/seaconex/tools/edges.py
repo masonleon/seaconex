@@ -1,18 +1,21 @@
 import geopandas as gpd
 import pandas as pd
+from ..utils import gdf_to_geo_file
 from shapely.geometry import Point, LineString
 
-def transport_calls_df_to_master_schedules_edges_gdf(transport_calls_df):
-  gdf = gpd.GeoDataFrame(
-      transport_calls_df,
-      crs='EPSG:3857',
-      geometry = gpd.points_from_xy(
-          transport_calls_df.Longitude,
-          transport_calls_df.Latitude
-      )
-  ).drop(
-      columns=['Latitude', 'Longitude']
-  )
+def transport_calls_gdf_to_master_schedules_edges_gdf(transport_calls_gdf):
+  # gdf = gpd.GeoDataFrame(
+  #     transport_calls_df,
+  #     crs='EPSG:3857',
+  #     geometry = gpd.points_from_xy(
+  #         transport_calls_df.Longitude,
+  #         transport_calls_df.Latitude
+  #     )
+  # ).drop(
+  #     columns=['Latitude', 'Longitude']
+  # )
+
+  gdf = transport_calls_gdf
 
   edge_columns = [
     'lane',
@@ -26,8 +29,8 @@ def transport_calls_df_to_master_schedules_edges_gdf(transport_calls_df):
     'terminal_call_facility_2',
     'port_call_unlocode_1',
     'port_call_unlocode_2',
-    'port_call_wpi_1',
-    'port_call_wpi_2',
+    # 'port_call_wpi_1',
+    # 'port_call_wpi_2',
     'port_call_seq_no_1',
     'port_call_seq_no_2',
     'terminal_call_seq_no_1',
@@ -70,8 +73,8 @@ def transport_calls_df_to_master_schedules_edges_gdf(transport_calls_df):
                 'terminal_call_facility_2': curr_row['terminal'],
                 'port_call_unlocode_1': prev_row['port_unlocode'],
                 'port_call_unlocode_2': curr_row['port_unlocode'],
-                'port_call_wpi_1': prev_row['wpi'],
-                'port_call_wpi_2': curr_row['wpi'],
+                # 'port_call_wpi_1': prev_row['wpi'],
+                # 'port_call_wpi_2': curr_row['wpi'],
                 'port_call_seq_no_1': prev_row['port_call_seq_no'],
                 'port_call_seq_no_2': curr_row['port_call_seq_no'],
                 'terminal_call_seq_no_1': prev_row['terminal_call_seq_no'],
@@ -104,8 +107,8 @@ def transport_calls_df_to_master_schedules_edges_gdf(transport_calls_df):
             'terminal_call_facility_2': curr_row['terminal'],
             'port_call_unlocode_1': prev_row['port_unlocode'],
             'port_call_unlocode_2': curr_row['port_unlocode'],
-            'port_call_wpi_1': prev_row['wpi'],
-            'port_call_wpi_2': curr_row['wpi'],
+            # 'port_call_wpi_1': prev_row['wpi'],
+            # 'port_call_wpi_2': curr_row['wpi'],
             'port_call_seq_no_1': prev_row['port_call_seq_no'],
             'port_call_seq_no_2': curr_row['port_call_seq_no'],
             'terminal_call_seq_no_1': prev_row['terminal_call_seq_no'],
@@ -118,52 +121,98 @@ def transport_calls_df_to_master_schedules_edges_gdf(transport_calls_df):
       )
   return edges_df
 
-# def master_schedules_edges_to_geojson(output_location):
-
-
-  # def dump_to_file(, lookups):
-  #   with open(output_location, "w") as file:
-  #     json.dump(lookups, file)
-
-
 def build_all_master_schedules_edges(
     terminal_location,
     # wpi_location,
     master_schedules_service_proforma_location,
-    output_location=None):
+    master_schedules_service_proforma_location_out_gpkg,
+    master_schedules_service_proforma_location_out_geojson,
+    master_schedules_edge_location_out_gpkg,
+    master_schedules_edge_location_out_geojson,
+    searoute_out=None
+):
 
-  df_terminals = pd.read_json(
-      terminal_location,
-      orient='records'
-  )
+  gdf_terminals = gpd.read_file(terminal_location)
 
-  df_msched_svc_pro_forma = pd.read_json(
-      master_schedules_service_proforma_location,
-      orient='records'
-  )
+  df_msched_svc_pro_forma = pd.read_csv(master_schedules_service_proforma_location)
 
-  terminal_calls = pd.merge(
+  df_terminal_calls = pd.merge(
       left=df_msched_svc_pro_forma,
-      right=df_terminals[['terminal', 'latitude', 'longitude']],
+      right=gdf_terminals[['terminal', 'port_unlocode', 'geometry']],
       how='left',
-      left_on=['terminal'],
-      right_on=['terminal']
+      on='terminal',
+      #     right_on=
   ).fillna(
       ""
   ).assign(
-      obj_type='master_schedules_terminal_call_info'
+      obj_type='master_schedules_terminal_call_svc_proforma'
   )
 
+  gdf_terminal_calls = gpd.GeoDataFrame(
+      df_terminal_calls,
+      crs='EPSG:3857',
+      geometry=df_terminal_calls.geometry
+  )
 
+  gdf_edges = transport_calls_gdf_to_master_schedules_edges_gdf(gdf_terminal_calls)
 
+  build_searoute_edges(gdf_edges, gdf_terminals, searoute_out)
 
+  gdf_to_geo_file(
+      gdf_terminal_calls,
+      master_schedules_service_proforma_location_out_gpkg,
+      master_schedules_service_proforma_location_out_geojson
+  )
 
+  gdf_to_geo_file(
+      gdf_edges,
+      master_schedules_edge_location_out_gpkg,
+      master_schedules_edge_location_out_geojson
+  )
 
+def build_searoute_edges(master_schedules_edges_gdf_in, terminals_gdf, searoute_out=None):
 
+    terminals_gdf = terminals_gdf
+    terminals_gdf['longitude'] = terminals_gdf.geometry.apply(lambda p: p.x)
+    terminals_gdf['latitude'] = terminals_gdf.geometry.apply(lambda p: p.y)
 
+    terminals_gdf.drop(
+        columns=['geometry'],
+        inplace=True
+    )
 
-  # if output_location:
-  #   return dump_to_file(output_location, lookups)
-  #
-  # else:
-  #   return json.dumps(lookups)
+    routes_gdf = master_schedules_edges_gdf_in[['transport_edge_no', 'terminal_call_facility_1', 'terminal_call_facility_2']]
+
+    routes_gdf = routes_gdf.merge(
+        #     left=routes_2,
+        right=terminals_gdf[['terminal', 'latitude', 'longitude']].add_suffix(
+          '_1'),
+        how='left',
+        left_on=['terminal_call_facility_1'],
+        right_on=['terminal_1']
+    ).merge(
+        #     left=routes_2,
+        right=terminals_gdf[['terminal', 'latitude', 'longitude']].add_suffix(
+          '_2'),
+        how='left',
+        left_on=['terminal_call_facility_2'],
+        right_on=['terminal_2']
+    ).drop(
+        columns=['terminal_1', 'terminal_2', 'terminal_call_facility_1',
+                 'terminal_call_facility_2'],
+    ).rename(
+        columns={
+          'latitude_1': 'olat',
+          'longitude_1': 'olon',
+          'latitude_2': 'dlat',
+          'longitude_2': 'dlon',
+        }
+    )
+
+    if searoute_out:
+      routes_gdf[['transport_edge_no','olon','olat','dlon','dlat']].to_csv(
+          path_or_buf=searoute_out,
+          index=False
+      )
+    else:
+      return routes_gdf
