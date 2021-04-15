@@ -13,7 +13,7 @@ function network() {
     },
     width = 960 - margin.left - margin.right,
     height = 600 - margin.top - margin.bottom,
-    ourBrush = null,
+    // ourBrush = null,
     selectableElements = d3.select(null),
     dispatcher;
 
@@ -103,21 +103,21 @@ function network() {
       .style("opacity", 0.2);
 
     let node = svg.append("g")
-      .attr("stroke", "#fff")
-      .attr("stroke-width", 1.5)
-      .selectAll("circle")
-      .data(graph.nodes)
-      .join("circle")
-      .attr('class', 'node-terminal-facility')
-      .attr('terminal', d => `${d.terminal}`)
-      .attr("r", 4)
-      .attr("fill", '#0000FF')
-      .call(
-        d3.drag()
-          .on("start", dragstarted)
-          .on("drag", dragged)
-          .on("end", dragended)
-      );
+              .selectAll("circle")
+              .data(graph.nodes)
+              .join("circle")
+              .attr('class', 'node-terminal-facility')
+              .attr('terminal', d => `${d.terminal}`)
+              .attr("r", 5)
+              .attr("fill", '#0000FF')
+              .on("mouseover", onMouseOver)
+              .on("mouseout", onMouseOut)
+              .call(
+                d3.drag()
+                  .on("start", dragstarted)
+                  .on("drag", dragged)
+                  .on("end", dragended)
+              );
 
     selectableElements = node;
 
@@ -135,82 +135,103 @@ function network() {
         return d.terminal;
       });
 
-    // node.append("title")
-    //   .text(function (d) {
-    //     return d.terminal;
-    //   });
+    var tooltip = d3.select(selector)
+      .append("div")
+      .attr("class", "tooltip")
+      .style("display", "none");
 
-    svg.call(brush);
+    function onMouseOver(d, i) {  
 
-    // Highlight points when brushed
-    function brush(g) {
-      const brush = d3.brush() // Create a 2D interactive brush
-      .on('start brush', highlight) // When the brush starts/continues do...
-      .on('end', brushEnd) // When the brush ends do...
-      .extent([
-        [-margin.left, -margin.bottom],
-        [width + margin.right, height + margin.top]
-      ]);
+        d3.select(this).transition()
+        .duration(750)
+        .attr("r", 12)
+        .attr("fill", "orange");
 
-      ourBrush = brush;
+        tooltip.transition()
+        	.duration(300)
+        	.style("display", "inline");
 
-      //set brush constraints to full width
-      const brushX = d3.scaleLinear()
-              .domain([0, width])
-              .rangeRound([0, width]),
-            brushY = d3.scaleLinear()
-              .domain([0, height])
-              .rangeRound([0, height]);
-
-      g.call(brush); // Adds the brush to this element
-
-      // Highlight the selected circles
-      function highlight(event, d) {
-        if (event.selection === null) {
-          return;
-        }
-        const [
-          [x0, y0],
-          [x1, y1]
-        ] = event.selection;
-
-        // console.log('selected', node)
-
-        // If within the bounds of the brush, select it
-        node.classed('selected', d =>
-            x0 <= brushX.invert(d.x) && brushX.invert(d.x) <= x1 &&
-            y0 <= brushY.invert(d.y) && brushY.invert(d.y) <= y1
-        );
-
-        // Get the name of our dispatcher's event
-        let dispatchString = Object.getOwnPropertyNames(dispatcher._)[0];
-
-        // Let other charts know about our selection
-        dispatcher.call(
-            dispatchString,
-            this,
-            svg.selectAll('.selected').data()
-        );
-      }
-
-      function brushEnd(event, d) {
-        // We don't want infinite recursion
-        if (event.sourceEvent !== undefined &&
-            event.sourceEvent.type !== 'end') {
-          d3.select(this)
-            .call(brush.move, null);
-        }
-      }
+      	tooltip.html("Name: " + d.terminal)
+        .style("left", (d3.select(selector).offsetLeft) + "px")     
+        .style("top",  (d3.select(selector).offsetTop) + "px" );
     }
+
+function onMouseOut() {
+        d3.select(this).transition()
+        .duration(750)
+        .attr("r", 4)
+        .attr("fill", "blue");
+
+        // tooltip.transition()
+        // .duration(300)
+        // .style("display", "none");
+    }
+
+    // svg.call(brush);
+
+    // // Highlight points when brushed
+    // function brush(g) {
+    //   const brush = d3.brush() // Create a 2D interactive brush
+    //   .on('start brush', highlight) // When the brush starts/continues do...
+    //   .on('end', brushEnd) // When the brush ends do...
+    //   .extent([
+    //     [-margin.left, -margin.bottom],
+    //     [width + margin.right, height + margin.top]
+    //   ]);
+
+    //   ourBrush = brush;
+
+    //   //set brush constraints to full width
+    //   const brushX = d3.scaleLinear()
+    //           .domain([0, width])
+    //           .rangeRound([0, width]),
+    //         brushY = d3.scaleLinear()
+    //           .domain([0, height])
+    //           .rangeRound([0, height]);
+
+    //   g.call(brush); // Adds the brush to this element
+
+    //   // Highlight the selected circles
+    //   function highlight(event, d) {
+    //     if (event.selection === null) {
+    //       return;
+    //     }
+    //     const [
+    //       [x0, y0],
+    //       [x1, y1]
+    //     ] = event.selection;
+
+    //     // console.log('selected', node)
+
+    //     // If within the bounds of the brush, select it
+    //     node.classed('selected', d =>
+    //         x0 <= brushX.invert(d.x) && brushX.invert(d.x) <= x1 &&
+    //         y0 <= brushY.invert(d.y) && brushY.invert(d.y) <= y1
+    //     );
+
+    //     // Get the name of our dispatcher's event
+    //     let dispatchString = Object.getOwnPropertyNames(dispatcher._)[0];
+
+    //     // Let other charts know about our selection
+    //     dispatcher.call(
+    //         dispatchString,
+    //         this,
+    //         svg.selectAll('.selected').data()
+    //     );
+    //   }
+
+    //   function brushEnd(event, d) {
+    //     // We don't want infinite recursion
+    //     if (event.sourceEvent !== undefined &&
+    //         event.sourceEvent.type !== 'end') {
+    //       d3.select(this)
+    //         .call(brush.move, null);
+    //     }
+    //   }
+    // }
 
     function ticked() {
       link.attr("d", linkArc)
-      // link.attr("d", d => {
-        // console.log(d)
-        // d3.line().curve(d3.curveBasis)(d)
-      // }
-      // );
-
 
       node
         .attr("cx", d =>
