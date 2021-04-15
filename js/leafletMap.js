@@ -1,5 +1,12 @@
 function leafletMap() {
 
+  let margin = {
+    top: 100,
+    left: 40,
+    right: 20,
+    bottom: 35
+  };
+
   let map;
 
   //http://bl.ocks.org/nitaku/047a77e256de17f25e72
@@ -7,22 +14,16 @@ function leafletMap() {
   function chart(selector, data) {
 
     // let container = d3.select('#center-component'),
-    let container = d3.select('#vis-map-1'),
-        width = container
-          .node()
-          .getBoundingClientRect()
-          .width,
-        height = container
-          .node()
-          .getBoundingClientRect()
-          .height
+    let container = d3.select('#vis-network'),
+        width = 960 - margin.left - margin.right,
+        height = 600 - margin.top - margin.bottom
         // width = 960,
         // height = 400
 
     // console.log('center-component width: ' + width, 'center-component height: ' + height)
 
     d3.select(selector)
-      .style("width", width + "px")
+      .style("width", '100%')
       // .style("height", height * 2 + "px")
       .style("height", height + "px")
 
