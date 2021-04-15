@@ -1,0 +1,9 @@
+{
+"type": "FeatureCollection",
+"crs": { "type": "name", "properties": { "name": "urn:ogc:def:crs:OGC:1.3:CRS84" } },
+"features": [
+{ "type": "Feature", "properties": { "vessel_mmsi": 215809000, "ais_time": "2021-01-23T20:49:13", "ais_sog": 14.4, "ais_heading": 281.0, "mssis_wpi": 0, "mssis_eez_country_code": "MAR", "mssis_ao": 8, "mssis_eez_country_name": "Morocco", "vessel_name": "Atlantic Sail", "vessel_build_year": 2016, "vessel_gross_tonnage": 1000430, "vessel_type": "ConRo", "vessel_flag_country": "Malta", "vessel_capacity_teu": 3800, "vessel_capacity_vehicle_units": 1300, "vessel_stern_ramp_capacity_tons": 420, "carrier": "ACL", "wpi_port_name": "" }, "geometry": { "type": "Point", "coordinates": [ -5.773742, 30.754515 ] } },
+{ "type": "Feature", "properties": { "vessel_mmsi": 338781000, "ais_time": "2021-02-24T00:02:08", "ais_sog": 15.8, "ais_heading": 227.0, "mssis_wpi": 0, "mssis_eez_country_code": "ATA", "mssis_ao": 7, "mssis_eez_country_name": "Antarctica", "vessel_name": "Philadelphia Express", "vessel_build_year": 2003, "vessel_gross_tonnage": 40146, "vessel_type": "Container", "vessel_flag_country": "USA", "vessel_capacity_teu": 3237, "vessel_capacity_vehicle_units": 0, "vessel_stern_ramp_capacity_tons": 0, "carrier": "HLUS", "wpi_port_name": "" }, "geometry": { "type": "Point", "coordinates": [ 2.15725, -76.473143 ] } },
+{ "type": "Feature", "properties": { "vessel_mmsi": 367168650, "ais_time": "2021-02-16T08:39:09", "ais_sog": 1.8, "ais_heading": 264.0, "mssis_wpi": 0, "mssis_eez_country_code": "ATA", "mssis_ao": 7, "mssis_eez_country_name": "Antarctica", "vessel_name": "Yorktown Express", "vessel_build_year": 2002, "vessel_gross_tonnage": 40146, "vessel_type": "Container", "vessel_flag_country": "USA", "vessel_capacity_teu": 3237, "vessel_capacity_vehicle_units": 0, "vessel_stern_ramp_capacity_tons": 0, "carrier": "HLUS", "wpi_port_name": "" }, "geometry": { "type": "Point", "coordinates": [ 0.506033, -81.31668 ] } }
+]
+}

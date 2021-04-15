@@ -73,7 +73,7 @@
       visControls,
       nodeViz,
       visMap1,
-    // visMap2,
+    visMap2,
       visTerminalTable
     // visDetails
     ];
