@@ -44,7 +44,6 @@
 
 #vis-network {
   width: 100%;
-  /*height: 100%;*/
 }
 
 #container-table-terminals {
@@ -62,8 +61,15 @@
   margin-left: 5px;
 }
 
-/* Style for selected marks (circles) */
+/* Style for selected marks (circles) in network */
 circle.node-terminal-facility.selected {
+  fill: pink;
+  stroke: red;
+  opacity: .5;
+}
+
+/* Style for selected marks (circles) in leaflet*/
+circle.point-terminal-facility.selected {
   fill: pink;
   stroke: red;
   opacity: .5;
@@ -167,10 +173,6 @@ circle.node-terminal-facility.selected {
   background-color: #7FD0BC;
 }
 
-.point-terminal-facility {
-  stroke: blue;
-  fill: red
-}
 /*path {*/
 /*  stroke: white;*/
 /*  stroke-width: .25px;*/

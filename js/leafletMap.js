@@ -1,5 +1,13 @@
 function leafletMap() {
 
+  let margin = {
+    top: 100,
+    left: 40,
+    right: 20,
+    bottom: 35
+  },
+  selectableElements = d3.select(null);
+
   let map;
 
   //http://bl.ocks.org/nitaku/047a77e256de17f25e72
@@ -7,22 +15,16 @@ function leafletMap() {
   function chart(selector, data) {
 
     // let container = d3.select('#center-component'),
-    let container = d3.select('#vis-map-1'),
-        width = container
-          .node()
-          .getBoundingClientRect()
-          .width,
-        height = container
-          .node()
-          .getBoundingClientRect()
-          .height
+    let container = d3.select('#vis-network'),
+        width = 960 - margin.left - margin.right,
+        height = 600 - margin.top - margin.bottom
         // width = 960,
         // height = 400
 
     // console.log('center-component width: ' + width, 'center-component height: ' + height)
 
     d3.select(selector)
-      .style("width", width + "px")
+      .style("width", '100%')
       // .style("height", height * 2 + "px")
       .style("height", height + "px")
 
@@ -107,15 +109,27 @@ function leafletMap() {
       .geoPath()
       .projection(projection);
 
+    var tooltip = d3.select(selector)
+      .append("div")
+      .attr("class", "tooltip")
+      .style('font-size', '10px')
+      .style("display", "none");
+
 
     let terminals = g.selectAll("circle")
       .data(data['terminals'].features)
       .enter()
-        .append("path")
-    // .join('circle')
-          .attr( "d", pathCreator )
-          .attr('class', 'point-terminal-facility')
-          .attr('id', d => `${d.properties.terminal}`)
+          .append('circle')
+            .attr('class', 'point-terminal-facility')
+            .attr('id', d => `${d.properties.terminal}`)
+            .attr("cx", d => map.latLngToLayerPoint([d.geometry.coordinates[1],d.geometry.coordinates[0]]).x)
+            .attr("cy", d => map.latLngToLayerPoint([d.geometry.coordinates[1],d.geometry.coordinates[0]]).y) 
+            .attr("r", 5)
+            .attr("fill", "red")
+          .on("mouseover", onMouseOver)
+          .on("mouseout", onMouseOut);
+
+    selectableElements = terminals;
 
     let vesselNames = data['timestamped_trajectory'].features
       .map((feature, i) =>
@@ -139,7 +153,7 @@ function leafletMap() {
     }
 
     let color = d3
-      .scaleOrdinal(d3.schemeCategory10)
+      .scaleOrdinal(d3.schemeSet3)
       .domain(vesselNames)
 
     console.log(color(vesselNames))
@@ -149,18 +163,61 @@ function leafletMap() {
       .data(data['timestamped_trajectory'].features)
       .enter()
       .append("path")
-      .attr("d", pathCreator)
+        .attr("class", "vessel-trajectories")
+        .attr("d", pathCreator)
       .style("fill", "none")
       .style("stroke", d => color(d.properties.vessel_name))
-      .style("stroke-width", 2);
+      .style("stroke-width", 2)
+      .style("opacity", 0);
+
+    let searouteEdges = g.selectAll('link')
+      .data(data['searoute_edges'].features)
+      .enter()
+        .append("path")
+        .attr("d", pathCreator)
+        .attr('class', 'link-edge-searoute')
+        .attr('id', d => `${d.properties.route_name}`)
+        .attr('stroke', 'red')
+        // .attr('marker-end', 'url(#end)')
+        .attr('fill', 'none');
+
+    function onMouseOver(e, d){
+      d3.select(this).transition()
+        .duration(300)
+        .attr("r", 12)
+        .attr("fill", "black");
+
+        tooltip.transition()
+        .duration(300)
+        .style("display", "inline");
+
+        tooltip.html("Terminal: " + d.terminal_name)
+        .style("left", (e.pageX + 10) + "px")     
+        .style("top",  (e.pageY + 10) + "px" );
+    }
+
+    function onMouseOut() {
+      d3.select(this).transition()
+      .duration(300)
+      .attr("r", 5)
+      .attr("fill", "red");
+
+      tooltip.transition()
+        .duration(300)
+        .style("display", "none");
+    }
 
     // Function to place svg based on zoom
     // let onZoom = () => terminals.attr('d', pathCreator)
-    let onZoom = () => g.attr('d', pathCreator)
+    function onZoom () {
+      terminals
+      .attr("cx", d => map.latLngToLayerPoint([d.geometry.coordinates[1],d.geometry.coordinates[0]]).x)
+      .attr("cy", d => map.latLngToLayerPoint([d.geometry.coordinates[1],d.geometry.coordinates[0]]).y);
 
+      trajectories.attr('d', pathCreator);
 
-    // initialize positioning
-    onZoom()
+      searouteEdges.attr('d', pathCreator);
+    }
 
     // reset whenever svgMap is moved
     map.on('zoomend', onZoom)
@@ -190,8 +247,57 @@ function leafletMap() {
     };
 
     legend.addTo(map);
-    return chart
+    return chart;
   }
 
-  return chart
+   // Given selected data from another visualization
+  // select the relevant elements here (linking)
+  chart.updateSelection = function (selectedData) {
+    if (!arguments.length) return;
+
+    // console.log(selectableElements.data())
+    console.log(selectedData)
+
+    // Deselect everything
+    selectableElements
+      .classed('selected', false);
+
+    d3.selectAll('.vessel-trajectories')
+      .style("opacity", 0)
+
+
+    // // Select a node if its datum was selected
+    // selectableElements
+    //   .filter(item => selectedData
+    //     .map(selected =>
+    //         selected.lookup.vessel_name
+    //     )
+    //     .reduce((prev, curr) =>
+    //         prev.concat(curr), []
+    //     )
+    //     .filter((item, i, arr) =>
+    //         arr.indexOf(item) === i
+    //     )
+    //     .includes(item.vessel_name)
+    //   )
+    //   .classed('selected', d => d)
+
+    // Select the edges
+    d3.selectAll('.vessel-trajectories')
+      .filter(item => selectedData
+          .map(selected =>
+              selected.lookup.vessel_name
+          )
+          .reduce((prev, curr) =>
+              prev.concat(curr), []
+          )
+          .filter((item, i, arr) =>
+              arr.indexOf(item) === i
+          )
+          .includes(item.vessel_name)
+        )
+      .style("opacity", 1)
+  };
+
+  return chart;
 }

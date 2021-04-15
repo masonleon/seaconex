@@ -55,12 +55,12 @@
       .selectionDispatcher(d3.dispatch(dispatchString))
       ('#vis-network', data);
 
-    let visMap1 = svgMap()
-      .selectionDispatcher(d3.dispatch(dispatchString))
-      ('#vis-map-1', data);
+    // let visMap1 = svgMap()
+    //   .selectionDispatcher(d3.dispatch(dispatchString))
+    //   ('#vis-map-2', data);
 
     let visMap2 = leafletMap()
-      ('#vis-map-2', data);
+      ('#vis-map-1', data);
 
     let visTerminalTable = terminalTable()
       .selectionDispatcher(d3.dispatch(dispatchString))
@@ -72,7 +72,7 @@
     let charts = [
       visControls,
       nodeViz,
-      visMap1,
+      // visMap1,
     visMap2,
       visTerminalTable
     // visDetails
