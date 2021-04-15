@@ -38,7 +38,7 @@ function terminalTable() {
     let thead = svg.append('thead');
     let tbody = svg.append('tbody');
 
-    let columns = Object.keys(data['terminals'].features[0].properties)
+    let columns = Object.keys(data['vessels'][0])
 
     thead
     // svg.select('thead')
@@ -51,7 +51,7 @@ function terminalTable() {
 
     // Make one row (tr) for each line in data
     let rows = tbody.selectAll('tr')
-      .data(data['terminals'].features)
+      .data(data['vessels'])
       .enter()
       .append('tr')
 
@@ -62,7 +62,7 @@ function terminalTable() {
         return columns.map((d, i) => {
           return {
             i: d,
-            value: row.properties[d]
+            value: row[d]
           };
         });
       })
