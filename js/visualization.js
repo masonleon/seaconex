@@ -9,7 +9,7 @@
   const searouteEdges = 'data/processed/searoutes.geojson';
   const masterSchedulesEdges = 'data/processed/master-schedules-terminal-call-edge.geojson'
   const masterSchedulesTerminalCallInfo = 'data/processed/master-schedules-terminal-call-svc-proforma.geojson'
-  const trajectory = './data/interim/timestamped-trajectory-icl-tac1.geojson'
+  const trajectory = './data/processed/timestamped-trajectory.geojson'
   const lookups = './data/processed/lookups.json'
 
   Promise.all([
