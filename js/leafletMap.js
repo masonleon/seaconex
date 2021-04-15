@@ -27,24 +27,27 @@ function leafletMap() {
       .style("height", height + "px")
 
 
-    let esriWorldImageryLayer = L.tileLayer(
-      'https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}', {
-      attribution: 'Esri, Maxar, GeoEye, Earthstar Geographics, CNES/Airbus DS, USDA, USGS, AeroGRID, IGN, and the GIS User Community '
-    });
+    let esriWorldImageryLayer = L
+      .tileLayer(
+        'https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}', {
+        attribution: 'Esri, Maxar, GeoEye, Earthstar Geographics, CNES/Airbus DS, USDA, USGS, AeroGRID, IGN, and the GIS User Community '
+      });
 
-    let noaaEncLayer = L.tileLayer(
-      'https://tileservice.charts.noaa.gov/tiles/50000_1/{z}/{x}/{y}.png', {
-      attribution: 'NOAA'
-    });
+    let noaaEncLayer = L
+      .tileLayer(
+        'https://tileservice.charts.noaa.gov/tiles/50000_1/{z}/{x}/{y}.png', {
+        attribution: 'NOAA'
+      });
 
-    map = L.map(selector.slice(1), {
-      center: [30, 0],
-      zoom: 3,
-      layers: [
-        esriWorldImageryLayer,
-        // noaaEncLayer
-      ],
-    });
+    map = L
+      .map(selector.slice(1), {
+        center: [30, 0],
+        zoom: 3,
+        layers: [
+          esriWorldImageryLayer,
+          // noaaEncLayer
+        ],
+      });
 
     let baseMaps = {
       // 'Noaa_EncTileService': noaaEncLayer,
@@ -88,34 +91,55 @@ function leafletMap() {
 
     // Use Leaflets projection API for drawing svg path (creates a stream of projected points)
     let projectPoint = function(x, y) {
-      let point = map.latLngToLayerPoint(new L.LatLng(y, x));
+      let point = map
+        .latLngToLayerPoint(new L.LatLng(y, x));
       this.stream.point(point.x, point.y);
     }
 
     // Use d3's custom geo transform method to implement the above
-    let projection = d3.geoTransform({
-      point: projectPoint
-    });
+    let projection = d3
+      .geoTransform({
+        point: projectPoint
+      });
 
     // creates geopath from projected points (SVG)
-    let pathCreator = d3.geoPath()
+    let pathCreator = d3
+      .geoPath()
       .projection(projection);
 
+
+    let terminals = g.selectAll("circle")
+      .data(data['terminals'].features)
+      .enter()
+        .append("path")
+    // .join('circle')
+          .attr( "d", pathCreator )
+          .attr('class', 'point-terminal-facility')
+          .attr('id', d => `${d.properties.terminal}`)
+
     let vesselNames = data['timestamped_trajectory'].features
-      .map((feature, i) => feature.properties.vessel_name)
-      .filter ((item, i, ar) => ar.indexOf(item) === i)
+      .map((feature, i) =>
+          feature.properties.vessel_name
+      )
+      .filter ((item, i, ar) =>
+          ar.indexOf(item) === i
+      )
 
     console.log(vesselNames)
 
     let dates = data['timestamped_trajectory'].features
-      .flatMap((c) => c.properties.times.map((x) => new Date(x)))
+      .flatMap((c) =>
+          c.properties.times.map((x) =>
+              new Date(x))
+      )
 
     let dateRange = {
       min : dates[0].toDateString(),
       max : dates[dates.length -1].toDateString()
     }
 
-    let color = d3.scaleOrdinal(d3.schemeCategory10)
+    let color = d3
+      .scaleOrdinal(d3.schemeCategory10)
       .domain(vesselNames)
 
     console.log(color(vesselNames))
@@ -131,9 +155,13 @@ function leafletMap() {
       .style("stroke-width", 2);
 
     // Function to place svg based on zoom
-    let onZoom = () => trajectories.attr('d', pathCreator)
+    // let onZoom = () => terminals.attr('d', pathCreator)
+    let onZoom = () => g.attr('d', pathCreator)
+
+
     // initialize positioning
     onZoom()
+
     // reset whenever svgMap is moved
     map.on('zoomend', onZoom)
 
