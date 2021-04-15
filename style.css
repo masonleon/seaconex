@@ -186,6 +186,11 @@ text.label {
   font-size: 12px;
 }
 
+html.tooltip {
+  font-family: sans-serif;
+  font-size: 12px;
+}
+
 /* Table formatting */
 table {
   text-align: left;

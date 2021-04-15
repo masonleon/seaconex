@@ -64,7 +64,6 @@ function network() {
 
     force.on('tick', ticked);
 
-
     // Arrowheads for directional links
     svg.append("defs").selectAll("marker")
       .data(lanes)
@@ -138,12 +137,13 @@ function network() {
     var tooltip = d3.select(selector)
       .append("div")
       .attr("class", "tooltip")
+      .style('font-size', '10px')
       .style("display", "none");
 
-    function onMouseOver(d, i) {  
+    function onMouseOver(e, d) {  
 
         d3.select(this).transition()
-        .duration(750)
+        .duration(300)
         .attr("r", 12)
         .attr("fill", "orange");
 
@@ -151,20 +151,20 @@ function network() {
         	.duration(300)
         	.style("display", "inline");
 
-      	tooltip.html("Name: " + d.terminal)
-        .style("left", (d3.select(selector).offsetLeft) + "px")     
-        .style("top",  (d3.select(selector).offsetTop) + "px" );
+      	tooltip.html("Terminal: " + d.terminal_name)
+        .style("left", (e.pageX + 10) + "px")     
+        .style("top",  (e.pageY - 10) + "px" );
     }
 
 function onMouseOut() {
         d3.select(this).transition()
-        .duration(750)
+        .duration(300)
         .attr("r", 4)
         .attr("fill", "blue");
 
-        // tooltip.transition()
-        // .duration(300)
-        // .style("display", "none");
+        tooltip.transition()
+        .duration(300)
+        .style("display", "none");
     }
 
     // svg.call(brush);
