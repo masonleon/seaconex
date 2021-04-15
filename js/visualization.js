@@ -7,8 +7,8 @@
   const vessels = './data/processed/vessels.json';
   const carriers = './data/processed/carriers.json';
   const searouteEdges = 'data/processed/searoutes.geojson';
-  const masterSchedulesEdges = './data/interim/master_schedules_edges.geojson'
-  const masterSchedulesTerminalCallInfo = './data/interim/master_schedules_terminal_call_info.geojson'
+  const masterSchedulesEdges = 'data/processed/master-schedules-terminal-call-edge.geojson'
+  const masterSchedulesTerminalCallInfo = 'data/processed/master-schedules-terminal-call-svc-proforma.geojson'
   const trajectory = './data/interim/timestamped-trajectory-icl-tac1.geojson'
   const lookups = './data/processed/lookups.json'
 
