@@ -26,7 +26,7 @@ function network() {
         .attr('preserveAspectRatio',
             'xMidYMid meet') // this will scale your visualization according to the size of its parent element and the page.
         .attr('width',
-            width) // this is now required by Chrome to ensure the SVG shows up at all
+            '100%') // this is now required by Chrome to ensure the SVG shows up at all
         .style('background-color',
             '#ccc') // change the background color to light gray
         .attr('viewBox', [0, 0, width + margin.left + margin.right,
@@ -145,7 +145,7 @@ function network() {
         d3.select(this).transition()
         .duration(300)
         .attr("r", 12)
-        .attr("fill", "orange");
+        .attr("fill", "red");
 
         tooltip.transition()
         	.duration(300)

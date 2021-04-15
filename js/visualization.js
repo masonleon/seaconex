@@ -9,7 +9,7 @@
   const searouteEdges = 'data/processed/searoutes.geojson';
   const masterSchedulesEdges = 'data/processed/master-schedules-terminal-call-edge.geojson'
   const masterSchedulesTerminalCallInfo = 'data/processed/master-schedules-terminal-call-svc-proforma.geojson'
-  const trajectory = './data/interim/timestamped-trajectory-icl-tac1.geojson'
+  const trajectory = './data/processed/timestamped-trajectory.geojson'
   const lookups = './data/processed/lookups.json'
 
   Promise.all([
@@ -55,12 +55,12 @@
       .selectionDispatcher(d3.dispatch(dispatchString))
       ('#vis-network', data);
 
-    let visMap1 = svgMap()
-      .selectionDispatcher(d3.dispatch(dispatchString))
-      ('#vis-map-1', data);
+    // let visMap1 = svgMap()
+    //   .selectionDispatcher(d3.dispatch(dispatchString))
+    //   ('#vis-map-2', data);
 
     let visMap2 = leafletMap()
-      ('#vis-map-2', data);
+      ('#vis-map-1', data);
 
     let visTerminalTable = terminalTable()
       .selectionDispatcher(d3.dispatch(dispatchString))
@@ -72,7 +72,7 @@
     let charts = [
       visControls,
       nodeViz,
-      visMap1,
+      // visMap1,
     visMap2,
       visTerminalTable
     // visDetails
