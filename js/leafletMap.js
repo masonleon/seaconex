@@ -140,7 +140,7 @@ function leafletMap() {
     }
 
     let color = d3
-      .scaleOrdinal(d3.schemeCategory10)
+      .scaleOrdinal(d3.schemeSet3)
       .domain(vesselNames)
 
     console.log(color(vesselNames))
@@ -155,6 +155,17 @@ function leafletMap() {
       .style("stroke", d => color(d.properties.vessel_name))
       .style("stroke-width", 2);
 
+    let searouteEdges = g.selectAll('link')
+      .data(data['searoute_edges'].features)
+      .enter()
+        .append("path")
+        .attr("d", pathCreator)
+        .attr('class', 'link-edge-searoute')
+        .attr('id', d => `${d.properties.route_name}`)
+        .attr('stroke', 'red')
+        // .attr('marker-end', 'url(#end)')
+        .attr('fill', 'none');
+
     // Function to place svg based on zoom
     // let onZoom = () => terminals.attr('d', pathCreator)
     function onZoom () {
@@ -163,6 +174,8 @@ function leafletMap() {
       .attr("cy", d => map.latLngToLayerPoint([d.geometry.coordinates[1],d.geometry.coordinates[0]]).y);
 
       trajectories.attr('d', pathCreator);
+
+      searouteEdges.attr('d', pathCreator);
     }
 
     // reset whenever svgMap is moved
