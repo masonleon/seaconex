@@ -145,7 +145,7 @@ function network() {
         d3.select(this).transition()
         .duration(300)
         .attr("r", 12)
-        .attr("fill", "orange");
+        .attr("fill", "red");
 
         tooltip.transition()
         	.duration(300)

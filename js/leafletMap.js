@@ -5,7 +5,8 @@ function leafletMap() {
     left: 40,
     right: 20,
     bottom: 35
-  };
+  },
+  selectableElements = d3.select(null);
 
   let map;
 
@@ -108,6 +109,12 @@ function leafletMap() {
       .geoPath()
       .projection(projection);
 
+    var tooltip = d3.select(selector)
+      .append("div")
+      .attr("class", "tooltip")
+      .style('font-size', '10px')
+      .style("display", "none");
+
 
     let terminals = g.selectAll("circle")
       .data(data['terminals'].features)
@@ -118,6 +125,11 @@ function leafletMap() {
             .attr("cx", d => map.latLngToLayerPoint([d.geometry.coordinates[1],d.geometry.coordinates[0]]).x)
             .attr("cy", d => map.latLngToLayerPoint([d.geometry.coordinates[1],d.geometry.coordinates[0]]).y) 
             .attr("r", 5)
+            .attr("fill", "red")
+          .on("mouseover", onMouseOver)
+          .on("mouseout", onMouseOut);
+
+    selectableElements = terminals;
 
     let vesselNames = data['timestamped_trajectory'].features
       .map((feature, i) =>
@@ -151,10 +163,12 @@ function leafletMap() {
       .data(data['timestamped_trajectory'].features)
       .enter()
       .append("path")
-      .attr("d", pathCreator)
+        .attr("class", "vessel-trajectories")
+        .attr("d", pathCreator)
       .style("fill", "none")
       .style("stroke", d => color(d.properties.vessel_name))
-      .style("stroke-width", 2);
+      .style("stroke-width", 2)
+      .style("opacity", 0);
 
     let searouteEdges = g.selectAll('link')
       .data(data['searoute_edges'].features)
@@ -166,6 +180,32 @@ function leafletMap() {
         .attr('stroke', 'red')
         // .attr('marker-end', 'url(#end)')
         .attr('fill', 'none');
+
+    function onMouseOver(e, d){
+      d3.select(this).transition()
+        .duration(300)
+        .attr("r", 12)
+        .attr("fill", "black");
+
+        tooltip.transition()
+        .duration(300)
+        .style("display", "inline");
+
+        tooltip.html("Terminal: " + d.terminal_name)
+        .style("left", (e.pageX + 10) + "px")     
+        .style("top",  (e.pageY + 10) + "px" );
+    }
+
+    function onMouseOut() {
+      d3.select(this).transition()
+      .duration(300)
+      .attr("r", 5)
+      .attr("fill", "red");
+
+      tooltip.transition()
+        .duration(300)
+        .style("display", "none");
+    }
 
     // Function to place svg based on zoom
     // let onZoom = () => terminals.attr('d', pathCreator)
@@ -207,8 +247,57 @@ function leafletMap() {
     };
 
     legend.addTo(map);
-    return chart
+    return chart;
   }
 
-  return chart
+   // Given selected data from another visualization
+  // select the relevant elements here (linking)
+  chart.updateSelection = function (selectedData) {
+    if (!arguments.length) return;
+
+    // console.log(selectableElements.data())
+    console.log(selectedData)
+
+    // Deselect everything
+    selectableElements
+      .classed('selected', false);
+
+    d3.selectAll('.vessel-trajectories')
+      .style("opacity", 0)
+
+
+    // // Select a node if its datum was selected
+    // selectableElements
+    //   .filter(item => selectedData
+    //     .map(selected =>
+    //         selected.lookup.vessel_name
+    //     )
+    //     .reduce((prev, curr) =>
+    //         prev.concat(curr), []
+    //     )
+    //     .filter((item, i, arr) =>
+    //         arr.indexOf(item) === i
+    //     )
+    //     .includes(item.vessel_name)
+    //   )
+    //   .classed('selected', d => d)
+
+    // Select the edges
+    d3.selectAll('.vessel-trajectories')
+      .filter(item => selectedData
+          .map(selected =>
+              selected.lookup.vessel_name
+          )
+          .reduce((prev, curr) =>
+              prev.concat(curr), []
+          )
+          .filter((item, i, arr) =>
+              arr.indexOf(item) === i
+          )
+          .includes(item.vessel_name)
+        )
+      .style("opacity", 1)
+  };
+
+  return chart;
 }
