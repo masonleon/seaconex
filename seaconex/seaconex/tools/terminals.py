@@ -63,7 +63,8 @@ def smdg_tcl_to_gpd(smdg_tcl_in_path):
 def get_all_nga_wpi(
     nga_wpi_in_path=None,
     nga_wpi_geojson_out_path=None,
-    nga_wpi_gpkg_out_path=None
+    nga_wpi_gpkg_out_path=None,
+
 ):
   if nga_wpi_in_path == None:
     nga_wpi_in_path = '../data/raw/nga-wpi-v2019-ed27.zip'
