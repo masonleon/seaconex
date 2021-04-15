@@ -2,11 +2,11 @@ notebooks/tmp
 movingpandas
 
 # geopackage temp files
-.gpkg-shm
-.gpkg-wal
+*.gpkg-shm
+*.gpkg-wal
 
 # QGIS
-.qgz
+*.qgz
 
 # Created by https://www.toptal.com/developers/gitignore/api/macos,linux,windows,vscode,jetbrains,jetbrains+iml,jetbrains+all,python,jupyternotebooks,virtualenv,latex,yarn,microsoftoffice,node
 # Edit at https://www.toptal.com/developers/gitignore?templates=macos,linux,windows,vscode,jetbrains,jetbrains+iml,jetbrains+all,python,jupyternotebooks,virtualenv,latex,yarn,microsoftoffice,node
