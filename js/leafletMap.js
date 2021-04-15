@@ -113,13 +113,15 @@ function leafletMap() {
       .append("div")
       .attr("class", "tooltip")
       .style('font-size', '10px')
-      .style("display", "none");
+      .style("opacity", 0);
 
 
     let terminals = g.selectAll("circle")
       .data(data['terminals'].features)
       .enter()
           .append('circle')
+            .style("stroke", '#000')
+            .style("stroke-width", 1)
             .attr('class', 'point-terminal-facility')
             .attr('id', d => `${d.properties.terminal}`)
             .attr("cx", d => map.latLngToLayerPoint([d.geometry.coordinates[1],d.geometry.coordinates[0]]).x)
@@ -185,15 +187,15 @@ function leafletMap() {
       d3.select(this).transition()
         .duration(300)
         .attr("r", 12)
-        .attr("fill", "black");
+        .attr("fill", "pink");
 
         tooltip.transition()
         .duration(300)
-        .style("display", "inline");
+        .style("opacity", 1);
 
         tooltip.html("Terminal: " + d.terminal_name)
-        .style("left", (e.pageX + 10) + "px")     
-        .style("top",  (e.pageY + 10) + "px" );
+        .style("left", (d3.pointer(this)[0] + 10) + "px")     
+        .style("top",  (d3.pointer(this)[1]) + "px" );
     }
 
     function onMouseOut() {
@@ -202,9 +204,9 @@ function leafletMap() {
       .attr("r", 5)
       .attr("fill", "red");
 
-      tooltip.transition()
-        .duration(300)
-        .style("display", "none");
+      // tooltip.transition()
+      //   .duration(300)
+      //   .style("opacity", 0);
     }
 
     // Function to place svg based on zoom
