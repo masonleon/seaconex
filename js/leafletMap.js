@@ -111,11 +111,12 @@ function leafletMap() {
     let terminals = g.selectAll("circle")
       .data(data['terminals'].features)
       .enter()
-        .append("path")
-    // .join('circle')
-          .attr( "d", pathCreator )
-          .attr('class', 'point-terminal-facility')
-          .attr('id', d => `${d.properties.terminal}`)
+          .append('circle')
+            .attr('class', 'point-terminal-facility')
+            .attr('id', d => `${d.properties.terminal}`)
+            .attr("cx", d => map.latLngToLayerPoint([d.geometry.coordinates[1],d.geometry.coordinates[0]]).x)
+            .attr("cy", d => map.latLngToLayerPoint([d.geometry.coordinates[1],d.geometry.coordinates[0]]).y) 
+            .attr("r", 5)
 
     let vesselNames = data['timestamped_trajectory'].features
       .map((feature, i) =>
@@ -156,11 +157,13 @@ function leafletMap() {
 
     // Function to place svg based on zoom
     // let onZoom = () => terminals.attr('d', pathCreator)
-    let onZoom = () => g.attr('d', pathCreator)
+    function onZoom () {
+      terminals
+      .attr("cx", d => map.latLngToLayerPoint([d.geometry.coordinates[1],d.geometry.coordinates[0]]).x)
+      .attr("cy", d => map.latLngToLayerPoint([d.geometry.coordinates[1],d.geometry.coordinates[0]]).y);
 
-
-    // initialize positioning
-    onZoom()
+      trajectories.attr('d', pathCreator);
+    }
 
     // reset whenever svgMap is moved
     map.on('zoomend', onZoom)
