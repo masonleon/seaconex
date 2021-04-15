@@ -10,7 +10,7 @@ def load_terminals(filename):
   for feature in data['features']:
     terminal_name = feature['properties']['terminal']
     terminal_info = {
-      "port_name": feature['properties']['port_name'],
+      # "port_name": feature['properties']['port_name'],
       "port_unlocode": feature['properties']['port_unlocode'],
     }
     terminals[terminal_name] = terminal_info
