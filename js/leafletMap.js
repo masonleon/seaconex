@@ -249,6 +249,9 @@ function leafletMap() {
     };
 
     legend.addTo(map);
+
+    // legend.style("display", "none");
+
     return chart;
   }
 
