@@ -66,6 +66,19 @@
 
 
   <h1>Abstract</h1>
+  <p>
+    The Container Express also known as the CONEX, was introduced by the United States Military during the Korean War
+    as an intermodal logistics platform to improve cargo flows and operations throughout supply chain networks. The 
+    CONEX and Malcolm McLean's intermodal container were simple freight technology concepts that revolutionized 
+    supply chains. Containerization and the equipment utilized to transport goods efficiently have fostered 
+    globalization and made the modern world. However, supply chains remain vulnerable to disruption and are plagued 
+    by poor visibility and difficulty exchanging information about cargo and freight networks. Supply chain 
+    disruption and the complexity of maritime and hinterland networks remain key issues around the world. SeaCONEX 
+    is not just a portmanteau, but a visualization tool focused on this larger issue by allowing users to see the 
+    connections of maritime supply chain networks. In this paper, we present a visualization dashboard that allows 
+    users to evaluate carrier service rotation between terminals, view the shortest navigable marine route between 
+    connections, and investigate vessel trajectories and deviations from the optimal route.
+  </p>
 
 <!--  <p>-->
 <!--    Supply chain operations and the world of transportation are often hidden from the general-->
@@ -238,7 +251,22 @@
 
 
   <h1>Visualization</h1>
+  <p>
+    The visualizations below depicts a hypothetical scenario where the UKMOD is trying to transport a shipment from 
+    London to the UK Overseas Territory of Bermuda. In this case study, UKMOD needs to evaluate commercial shipping 
+    options between the UK and Bermuda across 6 ocean carriers, 9 services, 18 deployed vessels, and their network of ports. 
+    The vessels include several Container/Roll-On Roll-Off (ConRo), geared container vessels, and fully-cellular container 
+    vessels actively deployed on the Trans-Atlantic and US-Bermuda trade lanes.
+  </p>
 
+  <p>
+    To support the two important tasks of 1) examining connectivity between ports with seemingly disjoint carrier networks 
+  and 2) tracking vessel trajectories based on AIS data; we present two views that allow users to accomplish these tasks.
+  The first view shows connections between ports in a node-link diagram and allows users to filter routes based on 
+  carriers. The second view allows users to examine actual paths taken by vessels and their deviation from the shortest
+  or most ideal routes in red.
+  </p>
+  
 <!--  <p>-->
 <!--    The visualizations below depicts the network for Independent Container Line (ICL). ICL is a-->
 <!--    niche-->
@@ -320,9 +348,6 @@
       <div id='vis-map-1'></div>
       <div id='vis-map-2'></div>
       <div id='map-settings'>
-        <div id='legend'>
-          [Legend Placeholder]
-        </div>
       </div>
     </div>
     <!-- <div id='detail-pane'>
@@ -341,16 +366,15 @@
   <h1>Demo Video</h1>
 
   <p>
-    Embed an MP4 demo video using the HTML5 &lt;video&gt; tag. For example, this screen recording
-    Prof. Cody Dunne made of Mike Bostock's flexible transitions in D3 slide:
+    See below for a quick demo of the above visualization.
   </p>
 
   <video controls width='100%'>
-    <source src='http://www.ccs.neu.edu/home/cody/courses/shared/d3-flexible-transitions.mp4'
+    <source src='img/seaconex_demo.mp4'
             type='video/mp4'>
     <p>
       Your browser doesn't support HTML5 video. Here is a
-      <a href='http://www.ccs.neu.edu/home/cody/courses/shared/d3-flexible-transitions.mp4'>
+      <a href='img/seaconex_demo.mp4'>
         link to the video
       </a>
       instead.
@@ -360,8 +384,16 @@
   <h1>Visualization explanation</h1>
 
   <p>
-    Replace with a brief explanation (can be copied from the paper) and linked presentation slides.
+    For the node-link diagram, we chose a very simple rendering. Marine terminals are in blue and, and when 
+    selected, change color to red, taking advantage of the pop-out effect which brings attention to terminals of interest. On hovering over a marine 
+    terminal, users can see more details like the name of the marine terminal and the carriers that operate 
+    their vessels there. The advantage of the node-link diagram is that it removes geographic interference, 
+    allowing the user to focus clearly on which ports are connected, without worrying about the distance 
+    between them, ocean conditions between them, etc. This can help remove bias on "best" or "most connected"
+     ports, and just examine the data.
   </p>
+
+  <p><a href="https://docs.google.com/presentation/d/1oqcMSHFFXwJzNTfjltaHumTK51zBVicduE65jQskXr0/edit?usp=sharing">Link to Slides</a></p>
 
   <h1>Acknowledgments</h1>
 

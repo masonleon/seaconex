@@ -151,7 +151,7 @@ function network() {
         	.duration(300)
         	.style("display", "inline");
 
-      	tooltip.html("Terminal: " + d.terminal_name)
+      	tooltip.html("Terminal: " + d.terminal_name + "<br/>Service: " + d.service + "<br/>Carrier: " + d.carrier)
         .style("left", (e.pageX + 10) + "px")     
         .style("top",  (e.pageY - 10) + "px" );
     }
