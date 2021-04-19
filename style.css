@@ -106,6 +106,19 @@ circle.point-terminal-facility.selected {
   flex-wrap: wrap;
 }
 
+/* Clear all selections button */
+#clear-all-selections {
+  background-color: #FFF;
+  border: none;
+  color: #282828;
+  padding: 6px 8px;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+  font-size: 16px;
+  font-weight: 700;
+}
+
 
 /* Header/Label "Carriers" */
 #filter-carrier {

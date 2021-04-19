@@ -11,16 +11,8 @@ function carrierFilter() {
 
     let filterEl = d3.selectAll(selector)
 
-    // filterEl.append('div')
-    //   .attr('id', 'filter-carrier')
-    //   .html(
-    //     `Carriers
-    //     <br>`
-    //   );
-
     let carrierSelector = filterEl;
 
-    console.log(data['carriers'])
 
     carrierSelector
       .selectAll('div')
@@ -44,7 +36,20 @@ function carrierFilter() {
           `
         );
 
+
     selectableElements = d3.selectAll('.carrier-selector')
+
+    var theButton = d3.select("clear-selection-button-div")
+      .append("svg")
+      
+
+    function clearSelections() {
+      console.log("Clearing selections....")
+      selectableElements.classed('selected', false);
+      selectElements([])
+    }
+
+    d3.select("#clear-all-selections").on("click", clearSelections )
 
     let currentlyBrushing = false,
         startIndex = null,
