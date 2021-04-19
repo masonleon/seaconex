@@ -44,6 +44,9 @@ function leafletMap() {
     map = L
       .map(selector.slice(1), {
         center: [30, 0],
+        preferCanvas: true,
+        updateWhenZooming: false,
+        updateWhenIdle: true,
         zoom: 3,
         layers: [
           esriWorldImageryLayer,
@@ -74,10 +77,10 @@ function leafletMap() {
       )
       .addTo(map);
 
-    L.svg({
-        clickable: true
-      })
-      .addTo(map);
+    // L.svg({
+    //     clickable: true
+    //   })
+    //   .addTo(map);
 
     let overlay = d3
       .select(map
@@ -85,51 +88,51 @@ function leafletMap() {
         .overlayPane
       );
 
-    let svg = overlay.select('svg')
-      .attr("pointer-events", "auto");
-
-    let g = svg.append('g')
-      .attr('class', 'leaflet-zoom-hide');
-
-    // Use Leaflets projection API for drawing svg path (creates a stream of projected points)
-    let projectPoint = function(x, y) {
-      let point = map
-        .latLngToLayerPoint(new L.LatLng(y, x));
-      this.stream.point(point.x, point.y);
-    }
-
-    // Use d3's custom geo transform method to implement the above
-    let projection = d3
-      .geoTransform({
-        point: projectPoint
-      });
-
-    // creates geopath from projected points (SVG)
-    let pathCreator = d3
-      .geoPath()
-      .projection(projection);
-
-    var tooltip = d3.select(selector)
+    let tooltip = d3.select(selector)
       .append("div")
       .attr("class", "tooltip")
       .style('font-size', '10px')
       .style("opacity", 0);
 
+    let geojsonMarkerOptions = {
+        radius: 6,
+        fillColor: "red",
+        color: "#000",
+        weight: 1,
+        opacity: 1,
+        fillOpacity: 0.8
+    };
+    
+    let terminals = L.geoJSON(data['terminals'].features, {
+        pointToLayer: function (feature, latlng) {
+          console.log(feature);
+            circleMarker = L.circleMarker(latlng, geojsonMarkerOptions);
+            circleMarker.bindTooltip(feature.properties.terminal_name);
+            // circleMarker.on('mouseover', function (e) {
+            //     this.openPopup();
+            // });
+            // circleMarker.on('mouseout', function (e) {
+            //     this.closePopup();
+            // });
+            return circleMarker;
+        }
+    }).addTo(map);
 
-    let terminals = g.selectAll("circle")
-      .data(data['terminals'].features)
-      .enter()
-          .append('circle')
-            .style("stroke", '#000')
-            .style("stroke-width", 1)
-            .attr('class', 'point-terminal-facility')
-            .attr('id', d => `${d.properties.terminal}`)
-            .attr("cx", d => map.latLngToLayerPoint([d.geometry.coordinates[1],d.geometry.coordinates[0]]).x)
-            .attr("cy", d => map.latLngToLayerPoint([d.geometry.coordinates[1],d.geometry.coordinates[0]]).y) 
-            .attr("r", 5)
-            .attr("fill", "red")
-          .on("mouseover", onMouseOver)
-          .on("mouseout", onMouseOut);
+
+    // let terminals = g.selectAll("circle")
+    //   .data(data['terminals'].features)
+    //   .enter()
+    //       .append('circle')
+    //         .style("stroke", '#000')
+    //         .style("stroke-width", 1)
+    //         .attr('class', 'point-terminal-facility')
+    //         .attr('id', d => `${d.properties.terminal}`)
+    //         .attr("cx", d => map.latLngToLayerPoint([d.geometry.coordinates[1],d.geometry.coordinates[0]]).x)
+    //         .attr("cy", d => map.latLngToLayerPoint([d.geometry.coordinates[1],d.geometry.coordinates[0]]).y) 
+    //         .attr("r", 5)
+    //         .attr("fill", "red")
+    //       .on("mouseover", onMouseOver)
+    //       .on("mouseout", onMouseOut);
 
     selectableElements = terminals;
 
@@ -154,101 +157,124 @@ function leafletMap() {
       max : dates[dates.length -1].toDateString()
     }
 
+     let result = [];
+
+      // selectedCarrierArr
+      //   .map(carrier => {
+      //     console.log(carrier)
+      //
+      //     let lookup_record = data
+      //       .api_callback_lookup
+      //       .carrier
+      //       .find(record =>
+      //           record.carrier === carrier
+      //       )
+      //
+      //     result.push(lookup_record)
+      //   })
+
     let color = d3
       .scaleOrdinal(d3.schemeSet3)
       .domain(vesselNames)
 
-    console.log(color(vesselNames))
+    // let trajectories = g.selectAll('path')
+    //   .data(data['timestamped_trajectory'].features)
+    //   .enter()
+    //   .append("path")
+    //     .attr("class", "vessel-trajectories")
+    //     .attr("d", pathCreator)
+    //   .style("fill", "none")
+    //   .style("stroke", d => color(d.properties.vessel_name))
+    //   .style("stroke-width", 2)
+    //   .style("opacity", 0);
+    function trajectoryStyle(feature) {
+      return {
+          stroke: color(feature.properties.vessel_mmsi),
+          strokeWidth: 1,
+          color: color(feature.properties.vessel_mmsi),
+          // className:"vessel-trajectories"
+      };
+  }
 
+    vesselTrajectoriesLayer = L.geoJSON(data['timestamped_trajectory'].features, {
+      style: trajectoryStyle
 
-    let trajectories = g.selectAll('path')
-      .data(data['timestamped_trajectory'].features)
-      .enter()
-      .append("path")
-        .attr("class", "vessel-trajectories")
-        .attr("d", pathCreator)
-      .style("fill", "none")
-      .style("stroke", d => color(d.properties.vessel_name))
-      .style("stroke-width", 2)
-      .style("opacity", 0);
+    }).addTo(map);
+    map.fitBounds(vesselTrajectoriesLayer.getBounds());
 
-    let searouteEdges = g.selectAll('link')
-      .data(data['searoute_edges'].features)
-      .enter()
-        .append("path")
-        .attr("d", pathCreator)
-        .attr('class', 'link-edge-searoute')
-        .attr('id', d => `${d.properties.route_name}`)
-        .attr('stroke', 'red')
-        // .attr('marker-end', 'url(#end)')
-        .attr('fill', 'none');
+    let myStyle = {
+      "color": "red",
+      "opacity": 0.65,
+      "stroke-width": 1
+  };
 
-    function onMouseOver(e, d){
-      d3.select(this).transition()
-        .duration(300)
-        .attr("r", 12)
-        .attr("fill", "pink");
+  seaRouteEdgesLayer = L.geoJSON(data['searoute_edges'].features, {
+      style: myStyle
+    }).addTo(map);
+    map.fitBounds(seaRouteEdgesLayer.getBounds());
 
-        tooltip.transition()
-        .duration(300)
-        .style("opacity", 1);
+    // let searouteEdges = g.selectAll('link')
+    //   .data(data['searoute_edges'].features)
+    //   .enter()
+    //     .append("path")
+    //     .attr("d", pathCreator)
+    //     .attr('class', 'link-edge-searoute')
+    //     .attr('id', d => `${d.properties.route_name}`)
+    //     .attr('stroke', 'red')
+    //     // .attr('marker-end', 'url(#end)')
+    //     .attr('fill', 'none');
 
-        tooltip.html("Terminal: " + d.terminal_name)
-        .style("left", (d3.pointer(this)[0] + 10) + "px")     
-        .style("top",  (d3.pointer(this)[1]) + "px" );
-    }
+    // function onMouseOver(e, d){
+    //   d3.select(this).transition()
+    //     .duration(300)
+    //     .attr("r", 12)
+    //     .attr("fill", "pink");
 
-    function onMouseOut() {
-      d3.select(this).transition()
-      .duration(300)
-      .attr("r", 5)
-      .attr("fill", "red");
+    //     tooltip.transition()
+    //     .duration(300)
+    //     .style("opacity", 1);
+
+    //     tooltip.html("Terminal: " + d.terminal_name)
+    //     .style("left", (d3.pointer(this)[0] + 10) + "px")     
+    //     .style("top",  (d3.pointer(this)[1]) + "px" );
+    // }
+
+    // function onMouseOut() {
+    //   d3.select(this).transition()
+    //   .duration(300)
+    //   .attr("r", 5)
+    //   .attr("fill", "red");
 
       // tooltip.transition()
       //   .duration(300)
       //   .style("opacity", 0);
-    }
+    // }
 
-    // Function to place svg based on zoom
-    // let onZoom = () => terminals.attr('d', pathCreator)
-    function onZoom () {
-      terminals
-      .attr("cx", d => map.latLngToLayerPoint([d.geometry.coordinates[1],d.geometry.coordinates[0]]).x)
-      .attr("cy", d => map.latLngToLayerPoint([d.geometry.coordinates[1],d.geometry.coordinates[0]]).y);
+    // let legend = L
+    //   .control({position: 'bottomright'});
 
-      trajectories.attr('d', pathCreator);
+    // legend.onAdd = () => {
+    //   let div = d3
+    //     .select(document.createElement("div"))
+    //     .classed('legend', true)
+    //     .text('ICL Vessels Trajectories between ' + dateRange.min + ' - ' + dateRange.max)
 
-      searouteEdges.attr('d', pathCreator);
-    }
+    //   let p = div.selectAll('p')
+    //    .data(vesselNames)
+    //    .enter()
+    //    .append('p')
 
-    // reset whenever svgMap is moved
-    map.on('zoomend', onZoom)
+    //   p.append('span')
+    //     .classed('legend-item', true)
+    //     .style('background-color', d => color(d));
 
-    let legend = L
-      .control({position: 'bottomright'});
+    //   p.append('span')
+    //     .text(d => d);
 
-    legend.onAdd = () => {
-      let div = d3
-        .select(document.createElement("div"))
-        .classed('legend', true)
-        .text('ICL Vessels Trajectories between ' + dateRange.min + ' - ' + dateRange.max)
+    //   return div.node();
+    // };
 
-      let p = div.selectAll('p')
-       .data(vesselNames)
-       .enter()
-       .append('p')
-
-      p.append('span')
-        .classed('legend-item', true)
-        .style('background-color', d => color(d));
-
-      p.append('span')
-        .text(d => d);
-
-      return div.node();
-    };
-
-    legend.addTo(map);
+    // legend.addTo(map);
 
     // legend.style("display", "none");
 
@@ -257,18 +283,18 @@ function leafletMap() {
 
    // Given selected data from another visualization
   // select the relevant elements here (linking)
-  chart.updateSelection = function (selectedData) {
-    if (!arguments.length) return;
+  // chart.updateSelection = function (selectedData) {
+  //   if (!arguments.length) return;
 
-    // console.log(selectableElements.data())
-    console.log(selectedData)
+  //   // console.log(selectableElements.data())
+  //   console.log(selectedData)
 
-    // Deselect everything
-    selectableElements
-      .classed('selected', false);
+  //   // Deselect everything
+  //   selectableElements
+  //     .classed('selected', false);
 
-    d3.selectAll('.vessel-trajectories')
-      .style("opacity", 0)
+    // d3.selectAll('.vessel-trajectories')
+    //   .style("opacity", 0)
 
 
     // // Select a node if its datum was selected
@@ -288,21 +314,21 @@ function leafletMap() {
     //   .classed('selected', d => d)
 
     // Select the edges
-    d3.selectAll('.vessel-trajectories')
-      .filter(item => selectedData
-          .map(selected =>
-              selected.lookup.vessel_name
-          )
-          .reduce((prev, curr) =>
-              prev.concat(curr), []
-          )
-          .filter((item, i, arr) =>
-              arr.indexOf(item) === i
-          )
-          .includes(item.vessel_name)
-        )
-      .style("opacity", 1)
-  };
+    // d3.selectAll('.vessel-trajectories')
+    //   .filter(item => selectedData
+    //       .map(selected =>
+    //           selected.lookup.vessel_name
+    //       )
+    //       .reduce((prev, curr) =>
+    //           prev.concat(curr), []
+    //       )
+    //       .filter((item, i, arr) =>
+    //           arr.indexOf(item) === i
+    //       )
+    //       .includes(item.vessel_name)
+    //     )
+    //   .style("opacity", 1)
+  // };
 
   return chart;
 }
