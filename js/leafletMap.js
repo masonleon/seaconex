@@ -88,13 +88,13 @@ function leafletMap() {
         .overlayPane
       );
 
-    var tooltip = d3.select(selector)
+    let tooltip = d3.select(selector)
       .append("div")
       .attr("class", "tooltip")
       .style('font-size', '10px')
       .style("opacity", 0);
 
-    var geojsonMarkerOptions = {
+    let geojsonMarkerOptions = {
         radius: 6,
         fillColor: "red",
         color: "#000",
@@ -157,6 +157,22 @@ function leafletMap() {
       max : dates[dates.length -1].toDateString()
     }
 
+     let result = [];
+
+      // selectedCarrierArr
+      //   .map(carrier => {
+      //     console.log(carrier)
+      //
+      //     let lookup_record = data
+      //       .api_callback_lookup
+      //       .carrier
+      //       .find(record =>
+      //           record.carrier === carrier
+      //       )
+      //
+      //     result.push(lookup_record)
+      //   })
+
     let color = d3
       .scaleOrdinal(d3.schemeSet3)
       .domain(vesselNames)
@@ -173,18 +189,20 @@ function leafletMap() {
     //   .style("opacity", 0);
     function trajectoryStyle(feature) {
       return {
-          stroke: color(feature.properties.vessel_name),
+          stroke: color(feature.properties.vessel_mmsi),
           strokeWidth: 1,
-          color: color(feature.properties.vessel_name)
+          color: color(feature.properties.vessel_mmsi),
+          // className:"vessel-trajectories"
       };
   }
 
     vesselTrajectoriesLayer = L.geoJSON(data['timestamped_trajectory'].features, {
       style: trajectoryStyle
+
     }).addTo(map);
     map.fitBounds(vesselTrajectoriesLayer.getBounds());
 
-    var myStyle = {
+    let myStyle = {
       "color": "red",
       "opacity": 0.65,
       "stroke-width": 1
