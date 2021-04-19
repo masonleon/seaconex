@@ -9,7 +9,7 @@
   const searouteEdges = 'data/processed/searoutes.geojson';
   const masterSchedulesEdges = 'data/processed/master-schedules-terminal-call-edge.geojson'
   const masterSchedulesTerminalCallInfo = 'data/processed/master-schedules-terminal-call-svc-proforma.geojson'
-  const trajectory = './data/processed/timestamped-trajectory.geojson'
+  const trajectory = './data/processed/timestamped-trajectory2.geojson'
   const lookups = './data/processed/lookups.json'
 
   Promise.all([
@@ -35,7 +35,6 @@
       'timestamped_trajectory': data[7],
       'network': dataNetworkVis(data[1].features, data[0].features),
       'api_callback_lookup': data[8],
-
     }
 
   }).then(data => {
@@ -73,7 +72,7 @@
       visControls,
       nodeViz,
       // visMap1,
-    visMap2,
+      visMap2,
       visTerminalTable
     // visDetails
     ];
@@ -158,5 +157,3 @@ const dataNetworkVis = (masterSchedulesEdgesFeatures, terminalsFeatures) => {
 
   return hashMap;
 }
-
-

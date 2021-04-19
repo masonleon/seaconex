@@ -50,6 +50,7 @@ def traj_to_timestamped_features(trajectory_collection):
               "times": times,
               "ais_sog": sogs,
               # "headings": headings,
+              "vessel_mmsi": data['vessel_mmsi']
             },
           }
       )
