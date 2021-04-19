@@ -113,6 +113,19 @@ function vesselTable() {
         .on('mouseout', mouseOut)
         .on('mouseup', mouseUp);
 
+
+    // Adds an invisible svg over the 'clear selections' button, and then clears selected elements when clicked
+    d3.select("clear-selection-button-div")
+      .append("svg")
+
+    d3.select("#clear-all-selections").on("click.vtable", clearSelections)
+    
+    function clearSelections() {
+      console.log("Clearing table selections....");
+      selectableElements.classed('selected', false);
+      selectElements([])
+    }
+
     function mouseDown(event, d) {
       startIndex = getElementIndex(this);
       currentlyBrushing = true;
@@ -181,16 +194,25 @@ function vesselTable() {
       // Get the name of our dispatcher's event
       let dispatchString = Object.getOwnPropertyNames(dispatcher._)[0];
 
-      let selectedVesselArr = Array.from(
-          new Set(
-              svg
-                // .selectAll('.selected')
-                .data()
-                .map(d => d.vessel_mmsi)
-          )
-      )
+      if (elements.length > 0){
+        let selectedVesselArr = Array.from(
+            new Set(
+                svg
+                  // .selectAll('.selected')
+                  .data()
+                  .map(d => d.vessel_mmsi)
+            )
+        )
+        console.log(selectedVesselArr)
 
-      console.log(selectedVesselArr)
+      }
+      else {
+        let selectedVesselArr = []
+        selectableElements
+          .classed('visible', false)
+          .classed('hidden', true);
+        }
+
       // console.log(selectableElements
       //           .selectAll('.selected'))
 
@@ -219,7 +241,7 @@ function vesselTable() {
   chart.updateSelection = function (selectedData) {
     if (!arguments.length) return;
 
-      // hide all vessels
+    // hide all vessels
      selectableElements
       .classed('visible', false)
       .classed('hidden', true);

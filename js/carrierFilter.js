@@ -53,16 +53,17 @@ function carrierFilter() {
 
     selectableElements = d3.selectAll('.carrier-selector')
 
-    var theButton = d3.select("clear-selection-button-div")
-      .append("svg")
-      
+    // Adds an invisible svg over the 'clear selections' button, and then clears selected elements when clicked
+    d3.select("clear-selection-button-div").append("svg")
+    d3.select("#clear-all-selections").on("click.cfilter", clearSelections)
 
     function clearSelections() {
+      console.log("Clearning selected carriers...");
       selectableElements.classed('selected', false);
       selectElements([])
     }
 
-    d3.select("#clear-all-selections").on("click", clearSelections )
+    
 
     let currentlyBrushing = false,
         startIndex = null,
