@@ -11,12 +11,30 @@ function vesselTable() {
         right: 30,
         bottom: 35
       },
-      width = 500 - margin.left - margin.right,
+      // width = 500 - margin.left - margin.right,
+      width = 400,
       height = 500 - margin.top - margin.bottom,
       selectableElements = d3.select(null),
       dispatcher;
 
   function chart(selector, data) {
+
+    // let carrierHdgParent = document
+    //   .getElementById(selector.slice(1))
+    //   .parentElement
+    //
+    // let carrierTitle = document
+    //   .createElement('div')
+    //
+    // carrierTitle
+    //   .innerHTML =
+    //   `
+    //   <h3>Vessels<h3>
+    //   <hr>
+    //   `
+    //
+    // carrierHdgParent
+    //   .insertBefore(carrierTitle, carrierHdgParent.childNodes[0])
 
     let svg = d3.select(selector)
       .append('table')
@@ -26,19 +44,28 @@ function vesselTable() {
       .classed('svg-content', true)
       .style("cursor", "crosshair");
 
-    // // Add table head and body elements
-    // svg.append('thead');
-    // svg.append('tbody');
-    //
-    // let thead = svg.select('thead');
-    // let tbody = svg.select('tbody');
-
-     // Add table head and body elements
-
+    // Add table head and body elements
     let thead = svg.append('thead');
     let tbody = svg.append('tbody');
 
-    let columns = Object.keys(data['vessels'][0])
+    // let columns = Object.keys(data['vessels'][0])
+    // console.log(columns)
+    let columns = [
+      // "vessel_imo",
+      "vessel_name",
+      // "vessel_mmsi",
+      // "vessel_call_sign",
+      // "vessel_build_year",
+      // "vessel_gross_tonnage",
+      "vessel_type",
+      "vessel_flag_country",
+      // "vessel_capacity_teu",
+      // "vessel_capacity_vehicle_units",
+      // "vessel_stern_ramp_capacity_tons",
+      "carrier",
+      "service"
+    ]
+
 
     thead
     // svg.select('thead')
@@ -151,12 +178,14 @@ function vesselTable() {
       // Get the name of our dispatcher's event
       let dispatchString = Object.getOwnPropertyNames(dispatcher._)[0];
 
-      // console.log(tbody.selectAll('.selected').data())
       // Let other charts know about our selection
-      dispatcher.call(dispatchString, this, tbody.selectAll('.selected').data());
+      dispatcher.call(
+          dispatchString,
+          this,
+          tbody.selectAll('.selected').data()
+      );
       // dispatcher.call(dispatchString, this, tbody.selectAll('.selected').data().map(x => x.properties).map(r => r.terminal));
 
-      // d3.select('#table-terminals')
     }
 
     return chart;
