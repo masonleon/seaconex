@@ -58,7 +58,6 @@ function carrierFilter() {
       
 
     function clearSelections() {
-      console.log("Clearing selections....")
       selectableElements.classed('selected', false);
       selectElements([])
     }
