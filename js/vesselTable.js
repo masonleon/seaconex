@@ -3,7 +3,7 @@
 
 // Initialize a carrier filter. Modeled after Mike Bostock's
 // Reusable Chart framework https://bost.ocks.org/mike/chart/
-function terminalTable() {
+function vesselTable() {
 
   let margin = {
         top: 60,

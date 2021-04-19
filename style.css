@@ -46,7 +46,14 @@
   width: 100%;
 }
 
-#container-table-terminals {
+/*#container-table-vessels {*/
+/*  background-color: #f8f5f1;*/
+/*  width: 100%;*/
+/*  color: #343f56;*/
+/*  padding: 10px;*/
+/*}*/
+
+#table-vessels {
   background-color: #f8f5f1;
   width: 100%;
   color: #343f56;
