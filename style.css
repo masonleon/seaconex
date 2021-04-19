@@ -15,7 +15,7 @@
 }
 
 /* Visualization Interactive Controls */
-#filters-component {
+#filters-container {
   background-color: #387c6d;
   width: 400px;
   color: #FFF;
@@ -46,7 +46,14 @@
   width: 100%;
 }
 
-#container-table-terminals {
+/*#container-table-vessels {*/
+/*  background-color: #f8f5f1;*/
+/*  width: 100%;*/
+/*  color: #343f56;*/
+/*  padding: 10px;*/
+/*}*/
+
+#table-vessels {
   background-color: #f8f5f1;
   width: 100%;
   color: #343f56;
@@ -254,6 +261,14 @@ tr.mouseover {
 /* ...but add a darker selected and brushed color. */
 tr.mouseover.selected{
   background-color: #e08fa3;
+}
+
+tr.hidden{
+  visibility: hidden;
+}
+
+tr.visible{
+  visibility: visible;
 }
 
 /* Don't also do text drag selection */
