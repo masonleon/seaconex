@@ -9,14 +9,25 @@ function carrierFilter() {
 
   function chart(selector, data) {
 
-    let filterEl = d3.selectAll(selector)
+    let carrierHdgParent = document
+      .getElementById(selector.slice(1))
+      .parentElement
 
-    // filterEl.append('div')
-    //   .attr('id', 'filter-carrier')
-    //   .html(
-    //     `Carriers
-    //     <br>`
-    //   );
+    let carrierTitle = document
+      .createElement('div')
+
+    carrierTitle
+      .innerHTML =
+      `
+      <h3>Carriers<h3>
+      <hr>
+      `
+
+    carrierHdgParent
+      .insertBefore(carrierTitle, carrierHdgParent.childNodes[0])
+
+
+    let filterEl = d3.selectAll(selector)
 
     let carrierSelector = filterEl;
 
