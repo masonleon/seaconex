@@ -253,6 +253,14 @@ tr.mouseover.selected{
   background-color: #e08fa3;
 }
 
+tr.hidden{
+  visibility: hidden;
+}
+
+tr.visible{
+  visibility: visible;
+}
+
 /* Don't also do text drag selection */
 table {
   -webkit-touch-callout: none;

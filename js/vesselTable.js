@@ -81,6 +81,7 @@ function vesselTable() {
       .data(data['vessels'])
       .enter()
       .append('tr')
+      .attr('class', 'hidden')
 
     // Cells code: http://bl.ocks.org/ndobie/336055eed95f62350ec3
     // Create the cells for the data
@@ -171,12 +172,27 @@ function vesselTable() {
     }
 
     function selectElements(elements){
+       // console.log(selectableElements
+       //          .selectAll('.selected').data())
       selectableElements.classed('selected', function(d){
         return elements.includes(this);
       });
 
       // Get the name of our dispatcher's event
       let dispatchString = Object.getOwnPropertyNames(dispatcher._)[0];
+
+      let selectedVesselArr = Array.from(
+          new Set(
+              svg
+                // .selectAll('.selected')
+                .data()
+                .map(d => d.vessel_mmsi)
+          )
+      )
+
+      console.log(selectedVesselArr)
+      // console.log(selectableElements
+      //           .selectAll('.selected'))
 
       // Let other charts know about our selection
       dispatcher.call(
@@ -203,17 +219,35 @@ function vesselTable() {
   chart.updateSelection = function (selectedData) {
     if (!arguments.length) return;
 
+      // hide all vessels
+     selectableElements
+      .classed('visible', false)
+      .classed('hidden', true);
+
+     // unhide a vessel if its carrier was selected
+      selectableElements
+        .filter(item => selectedData
+          .map(selected =>
+              selected.lookup.vessel_mmsi
+          )
+          .reduce((prev, curr) =>
+              prev.concat(curr), []
+          )
+          .filter((item, i, arr) =>
+              arr.indexOf(item) === i
+          )
+          .includes(item.vessel_mmsi)
+        )
+        .classed('visible', d => d);
 
       // Select an element if its datum was selected
-      selectableElements
-        .classed('selected', d => {
-          // console.log(d.properties)
-          // console.log(d.properties)
-
-          selectedData.includes(d)
-        }
-    );
-
+      // selectableElements
+      //   .classed('selected', d => {
+      //     // console.log(d.properties)
+      //     // console.log(d.properties)
+      //
+      //     selectedData.includes(d)
+      //   });
   };
 
   return chart;
