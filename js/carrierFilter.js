@@ -9,14 +9,25 @@ function carrierFilter() {
 
   function chart(selector, data) {
 
-    let filterEl = d3.selectAll(selector)
+    let carrierHdgParent = document
+      .getElementById(selector.slice(1))
+      .parentElement
 
-    // filterEl.append('div')
-    //   .attr('id', 'filter-carrier')
-    //   .html(
-    //     `Carriers
-    //     <br>`
-    //   );
+    let carrierTitle = document
+      .createElement('div')
+
+    carrierTitle
+      .innerHTML =
+      `
+      <h3>Carriers<h3>
+      <hr>
+      `
+
+    carrierHdgParent
+      .insertBefore(carrierTitle, carrierHdgParent.childNodes[0])
+
+
+    let filterEl = d3.selectAll(selector)
 
     let carrierSelector = filterEl;
 
@@ -27,22 +38,18 @@ function carrierFilter() {
       .data(data['carriers'])
       .enter()
       .append('div')
-        .attr('id', d => {
+        .attr('id', d =>
           `${d.carrier_id}`
-        })
+        )
         .attr('class', 'carrier-selector')
-      // .append('div')
-      //   .text(d => `${d.carrier_name}`)
-      //   .attr('class', 'carrier-selector-text')
-      .append('div')
         .html(d =>
-          `<div class="crop">
-            <img src="./img/logo-${d.carrier_nmfta_code}.png"
-                 alt="${d.carrier_nmfta_code}Logo"
-                 width="auto"
-                 height="25px"> </div>
           `
-        );
+            <img src="./img/logo-${d.carrier_nmfta_code}.svg"
+                 alt="${d.carrier_nmfta_code}Logo"
+                 width="100px"
+                 height="auto">
+          `
+        )
 
     selectableElements = d3.selectAll('.carrier-selector')
 
