@@ -35,22 +35,22 @@ function network() {
         //   600].join(' '))
         .style("cursor", "crosshair");
 
-       //http://www.d3noob.org/2013/01/adding-title-to-your-d3js-graph.html
-       svg.append("text")
-          .attr("x", (width / 2))
-          .attr("y", 0 - (margin.top / 2))
-          .attr("text-anchor", "middle")
-          .style("font-size", "40px")
-          .style("text-decoration", "underline")
-          .text("Ocean Carrier Service Network");
-
-        svg.append("text")
-          .attr("x", (width / 2))
-          .attr("y", 0 - (margin.top / 2) + 35)
-          .attr("text-anchor", "middle")
-          .style("font-size", "20px")
-          // .style("text-decoration", "underline")
-          .text("Explore the marine terminal connectivity of publicly posted carrier master service schedules")
+       // //http://www.d3noob.org/2013/01/adding-title-to-your-d3js-graph.html
+       // svg.append("text")
+       //    .attr("x", (width / 2))
+       //    .attr("y", 0 - (margin.top / 2))
+       //    .attr("text-anchor", "middle")
+       //    .style("font-size", "40px")
+       //    .style("text-decoration", "underline")
+       //    .text("Ocean Carrier Service Network");
+       //
+       //  svg.append("text")
+       //    .attr("x", (width / 2))
+       //    .attr("y", 0 - (margin.top / 2) + 35)
+       //    .attr("text-anchor", "middle")
+       //    .style("font-size", "20px")
+       //    // .style("text-decoration", "underline")
+       //    .text("Explore the marine terminal connectivity of publicly posted carrier master service schedules")
 
     let links = data['network'].get('links')
     let nodes = data['network'].get('nodes')
