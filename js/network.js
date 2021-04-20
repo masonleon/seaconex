@@ -6,13 +6,13 @@ function network() {
     // Based on Mike Bostock's margin convention
   // https://bl.ocks.org/mbostock/3019563
   let margin = {
-      top: 100,
+      top: 30,
       left: 40,
       right: 20,
-      bottom: 35
+      bottom: 30
     },
     width = 960 - margin.left - margin.right,
-    height = 600 - margin.top - margin.bottom,
+    height = 450 - margin.top - margin.bottom,
     // ourBrush = null,
     selectableElements = d3.select(null),
     dispatcher;
@@ -171,7 +171,7 @@ function network() {
         	.duration(300)
         	.style("display", "inline");
 
-      	tooltip.html("Terminal: " + d.terminal_name + "<br/>Service: " + d.service + "<br/>Carrier: " + d.carrier)
+      	tooltip.html("Terminal: " + d.terminal_name + "<br/>Address: " + d.terminal_address)
         .style("left", (e.pageX + 10) + "px")     
         .style("top",  (e.pageY - 10) + "px" );
     }

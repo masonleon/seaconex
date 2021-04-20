@@ -1,10 +1,10 @@
 function leafletMap() {
 
   let margin = {
-    top: 100,
+    top: 30,
     left: 40,
     right: 20,
-    bottom: 35
+    bottom: 20
   },
   selectableElements = d3.select(null);
 
@@ -17,7 +17,7 @@ function leafletMap() {
     // let container = d3.select('#center-component'),
     let container = d3.select('#vis-network'),
         width = 960 - margin.left - margin.right,
-        height = 600 - margin.top - margin.bottom
+        height = 450 - margin.top - margin.bottom
         // width = 960,
         // height = 400
 
