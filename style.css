@@ -15,14 +15,14 @@
 }
 
 /* Visualization Interactive Controls */
-#filters-component {
+#filters-container {
   background-color: #387c6d;
   width: 400px;
   color: #FFF;
   padding: 10px;
   margin-right: 5px;
-  padding-right: 40px;
-  padding-left: 40px;
+  padding-right: 20px;
+  padding-left: 20px;
 
 }
 
@@ -46,7 +46,14 @@
   width: 100%;
 }
 
-#container-table-terminals {
+/*#container-table-vessels {*/
+/*  background-color: #f8f5f1;*/
+/*  width: 100%;*/
+/*  color: #343f56;*/
+/*  padding: 10px;*/
+/*}*/
+
+#table-vessels {
   background-color: #f8f5f1;
   width: 100%;
   color: #343f56;
@@ -101,16 +108,26 @@ circle.point-terminal-facility.selected {
 
 /* Carrier h5, Carrier Name and Logos Flexbox */
 #filters-carriers-component {
-  /*display: flex;*/
-  /*flex-direction: row;*/
-  /*flex-wrap: wrap;*/
-  /*  width: 100%;*/
-  /*  -moz-column-count: 2;*/
-  /*  -moz-column-gap: 50%;*/
-  /*  -webkit-column-count: 2;*/
-  /*  -webkit-column-gap: 50%;*/
     column-count: 2;
-  /*  column-gap: 50%;*/
+}
+
+/* Clear all selections button */
+#clear-all-selections {
+  background-color: #FFF;
+  border: #282828;
+  color: #282828;
+  padding: 6px 8px;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+  font-size: 16px;
+  font-weight: 700;
+  border-radius:3px;
+}
+
+#clear-all-selections:hover {
+  background-color: #DCDCDC; 
+  color: #282828;
 }
 
 
@@ -244,6 +261,14 @@ tr.mouseover {
 /* ...but add a darker selected and brushed color. */
 tr.mouseover.selected{
   background-color: #e08fa3;
+}
+
+tr.hidden{
+  visibility: hidden;
+}
+
+tr.visible{
+  visibility: visible;
 }
 
 /* Don't also do text drag selection */

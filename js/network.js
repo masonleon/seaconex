@@ -6,13 +6,13 @@ function network() {
     // Based on Mike Bostock's margin convention
   // https://bl.ocks.org/mbostock/3019563
   let margin = {
-      top: 100,
+      top: 30,
       left: 40,
       right: 20,
-      bottom: 35
+      bottom: 30
     },
     width = 960 - margin.left - margin.right,
-    height = 600 - margin.top - margin.bottom,
+    height = 450 - margin.top - margin.bottom,
     // ourBrush = null,
     selectableElements = d3.select(null),
     dispatcher;
@@ -31,7 +31,26 @@ function network() {
             '#ccc') // change the background color to light gray
         .attr('viewBox', [0, 0, width + margin.left + margin.right,
           height + margin.top + margin.bottom].join(' '))
+        //  .attr('viewBox', [0, 0, 960,
+        //   600].join(' '))
         .style("cursor", "crosshair");
+
+       // //http://www.d3noob.org/2013/01/adding-title-to-your-d3js-graph.html
+       // svg.append("text")
+       //    .attr("x", (width / 2))
+       //    .attr("y", 0 - (margin.top / 2))
+       //    .attr("text-anchor", "middle")
+       //    .style("font-size", "40px")
+       //    .style("text-decoration", "underline")
+       //    .text("Ocean Carrier Service Network");
+       //
+       //  svg.append("text")
+       //    .attr("x", (width / 2))
+       //    .attr("y", 0 - (margin.top / 2) + 35)
+       //    .attr("text-anchor", "middle")
+       //    .style("font-size", "20px")
+       //    // .style("text-decoration", "underline")
+       //    .text("Explore the marine terminal connectivity of publicly posted carrier master service schedules")
 
     let links = data['network'].get('links')
     let nodes = data['network'].get('nodes')
@@ -57,7 +76,8 @@ function network() {
             .id(d => d.terminal)
             .distance(100))
       .force('center',
-          d3.forceCenter(width / 2, height / 2))
+          // d3.forceCenter(width / 2, (height + margin.top + margin.bottom) / 2))
+          d3.forceCenter((width + margin.left + margin.right) / 2, (height + margin.top + margin.bottom + 50) / 2))
       .force("x", d3.forceX())
       .force("y", d3.forceY())
       .alphaTarget(1);
@@ -134,7 +154,7 @@ function network() {
         return d.terminal;
       });
 
-    var tooltip = d3.select(selector)
+    let tooltip = d3.select(selector)
       .append("div")
       .attr("class", "tooltip")
       .style('font-size', '10px')
@@ -151,7 +171,7 @@ function network() {
         	.duration(300)
         	.style("display", "inline");
 
-      	tooltip.html("Terminal: " + d.terminal_name + "<br/>Service: " + d.service + "<br/>Carrier: " + d.carrier)
+      	tooltip.html("Terminal: " + d.terminal_name + "<br/>Address: " + d.terminal_address)
         .style("left", (e.pageX + 10) + "px")     
         .style("top",  (e.pageY - 10) + "px" );
     }
@@ -297,7 +317,7 @@ function onMouseOut() {
   // Given selected data from another visualization
   // select the relevant elements here (linking)
   chart.updateSelection = function (selectedData) {
-    if (!arguments.length) return;
+    if (!arguments.length || !selectedData[0]["lookup"]) return;
 
     // console.log(selectableElements.data())
     console.log(selectedData)

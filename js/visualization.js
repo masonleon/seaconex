@@ -61,9 +61,9 @@
     let visMap2 = leafletMap()
       ('#vis-map-1', data);
 
-    let visTerminalTable = terminalTable()
+    let visVesselTable = vesselTable()
       .selectionDispatcher(d3.dispatch(dispatchString))
-      ('#table-terminals', data);
+      ('#table-vessels', data);
 
     // let visDetails = detailPane()
     //   ('#detail-pane', data);
@@ -72,8 +72,8 @@
       visControls,
       nodeViz,
       // visMap1,
-      visMap2,
-      visTerminalTable
+      visVesselTable,
+      visMap2
     // visDetails
     ];
 
