@@ -65,11 +65,11 @@ function leafletMap() {
     };
 
     let controlOptions = {
-      collapsed:false
+      collapsed:true
     };
 
     //https://gis.stackexchange.com/questions/64385/making-leaflet-control-open-by-default
-    L.control
+    var layerControl = L.control
       .layers(
         baseMaps,
         overlayMaps,
@@ -164,7 +164,7 @@ function leafletMap() {
       )
       .filter ((item, i, ar) =>
           ar.indexOf(item) === i
-      )
+      );
 
     console.log(vesselNames)
 
@@ -215,16 +215,17 @@ function leafletMap() {
           stroke: color(feature.properties.vessel_mmsi),
           strokeWidth: 1,
           color: color(feature.properties.vessel_mmsi),
-          opacity: 0
+          opacity: 1
           // className:"vessel-trajectories"
       };
     }
 
-    var vesselTrajectories = L.geoJSON(data['timestamped_trajectory'].features, {
+    var vesselTrajectoriesLayer = L.geoJSON(data['timestamped_trajectory'].features, {
       style: trajectoryStyle
     }).addTo(map);
-    map.fitBounds(vesselTrajectories.getBounds());
-    
+    map.fitBounds(vesselTrajectoriesLayer.getBounds());
+
+    layerControl.addOverlay(vesselTrajectoriesLayer, "Vessel Trajectories");
 
 
   //   let myStyle = {
@@ -278,6 +279,8 @@ function leafletMap() {
 
     let legend = L
       .control({position: 'bottomright'});
+
+    // console.log(vesselNames);
 
     legend.onAdd = () => {
       let div = d3
