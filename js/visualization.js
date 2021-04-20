@@ -72,8 +72,8 @@
       visControls,
       nodeViz,
       // visMap1,
-      visMap2,
-      visVesselTable
+      visVesselTable,
+      visMap2
     // visDetails
     ];
 

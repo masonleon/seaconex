@@ -297,7 +297,7 @@ function onMouseOut() {
   // Given selected data from another visualization
   // select the relevant elements here (linking)
   chart.updateSelection = function (selectedData) {
-    if (!arguments.length) return;
+    if (!arguments.length || !selectedData[0]["lookup"]) return;
 
     // console.log(selectableElements.data())
     console.log(selectedData)

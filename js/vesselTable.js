@@ -194,24 +194,26 @@ function vesselTable() {
       // Get the name of our dispatcher's event
       let dispatchString = Object.getOwnPropertyNames(dispatcher._)[0];
 
-      if (elements.length > 0){
-        let selectedVesselArr = Array.from(
-            new Set(
-                svg
-                  // .selectAll('.selected')
-                  .data()
-                  .map(d => d.vessel_mmsi)
-            )
-        )
-        console.log(selectedVesselArr)
+      // console.log(svg.data());
 
-      }
-      else {
-        let selectedVesselArr = []
-        selectableElements
-          .classed('visible', false)
-          .classed('hidden', true);
-        }
+      // if (elements.length > 0){
+      //   let selectedVesselArr = Array.from(
+      //       new Set(
+      //           svg
+      //             // .selectAll('.selected')
+      //             .data()
+      //             .map(d => d.vessel_mmsi)
+      //       )
+      //   )
+      //   console.log(selectedVesselArr)
+
+      // }
+      // else {
+      //   let selectedVesselArr = []
+      //   selectableElements
+      //     .classed('visible', false)
+      //     .classed('hidden', true);
+      //   }
 
       // console.log(selectableElements
       //           .selectAll('.selected'))
