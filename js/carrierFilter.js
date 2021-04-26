@@ -9,21 +9,21 @@ function carrierFilter() {
 
   function chart(selector, data) {
 
-    let carrierHdgParent = document
-      .getElementById(selector.slice(1))
-      .parentElement
-
-    let carrierTitle = document
-      .createElement('div')
-    carrierTitle
-      .innerHTML =
-        `
-          <h3>Carriers<h3>
-          <hr>
-        `
-
-    carrierHdgParent
-      .insertBefore(carrierTitle, carrierHdgParent.childNodes[0])
+    // let carrierHdgParent = document
+    //   .getElementById(selector.slice(1))
+    //   .parentElement
+    //
+    // let carrierTitle = document
+    //   .createElement('div')
+    // carrierTitle
+    //   .innerHTML =
+    //     `
+    //       <h3>Carriers</h3>
+    //       <hr>
+    //     `
+    //
+    // carrierHdgParent
+    //   .insertBefore(carrierTitle, carrierHdgParent.childNodes[0])
 
     let filterEl = d3.selectAll(selector)
 

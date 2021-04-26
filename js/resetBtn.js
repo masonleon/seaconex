@@ -10,7 +10,9 @@ function resetBtn() {
 
     console.log(data)
 
-    let resetBtnParent = document.getElementById(selector.slice(1))
+    let resetBtnParent = document
+      .getElementById(selector.slice(1))
+      // .parentElement
 
     let buttonEl = document.createElement('button');
     buttonEl.setAttribute("type", "button");
