@@ -6,7 +6,8 @@ function leafletMap() {
     right: 20,
     bottom: 20
   },
-  selectableElements = d3.select(null);
+  selectableElements = d3.select(null),
+  dispatcher;
 
   let map;
 
@@ -20,8 +21,6 @@ function leafletMap() {
         height = 450 - margin.top - margin.bottom
         // width = 960,
         // height = 400
-
-    // console.log('center-component width: ' + width, 'center-component height: ' + height)
 
     d3.select(selector)
       .style("width", '100%')
@@ -69,7 +68,7 @@ function leafletMap() {
     };
 
     //https://gis.stackexchange.com/questions/64385/making-leaflet-control-open-by-default
-    var layerControl = L.control
+    let layerControl = L.control
       .layers(
         baseMaps,
         overlayMaps,
@@ -220,9 +219,12 @@ function leafletMap() {
       };
     }
 
-    var vesselTrajectoriesLayer = L.geoJSON(data['timestamped_trajectory'].features, {
-      style: trajectoryStyle
-    }).addTo(map);
+    let vesselTrajectoriesLayer = L
+      .geoJSON(data['timestamped_trajectory'].features, {
+          style: trajectoryStyle
+        }
+      ).addTo(map);
+
     map.fitBounds(vesselTrajectoriesLayer.getBounds());
 
     layerControl.addOverlay(vesselTrajectoriesLayer, "Vessel Trajectories");
@@ -280,7 +282,6 @@ function leafletMap() {
     let legend = L
       .control({position: 'bottomright'});
 
-    // console.log(vesselNames);
 
     legend.onAdd = () => {
       let div = d3
@@ -320,6 +321,13 @@ function leafletMap() {
 
     return chart;
   }
+
+   // Gets or sets the dispatcher we use for selection events
+  chart.selectionDispatcher = function (_) {
+    if (!arguments.length) return dispatcher;
+    dispatcher = _;
+    return chart;
+  };
 
    // Given selected data from another visualization
   // select the relevant elements here (linking)
@@ -401,6 +409,18 @@ function leafletMap() {
     //     )
     //   .style("opacity", 1)
   };
+
+  // Deselect everything
+  chart.clearSelection = function (_) {
+
+    // selectableElements
+    //     .classed('', false);
+
+    d3.selectAll('.link-edge-searoute')
+      .style("opacity", 0);
+
+      // selectElements([])
+  }
 
   return chart;
 }
