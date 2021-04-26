@@ -108,10 +108,10 @@ function vesselTable() {
         endIndex = null;
 
     selectableElements
-        .on('mousedown', mouseDown)
-        .on('mouseover', mouseOver)
-        .on('mouseout', mouseOut)
-        .on('mouseup', mouseUp);
+      .on('mousedown', mouseDown)
+      .on('mouseover', mouseOver)
+      .on('mouseout', mouseOut)
+      .on('mouseup', mouseUp);
 
 
     // Adds an invisible svg over the 'clear selections' button, and then clears selected elements when clicked
@@ -225,7 +225,6 @@ function vesselTable() {
           tbody.selectAll('.selected').data()
       );
       // dispatcher.call(dispatchString, this, tbody.selectAll('.selected').data().map(x => x.properties).map(r => r.terminal));
-
     }
 
     return chart;
@@ -273,6 +272,16 @@ function vesselTable() {
       //     selectedData.includes(d)
       //   });
   };
+
+   // Deselect everything
+  chart.clearSelection = function (_) {
+
+    // hide all vessels
+     selectableElements
+      .classed('visible', false)
+      .classed('hidden', true);
+
+  }
 
   return chart;
 }
