@@ -15,22 +15,19 @@ function carrierFilter() {
 
     let carrierTitle = document
       .createElement('div')
-
     carrierTitle
       .innerHTML =
-      `
-      <h3>Carriers<h3>
-      <hr>
-      `
+        `
+          <h3>Carriers<h3>
+          <hr>
+        `
 
     carrierHdgParent
       .insertBefore(carrierTitle, carrierHdgParent.childNodes[0])
 
-
     let filterEl = d3.selectAll(selector)
 
     let carrierSelector = filterEl;
-
 
     carrierSelector
       .selectAll('div')
@@ -50,30 +47,30 @@ function carrierFilter() {
           `
         )
 
-
     selectableElements = d3.selectAll('.carrier-selector')
 
     // Adds an invisible svg over the 'clear selections' button, and then clears selected elements when clicked
-    d3.select("clear-selection-button-div").append("svg")
-    d3.select("#clear-all-selections").on("click.cfilter", clearSelections)
+    // d3.select("clear-selection-button-div")
+    //   .append("svg")
+    // d3.select("#clear-all-selections")
+    //   .on("click.cfilter", clearSelections)
 
-    function clearSelections() {
-      console.log("Clearning selected carriers...");
-      selectableElements.classed('selected', false);
-      selectElements([])
-    }
-
-    
+    // function clearSelections() {
+    //   console.log("Clearing selected carriers...");
+    //   selectableElements
+    //     .classed('selected', false);
+    //   selectElements([])
+    // }
 
     let currentlyBrushing = false,
         startIndex = null,
         endIndex = null;
 
     selectableElements
-        .on('mousedown', mouseDown)
-        .on('mouseover', mouseOver)
-        .on('mouseout', mouseOut)
-        .on('mouseup', mouseUp);
+      .on('mousedown', mouseDown)
+      .on('mouseover', mouseOver)
+      .on('mouseout', mouseOut)
+      .on('mouseup', mouseUp);
 
     function mouseDown(event, d) {
       startIndex = getElementIndex(this);
@@ -93,11 +90,13 @@ function carrierFilter() {
       }
 
       selectableElements.classed('mouseover', false);
-      d3.select(this).classed('mouseover', true);
+      d3.select(this)
+        .classed('mouseover', true);
     }
 
     function mouseOut(event, d) {
-      d3.select(this).classed('mouseover', false);
+      d3.select(this)
+        .classed('mouseover', false);
     }
 
     function mouseUp(event, d) {
@@ -108,7 +107,8 @@ function carrierFilter() {
       }
 
       selectableElements.classed('mouseover', false);
-      d3.select(this).classed('mouseover', true);
+      d3.select(this)
+        .classed('mouseover', true);
 
       currentlyBrushing = false;
       startIndex = null;
@@ -197,6 +197,13 @@ function carrierFilter() {
       .classed('selected', d => selectedData.includes(d)
     );
   };
+
+  // Deselect everything
+  chart.clearSelection = function (_) {
+      selectableElements
+        .classed('selected', false);
+      // selectElements([])
+  }
 
   return chart;
 }

@@ -39,7 +39,6 @@
 
   }).then(data => {
 
-    // console.log(data.api);
     console.log(data);
 
     // General event type for selections, used by d3-dispatch
@@ -50,16 +49,13 @@
       .selectionDispatcher(d3.dispatch(dispatchString))
       ('#filters-carriers-component', data)
 
-    let nodeViz = network()
+    let visNetwork = network()
       .selectionDispatcher(d3.dispatch(dispatchString))
       ('#vis-network', data);
 
-    // let visMap1 = svgMap()
-    //   .selectionDispatcher(d3.dispatch(dispatchString))
-    //   ('#vis-map-2', data);
-
-    let visMap2 = leafletMap()
-      ('#vis-map-1', data);
+    let visMap = leafletMap()
+      .selectionDispatcher(d3.dispatch(dispatchString))
+      ('#vis-map', data);
 
     let visVesselTable = vesselTable()
       .selectionDispatcher(d3.dispatch(dispatchString))
@@ -70,12 +66,15 @@
 
     let charts = [
       visControls,
-      nodeViz,
-      // visMap1,
+      visNetwork,
+      visMap,
       visVesselTable,
-      visMap2
     // visDetails
     ];
+
+    let reset = resetBtn()
+      // .selectionDispatcher(d3.dispatch(dispatchString))
+      ('#clear-selection-button-div', charts);
 
     // https://neu-cs-7250-s21-staff.github.io/Assignment--Brushing_and_Linking--Solution/
     // When any chart selection is updated via brushing,
