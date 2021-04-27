@@ -254,24 +254,17 @@ function vesselTable() {
 
     // Select an element if its datum was selected
     // selectableElements
-    //   .classed('selected', d => {
-    //     // console.log(d.properties)
-    //     // console.log(d.properties)
-    //
-    //     selectedData.includes(d)
-    //   });
+    //   .classed('selected', d => selectedData.includes(d));
   };
 
   // Deselect everything
   chart.clearSelection = function (_) {
     selectableElements
-      .classed('selected', false);
-    // selectElements([])
-
-    // hide all vessels
-    selectableElements
+      .classed('selected', false)
+       // hide all vessels
       .classed('visible', false)
       .classed('hidden', true);
+    // selectElements([])
   }
 
   return chart;

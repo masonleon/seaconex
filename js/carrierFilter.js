@@ -177,8 +177,7 @@ function carrierFilter() {
 
     // Select an element if its datum was selected
     selectableElements
-      .classed('selected', d => selectedData.includes(d)
-    );
+      .classed('selected', d => selectedData.includes(d));
   };
 
   // Deselect everything
