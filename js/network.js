@@ -306,24 +306,12 @@ function network() {
       d.fy = null;
     }
 
-    // function clearSelection() {
-    //
-    //     // Deselect everything
-    //   selectableElements
-    //     .classed('selected', false);
-    //
-    //   d3.selectAll('.link-edge-network')
-    //     .style("opacity", 0.2)
-    // }
-
     return chart;
   }
 
   // Gets or sets the dispatcher we use for selection events
   chart.selectionDispatcher = function (_) {
-    if (!arguments.length) {
-      return dispatcher;
-    }
+    if (!arguments.length) return dispatcher;
     dispatcher = _;
     return chart;
   };
@@ -331,40 +319,18 @@ function network() {
   // Given selected data from another visualization
   // select the relevant elements here (linking)
   chart.updateSelection = function (selectedData) {
-    if (!arguments.length || !selectedData[0]["lookup"]) return;
+    if (!arguments.length) return;
 
-    // console.log(selectableElements.data())
-    console.log(selectedData)
+    // only update if data was for a carrier
+    if (selectedData.some(e => e.hasOwnProperty('carrier'))){
+      // clear all nodes and edges
+      chart.clearSelection()
 
-    // Deselect everything
-    selectableElements
-      .classed('selected', false);
-
-    d3.selectAll('.link-edge-network')
-      .style("opacity", 0.2)
-
-
-    // Select a node if its datum was selected
-    selectableElements
-      .filter(item => selectedData
-        .map(selected =>
-            selected.lookup.terminal
-        )
-        .reduce((prev, curr) =>
-            prev.concat(curr), []
-        )
-        .filter((item, i, arr) =>
-            arr.indexOf(item) === i
-        )
-        .includes(item.terminal)
-      )
-      .classed('selected', d => d)
-
-    // Select the edges
-    d3.selectAll('.link-edge-network')
-      .filter(item => selectedData
+      // show a node if it is serviced by a selected carrier
+      selectableElements
+        .filter(item => selectedData
           .map(selected =>
-              selected.lookup.transport_edge_no
+              selected.lookup.terminal
           )
           .reduce((prev, curr) =>
               prev.concat(curr), []
@@ -372,16 +338,35 @@ function network() {
           .filter((item, i, arr) =>
               arr.indexOf(item) === i
           )
-          .includes(item.transport_edge_no)
+          .includes(item.terminal)
         )
-      .style("opacity", 1)
-  };
+        .classed('selected', d => d)
 
+      // show an edge if it belongs to a selected carrier's service
+      d3.selectAll('.link-edge-network')
+        .filter(item => selectedData
+            .map(selected =>
+                selected.lookup.transport_edge_no
+            )
+            .reduce((prev, curr) =>
+                prev.concat(curr), []
+            )
+            .filter((item, i, arr) =>
+                arr.indexOf(item) === i
+            )
+            .includes(item.transport_edge_no)
+          )
+        .style("opacity", 1)
+      }
+    };
+
+  // Deselect all nodes and edges
   chart.clearSelection = function (_) {
-      // Deselect everything
     selectableElements
+      // clear all selected nodes
       .classed('selected', false);
 
+    // hide all edges
     d3.selectAll('.link-edge-network')
       .style("opacity", 0.2)
   }

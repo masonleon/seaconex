@@ -176,15 +176,15 @@ function carrierFilter() {
     if (!arguments.length) return;
 
     // Select an element if its datum was selected
-    selectableElements
-      .classed('selected', d => selectedData.includes(d));
+    // selectableElements
+    //   .classed('selected', d => selectedData.includes(d));
   };
 
-  // Deselect everything
+  // Deselect all carriers
   chart.clearSelection = function (_) {
       selectableElements
+        //clear all selected carriers
         .classed('selected', false);
-      // selectElements([])
   }
 
   return chart;

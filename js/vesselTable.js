@@ -191,11 +191,6 @@ function vesselTable() {
 
       let result = []
 
-      // selectableElements
-      //   .classed('visible', false)
-      //   .classed('hidden', true);
-      // }
-
       selectedVesselArr
         .map(vessel_mmsi => {
           let lookup_record = data
@@ -231,40 +226,37 @@ function vesselTable() {
   chart.updateSelection = function (selectedData) {
     if (!arguments.length) return;
 
-    // hide all vessels
-    //  selectableElements
-    //   .classed('visible', false)
-    //   .classed('hidden', true);
+    // only update if data was for a carrier
+    if (selectedData.some(e => e.hasOwnProperty('carrier'))){
+      // clear all vessels
+      chart.clearSelection()
 
-    // unhide a vessel if its carrier was selected
-    selectableElements
-      .filter(item => selectedData
-        .map(selected =>
-            selected.lookup.vessel_mmsi
+      // show a vessel if it is operated by a selected carrier
+      selectableElements
+        .filter(item => selectedData
+          .map(selected =>
+              selected.lookup.vessel_mmsi
+          )
+          .reduce((prev, curr) =>
+              prev.concat(curr), []
+          )
+          .filter((item, i, arr) =>
+              arr.indexOf(item) === i
+          )
+          .includes(item.vessel_mmsi)
         )
-        .reduce((prev, curr) =>
-            prev.concat(curr), []
-        )
-        .filter((item, i, arr) =>
-            arr.indexOf(item) === i
-        )
-        .includes(item.vessel_mmsi)
-      )
-      .classed('visible', d => d);
-
-    // Select an element if its datum was selected
-    // selectableElements
-    //   .classed('selected', d => selectedData.includes(d));
+        .classed('visible', d => d);
+    }
   };
 
-  // Deselect everything
+  // Deselect all vessels
   chart.clearSelection = function (_) {
     selectableElements
+      // clear all selected vessels
       .classed('selected', false)
-       // hide all vessels
+      // hide all vessels
       .classed('visible', false)
       .classed('hidden', true);
-    // selectElements([])
   }
 
   return chart;
