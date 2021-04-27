@@ -38,13 +38,9 @@ function carrierFilter() {
     // d3.select("#clear-all-selections")
     //   .on("click.cfilter", clearSelections)
 
-    // function clearSelections() {
-    //   console.log("Clearing selected carriers...");
-    //   selectableElements
-    //     .classed('selected', false);
-    //   selectElements([])
-    // }
-
+    // https://neu-cs-7250-s21-staff.github.io/Assignment--Brushing_and_Linking--Solution/
+    // Figure out brushing-like behavior using mousedown,
+    // mouseover, mouseout, and mouseup events
     let currentlyBrushing = false,
         startIndex = null,
         endIndex = null;
@@ -53,8 +49,7 @@ function carrierFilter() {
       .on('mousedown', mouseDown)
       .on('mouseover', mouseOver)
       .on('mouseout', mouseOut)
-      // .on('mouseup', mouseUp2);
-          .on('mouseup', mouseUp);
+      .on('mouseup', mouseUp);
 
 
     function mouseDown(event, d) {
@@ -62,7 +57,8 @@ function carrierFilter() {
       currentlyBrushing = true;
 
       // Deselect everything
-      selectableElements.classed('selected', false);
+      selectableElements
+        .classed('selected', false);
 
       selectElements([this]);
     }
@@ -74,7 +70,9 @@ function carrierFilter() {
         selectElements(e);
       }
 
-      selectableElements.classed('mouseover', false);
+      selectableElements
+        .classed('mouseover', false);
+
       d3.select(this)
         .classed('mouseover', true);
     }
@@ -91,29 +89,12 @@ function carrierFilter() {
         selectElements(e);
       }
 
-      selectableElements.classed('mouseover', false);
+      selectableElements
+        .classed('mouseover', false);
+
       d3.select(this)
         .classed('mouseover', true);
 
-      currentlyBrushing = false;
-      startIndex = null;
-      endIndex = null;
-    }
-
-    function mouseUp2(event, d) {
-      if (currentlyBrushing) {
-        endIndex = getElementIndex(this);
-        let e = getElementsInRange(startIndex, endIndex);
-        selectElements(e);
-      }
-
-      selectableElements.classed('mouseover', false);
-
-      let x = d3.select(this)
-        // .selectAll('div')
-        .classed('mouseover', true);
-
-      console.log(x)
       currentlyBrushing = false;
       startIndex = null;
       endIndex = null;
@@ -134,13 +115,16 @@ function carrierFilter() {
         stop = tmp;
       }
 
-      return selectableElements.nodes().slice(start, stop + 1);
+      return selectableElements
+              .nodes()
+              .slice(start, stop + 1);
     }
 
     function selectElements(elements){
-      selectableElements.classed('selected', function(d){
-        return elements.includes(this);
-      });
+      selectableElements
+        .classed('selected', function(d){
+          return elements.includes(this);
+        });
 
       // Get the name of our dispatcher's event
       let dispatchString = Object.getOwnPropertyNames(dispatcher._)[0];
@@ -158,8 +142,6 @@ function carrierFilter() {
 
       selectedCarrierArr
         .map(carrier => {
-          // console.log(carrier)
-
           let lookup_record = data
             .api_callback_lookup
             .carrier
@@ -169,9 +151,6 @@ function carrierFilter() {
 
           result.push(lookup_record)
         })
-
-      // console.log(selectedCarrierArr)
-      // console.log(result)
 
       // Let other charts know about our selection
       dispatcher.call(

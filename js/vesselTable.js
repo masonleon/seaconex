@@ -108,7 +108,8 @@ function vesselTable() {
       currentlyBrushing = true;
 
       // Deselect everything
-      selectableElements.classed('selected', false);
+      selectableElements
+        .classed('selected', false);
 
       selectElements([this]);
     }
@@ -120,12 +121,16 @@ function vesselTable() {
         selectElements(e);
       }
 
-      selectableElements.classed('mouseover', false);
-      d3.select(this).classed('mouseover', true);
+      selectableElements
+        .classed('mouseover', false);
+
+      d3.select(this)
+        .classed('mouseover', true);
     }
 
     function mouseOut(event, d) {
-      d3.select(this).classed('mouseover', false);
+      d3.select(this)
+        .classed('mouseover', false);
     }
 
     function mouseUp(event, d) {
@@ -133,11 +138,13 @@ function vesselTable() {
         endIndex = getElementIndex(this);
         let e = getElementsInRange(startIndex, endIndex);
         selectElements(e);
-        // currentlyBrushing = false;
       }
 
-      selectableElements.classed('mouseover', false);
-      d3.select(this).classed('mouseover', true);
+      selectableElements
+        .classed('mouseover', false);
+
+      d3.select(this)
+        .classed('mouseover', true);
 
       currentlyBrushing = false;
       startIndex = null;
@@ -146,7 +153,7 @@ function vesselTable() {
 
     function getElementIndex(element) {
       const e = selectableElements.nodes(),
-          i = e.indexOf(element);
+            i = e.indexOf(element);
       return i;
     }
 
@@ -159,20 +166,20 @@ function vesselTable() {
         stop = tmp;
       }
 
-      return selectableElements.nodes().slice(start, stop + 1);
+      return selectableElements
+              .nodes()
+              .slice(start, stop + 1);
     }
 
     function selectElements(elements) {
-      selectableElements.classed('selected', function (d) {
-        return elements.includes(this);
-      });
+      selectableElements
+        .classed('selected', function (d) {
+          return elements.includes(this);
+        });
 
       // Get the name of our dispatcher's event
       let dispatchString = Object.getOwnPropertyNames(dispatcher._)[0];
 
-      // console.log(svg.data());
-
-      // if (elements.length > 0){
       let selectedVesselArr = Array.from(
           new Set(
               svg
@@ -181,10 +188,7 @@ function vesselTable() {
                 .map(d => d.vessel_mmsi)
           )
       )
-      // console.log(selectedVesselArr)
 
-      // }
-      // else {
       let result = []
 
       // selectableElements
@@ -194,8 +198,6 @@ function vesselTable() {
 
       selectedVesselArr
         .map(vessel_mmsi => {
-          // console.log(vessel_mmsi)
-
           let lookup_record = data
             .api_callback_lookup
             .vessel_mmsi
@@ -206,16 +208,12 @@ function vesselTable() {
           result.push(lookup_record)
         })
 
-      // console.log(selectableElements
-      //           .selectAll('.selected'))
-
       // Let other charts know about our selection
       dispatcher.call(
           dispatchString,
           this,
           result
       );
-      // dispatcher.call(dispatchString, this, tbody.selectAll('.selected').data().map(x => x.properties).map(r => r.terminal));
     }
 
     return chart;
@@ -223,9 +221,7 @@ function vesselTable() {
 
   // Gets or sets the dispatcher we use for selection events
   chart.selectionDispatcher = function (_) {
-    if (!arguments.length) {
-      return dispatcher;
-    }
+    if (!arguments.length) return dispatcher;
     dispatcher = _;
     return chart;
   };
@@ -233,9 +229,7 @@ function vesselTable() {
   // Given selected data from another visualization
   // select the relevant elements here (linking)
   chart.updateSelection = function (selectedData) {
-    if (!arguments.length) {
-      return;
-    }
+    if (!arguments.length) return;
 
     // hide all vessels
     //  selectableElements
@@ -270,20 +264,14 @@ function vesselTable() {
 
   // Deselect everything
   chart.clearSelection = function (_) {
-
-    // currentlyBrushing = false;
-    // startIndex = null;
-    // endIndex = null;
-
     selectableElements
-    .classed('selected', false);
+      .classed('selected', false);
     // selectElements([])
 
     // hide all vessels
     selectableElements
-    .classed('visible', false)
-    .classed('hidden', true);
-
+      .classed('visible', false)
+      .classed('hidden', true);
   }
 
   return chart;
