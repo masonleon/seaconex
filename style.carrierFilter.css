@@ -1,0 +1,51 @@
+/* Carrier h5, Carrier Name and Logos Flexbox */
+#filters-carriers {
+  column-count: 2;
+}
+
+/* Carrier Name + Logo */
+.carrier-selector {
+  /*outline: none;*/
+  /*font-size: 12px;*/
+  /*color: white;*/
+  /*text-align: center;*/
+  /*margin:0 0 5px 5px;*/
+  /*width:20%;*/
+  /*flex: 50%;*/
+  -webkit-user-select: none;
+  -khtml-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  -o-user-select: none;
+  user-select: none;
+  /*cursor: default;*/
+  /*padding-bottom: 5px;*/
+  /*padding-top: 5px;*/
+  /*border-top: #68AB9A 1px dotted;*/
+  /*flex: 1 1 25px;*/
+  /*height: 25px;*/
+  /*width:auto;*/
+}
+
+img {
+  -webkit-user-drag: none;
+  -khtml-user-drag: none;
+  -moz-user-drag: none;
+  -o-user-drag: none;
+  user-drag: none;
+}
+
+/* Style for selected marks (table rows, filters) */
+.selected {
+  background-color: #68AB9A;
+}
+
+/* Recreate the D3 brush style... */
+.mouseover {
+  background-color: #68AB9A;
+}
+
+/* ...but add a darker selected and brushed color. */
+.mouseover.selected {
+  background-color: #7FD0BC;
+}

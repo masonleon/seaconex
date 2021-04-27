@@ -1,0 +1,20 @@
+#vis-network {
+  width: 100%;
+}
+
+/* Style for selected marks (circles) in network */
+circle.node-terminal-facility.selected {
+  fill: pink;
+  stroke: red;
+  opacity: .5;
+}
+
+html.tooltip {
+  font-family: sans-serif;
+  font-size: 12px;
+}
+
+text.label {
+  font-family: sans-serif;
+  font-size: 12px;
+}

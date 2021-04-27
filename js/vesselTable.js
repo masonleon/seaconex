@@ -18,9 +18,9 @@ function vesselTable() {
       selectableElements = d3.select(null),
       dispatcher;
 
-  let currentlyBrushing = false,
-      startIndex = null,
-      endIndex = null;
+  // let currentlyBrushing = false,
+  //     startIndex = null,
+  //     endIndex = null;
 
   function chart(selector, data) {
 
@@ -93,9 +93,9 @@ function vesselTable() {
     // https://neu-cs-7250-s21-staff.github.io/Assignment--Brushing_and_Linking--Solution/
     // Figure out brushing-like behavior using mousedown,
     // mouseover, mouseout, and mouseup events
-    // let currentlyBrushing = false,
-    //     startIndex = null,
-    //     endIndex = null;
+    let currentlyBrushing = false,
+        startIndex = null,
+        endIndex = null;
 
     selectableElements
       .on('mousedown', mouseDown)
@@ -265,11 +265,12 @@ function vesselTable() {
    // Deselect everything
   chart.clearSelection = function (_) {
 
-    currentlyBrushing = false;
-    startIndex = null;
-    endIndex = null;
+    // currentlyBrushing = false;
+    // startIndex = null;
+    // endIndex = null;
 
-    selectableElements.classed('selected', false);
+    selectableElements
+      .classed('selected', false);
       // selectElements([])
 
     // hide all vessels

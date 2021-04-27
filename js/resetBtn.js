@@ -8,7 +8,7 @@ function resetBtn() {
 
   function button(selector, data) {
 
-    console.log(data)
+    // console.log(data)
 
     let resetBtnParent = document
       .getElementById(selector.slice(1))
