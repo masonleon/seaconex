@@ -1,0 +1,42 @@
+#vis-map {
+  width: 100%;
+}
+
+/* Style for selected marks (circles) in leaflet*/
+circle.point-terminal-facility.selected {
+  fill: pink;
+  stroke: red;
+  opacity: .5;
+}
+
+/* Leaflet Map Legend*/
+.legend {
+  line-height: 18px;
+  background-color: #eee;
+  padding: 10px;
+}
+
+.legend p {
+  margin: 1px
+}
+
+.legend .legend-item {
+  width: 18px;
+  height: 18px;
+  float: left;
+  margin-right: 8px;
+  opacity: 0.7;
+}
+
+div.tooltip {
+  position: absolute;
+  background-color: white;
+  max-width: 100px;
+  height: auto;
+  padding: 1px;
+  border-style: solid;
+  border-radius: 4px;
+  border-width: 1px;
+  box-shadow: 3px 3px 10px rgba(0, 0, 0, .5);
+  pointer-events: none;
+}

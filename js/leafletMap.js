@@ -6,27 +6,30 @@ function leafletMap() {
     right: 20,
     bottom: 20
   },
-  selectableElements = d3.select(null);
-
-  let map;
+  selectableElements = d3.select(null),
+  dispatcher,
+  map;
 
   //http://bl.ocks.org/nitaku/047a77e256de17f25e72
   //https://codepen.io/tforward/pen/ZPeZxd?editors=1010
   function chart(selector, data) {
 
-    // let container = d3.select('#center-component'),
-    let container = d3.select('#vis-network'),
-        width = 960 - margin.left - margin.right,
-        height = 450 - margin.top - margin.bottom
+    // // let container = d3.select('#center-component'),
+    // let container = d3.select('#vis-network'),
+    //     width = 960 - margin.left - margin.right,
+    //     height = 450 - margin.top - margin.bottom
         // width = 960,
         // height = 400
+    //
+    // d3.select(selector)
+    //   .style("width", '100%')
+    //   // .style("height", height * 2 + "px")
+    //   .style("height", height + "px")
 
-    // console.log('center-component width: ' + width, 'center-component height: ' + height)
-
-    d3.select(selector)
+       d3.select(selector)
       .style("width", '100%')
       // .style("height", height * 2 + "px")
-      .style("height", height + "px")
+      .style("height", 450 - margin.top - margin.bottom + "px")
 
 
     let esriWorldImageryLayer = L
@@ -69,7 +72,7 @@ function leafletMap() {
     };
 
     //https://gis.stackexchange.com/questions/64385/making-leaflet-control-open-by-default
-    var layerControl = L.control
+    let layerControl = L.control
       .layers(
         baseMaps,
         overlayMaps,
@@ -157,6 +160,7 @@ function leafletMap() {
           // .on("mouseout", onMouseOut);
 
     selectableElements = terminals;
+    // console.log(selectableElements)
 
     let vesselNames = data['timestamped_trajectory'].features
       .map((feature, i) =>
@@ -210,22 +214,25 @@ function leafletMap() {
     //   .style("stroke-width", 2)
     //   .style("opacity", 1);
 
-    function trajectoryStyle(feature) {
-      return {
-          stroke: color(feature.properties.vessel_mmsi),
-          strokeWidth: 1,
-          color: color(feature.properties.vessel_mmsi),
-          opacity: 1
-          // className:"vessel-trajectories"
-      };
-    }
+    // function trajectoryStyle(feature) {
+    //   return {
+    //       stroke: color(feature.properties.vessel_mmsi),
+    //       strokeWidth: 1,
+    //       color: color(feature.properties.vessel_mmsi),
+    //       opacity: 1
+    //       // className:"vessel-trajectories"
+    //   };
+    // }
 
-    var vesselTrajectoriesLayer = L.geoJSON(data['timestamped_trajectory'].features, {
-      style: trajectoryStyle
-    }).addTo(map);
-    map.fitBounds(vesselTrajectoriesLayer.getBounds());
-
-    layerControl.addOverlay(vesselTrajectoriesLayer, "Vessel Trajectories");
+    // let vesselTrajectoriesLayer = L
+    //   .geoJSON(data['timestamped_trajectory'].features, {
+    //       style: trajectoryStyle
+    //     }
+    //   ).addTo(map);
+    //
+    // map.fitBounds(vesselTrajectoriesLayer.getBounds());
+    //
+    // layerControl.addOverlay(vesselTrajectoriesLayer, "Vessel Trajectories");
 
 
   //   let myStyle = {
@@ -280,7 +287,6 @@ function leafletMap() {
     let legend = L
       .control({position: 'bottomright'});
 
-    // console.log(vesselNames);
 
     legend.onAdd = () => {
       let div = d3
@@ -309,8 +315,8 @@ function leafletMap() {
 
     function onZoom () {
       terminals
-      .attr("cx", d => map.latLngToLayerPoint([d.geometry.coordinates[1],d.geometry.coordinates[0]]).x)
-      .attr("cy", d => map.latLngToLayerPoint([d.geometry.coordinates[1],d.geometry.coordinates[0]]).y);
+        .attr("cx", d => map.latLngToLayerPoint([d.geometry.coordinates[1],d.geometry.coordinates[0]]).x)
+        .attr("cy", d => map.latLngToLayerPoint([d.geometry.coordinates[1],d.geometry.coordinates[0]]).y);
       // trajectories.attr('d', pathCreator);
       searouteEdges.attr('d', pathCreator);
     }
@@ -321,86 +327,101 @@ function leafletMap() {
     return chart;
   }
 
+   // Gets or sets the dispatcher we use for selection events
+  chart.selectionDispatcher = function (_) {
+    if (!arguments.length) return dispatcher;
+    dispatcher = _;
+    return chart;
+  };
+
    // Given selected data from another visualization
   // select the relevant elements here (linking)
   chart.updateSelection = function (selectedData) {
     if (!arguments.length) return;
 
+    // only update searoute edges if data was for a carrier
+    if (selectedData.some(e => e.hasOwnProperty('carrier'))) {
+      chart.clearSelection();
+
+      // Select the edges
+      d3.selectAll('.link-edge-searoute')
+        .filter(item => selectedData
+            .map(selected =>
+                selected.lookup.transport_edge_no
+            )
+            .reduce((prev, curr) =>
+                prev.concat(curr), []
+            )
+            .filter((item, i, arr) =>
+                arr.indexOf(item) === i
+            )
+            .includes(item.properties.transport_edge_no)
+        )
+        .style("opacity", 1)
+
+      // function trajectoryStyle(feature) {
+      //   return {
+      //       stroke: color(feature.properties.vessel_mmsi),
+      //       strokeWidth: 1,
+      //       color: color(feature.properties.vessel_mmsi),
+      //       // className:"vessel-trajectories"
+      //   };
+      // }
+
+      // var selectedTrajectories = data["timestamped_trajectory"].features
+      // .filter(
+      //   item => selectedData
+      //   .map(selected =>
+      //     selected.vessel_mmsi
+      //   )
+      //   .filter((item, i, arr) =>
+      //             arr.indexOf(item) === i
+      //         )
+      //         .includes(item.vessel_mmsi)
+      // );
+
+      // console.log(selectedTrajectories);
+
+      // vesselTrajectoriesLayer = L.geoJSON(selectedTrajectories.features, {
+      //     style: trajectoryStyle
+
+      //   }).addTo(map);
+      //   map.fitBounds(vesselTrajectoriesLayer.getBounds());
+
+      // Deselect everything
+      // selectableElements
+      //   .classed('selected', false);
+
+      // d3.selectAll('.vessel-trajectories')
+      //   .style("opacity", 0)
+
+      // Select the edges
+      // d3.selectAll('.vessel-trajectories')
+      //   .filter(item => selectedData
+      //       .map(selected =>
+      //           selected.lookup.vessel_name
+      //       )
+      //       .reduce((prev, curr) =>
+      //           prev.concat(curr), []
+      //       )
+      //       .filter((item, i, arr) =>
+      //           arr.indexOf(item) === i
+      //       )
+      //       .includes(item.vessel_name)
+      //     )
+      //   .style("opacity", 1)
+    }
+  };
+
+  // Deselect everything
+  chart.clearSelection = function (_) {
+
+    // selectableElements
+    //     .classed('', false);
+
     d3.selectAll('.link-edge-searoute')
       .style("opacity", 0);
-
-    // console.log(selectableElements.data())
-    console.log(selectedData)
-
-    // Select the edges
-    d3.selectAll('.link-edge-searoute')
-      .filter(item => selectedData
-          .map(selected =>
-              selected.lookup.transport_edge_no
-          )
-          .reduce((prev, curr) =>
-              prev.concat(curr), []
-          )
-          .filter((item, i, arr) =>
-              arr.indexOf(item) === i
-          )
-          .includes(item.properties.transport_edge_no)
-        )
-      .style("opacity", 1)
-
-    // function trajectoryStyle(feature) {
-    //   return {
-    //       stroke: color(feature.properties.vessel_mmsi),
-    //       strokeWidth: 1,
-    //       color: color(feature.properties.vessel_mmsi),
-    //       // className:"vessel-trajectories"
-    //   };
-    // }
-
-    // var selectedTrajectories = data["timestamped_trajectory"].features
-    // .filter(
-    //   item => selectedData
-    //   .map(selected => 
-    //     selected.vessel_mmsi
-    //   )
-    //   .filter((item, i, arr) =>
-    //             arr.indexOf(item) === i
-    //         )
-    //         .includes(item.vessel_mmsi)
-    // );
-
-    // console.log(selectedTrajectories);
-
-    // vesselTrajectoriesLayer = L.geoJSON(selectedTrajectories.features, {
-    //     style: trajectoryStyle
-
-    //   }).addTo(map);
-    //   map.fitBounds(vesselTrajectoriesLayer.getBounds());
-
-    // Deselect everything
-    // selectableElements
-    //   .classed('selected', false);
-
-    // d3.selectAll('.vessel-trajectories')
-    //   .style("opacity", 0)
-
-
-    // Select the edges
-    // d3.selectAll('.vessel-trajectories')
-    //   .filter(item => selectedData
-    //       .map(selected =>
-    //           selected.lookup.vessel_name
-    //       )
-    //       .reduce((prev, curr) =>
-    //           prev.concat(curr), []
-    //       )
-    //       .filter((item, i, arr) =>
-    //           arr.indexOf(item) === i
-    //       )
-    //       .includes(item.vessel_name)
-    //     )
-    //   .style("opacity", 1)
-  };
+  }
 
   return chart;
 }

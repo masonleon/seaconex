@@ -23,16 +23,12 @@ function network() {
     let svg = d3.select(selector)
       .append("svg")
         .attr("height", height)
-        .attr('preserveAspectRatio',
-            'xMidYMid meet') // this will scale your visualization according to the size of its parent element and the page.
-        .attr('width',
-            '100%') // this is now required by Chrome to ensure the SVG shows up at all
-        .style('background-color',
-            '#ccc') // change the background color to light gray
+        .attr('preserveAspectRatio', 'xMidYMid meet') // this will scale your visualization according to the size of its parent element and the page.
+        .attr('width', '100%') // this is now required by Chrome to ensure the SVG shows up at all
+        .style('background-color', '#ccc') // change the background color to light gray
         .attr('viewBox', [0, 0, width + margin.left + margin.right,
           height + margin.top + margin.bottom].join(' '))
-        //  .attr('viewBox', [0, 0, 960,
-        //   600].join(' '))
+        //  .attr('viewBox', [0, 0, 960, 600].join(' '))
         .style("cursor", "crosshair");
 
        // //http://www.d3noob.org/2013/01/adding-title-to-your-d3js-graph.html
@@ -110,7 +106,7 @@ function network() {
       //   console.log([[d.source.x, d.source.y],[d.target.x, d.target.y]])
       //   return d3.line().curve(d3.curveBasis)([[d.source.x, d.source.y],[d.target.x, d.target.y]])
       // })
-     .attr("d", d => {
+      .attr("d", d => {
         // console.log([[d.source.x, d.source.y],[d.target.x, d.target.y]])
         return linkArc(d)
       })
@@ -122,21 +118,21 @@ function network() {
       .style("opacity", 0.2);
 
     let node = svg.append("g")
-              .selectAll("circle")
-              .data(graph.nodes)
-              .join("circle")
-              .attr('class', 'node-terminal-facility')
-              .attr('terminal', d => `${d.terminal}`)
-              .attr("r", 5)
-              .attr("fill", '#0000FF')
-              .on("mouseover", onMouseOver)
-              .on("mouseout", onMouseOut)
-              .call(
-                d3.drag()
-                  .on("start", dragstarted)
-                  .on("drag", dragged)
-                  .on("end", dragended)
-              );
+      .selectAll("circle")
+      .data(graph.nodes)
+      .join("circle")
+      .attr('class', 'node-terminal-facility')
+      .attr('terminal', d => `${d.terminal}`)
+      .attr("r", 5)
+      .attr("fill", '#0000FF')
+      .on("mouseover", onMouseOver)
+      .on("mouseout", onMouseOut)
+      .call(
+        d3.drag()
+          .on("start", dragstarted)
+          .on("drag", dragged)
+          .on("end", dragended)
+      );
 
     selectableElements = node;
 
@@ -160,31 +156,37 @@ function network() {
       .style('font-size', '10px')
       .style("display", "none");
 
-    function onMouseOver(e, d) {  
+    function onMouseOver(e, d) {
+      d3.select(this)
+      .transition()
+      .duration(300)
+      .attr("r", 12)
+      .attr("fill", "red");
 
-        d3.select(this).transition()
+      tooltip
+        .transition()
         .duration(300)
-        .attr("r", 12)
-        .attr("fill", "red");
+        .style("display", "inline");
 
-        tooltip.transition()
-        	.duration(300)
-        	.style("display", "inline");
-
-      	tooltip.html("Terminal: " + d.terminal_name + "<br/>Address: " + d.terminal_address)
-        .style("left", (e.pageX + 10) + "px")     
-        .style("top",  (e.pageY - 10) + "px" );
+      tooltip
+      .html(
+          "Terminal: " + d.terminal_name + "<br/>" +
+          "Address: " + d.terminal_address
+      )
+      .style("left", (e.pageX + 10) + "px")
+      .style("top",  (e.pageY - 10) + "px" );
     }
 
-function onMouseOut() {
-        d3.select(this).transition()
-        .duration(300)
-        .attr("r", 4)
-        .attr("fill", "blue");
+    function onMouseOut() {
+      d3.select(this)
+      .transition()
+      .duration(300)
+      .attr("r", 4)
+      .attr("fill", "blue");
 
-        tooltip.transition()
-        .duration(300)
-        .style("display", "none");
+      tooltip.transition()
+      .duration(300)
+      .style("display", "none");
     }
 
     // svg.call(brush);
@@ -220,8 +222,6 @@ function onMouseOut() {
     //       [x0, y0],
     //       [x1, y1]
     //     ] = event.selection;
-
-    //     // console.log('selected', node)
 
     //     // If within the bounds of the brush, select it
     //     node.classed('selected', d =>
@@ -269,9 +269,13 @@ function onMouseOut() {
       let dx = d.target.x - d.source.x,
           dy = d.target.y - d.source.y,
           dr = Math.sqrt(dx * dx + dy * dy);
+       // let dx = d.source.x - d.target.x,
+       //     dy = d.source.y - d.target.y,
+       //     dr = Math.sqrt(dx * dx + dy * dy);
       if (d.lane === "E") {
         return "M" + d.source.x + "," + d.source.y + "A" + dr + "," + dr + " 0 0,1 " + d.target.x + "," + d.target.y;
-      } else {
+      }
+      if (d.lane === "W") {
         return "M" + d.target.x + "," + d.target.y + "A" + dr + ","+ dr + " 0 0,1 " + d.source.x + "," + d.source.y;
       }
     }
@@ -307,9 +311,7 @@ function onMouseOut() {
 
   // Gets or sets the dispatcher we use for selection events
   chart.selectionDispatcher = function (_) {
-    if (!arguments.length) {
-      return dispatcher;
-    }
+    if (!arguments.length) return dispatcher;
     dispatcher = _;
     return chart;
   };
@@ -317,40 +319,18 @@ function onMouseOut() {
   // Given selected data from another visualization
   // select the relevant elements here (linking)
   chart.updateSelection = function (selectedData) {
-    if (!arguments.length || !selectedData[0]["lookup"]) return;
+    if (!arguments.length) return;
 
-    // console.log(selectableElements.data())
-    console.log(selectedData)
+    // only update if data was for a carrier
+    if (selectedData.some(e => e.hasOwnProperty('carrier'))){
+      // clear all nodes and edges
+      chart.clearSelection()
 
-    // Deselect everything
-    selectableElements
-      .classed('selected', false);
-
-    d3.selectAll('.link-edge-network')
-      .style("opacity", 0.2)
-
-
-    // Select a node if its datum was selected
-    selectableElements
-      .filter(item => selectedData
-        .map(selected =>
-            selected.lookup.terminal
-        )
-        .reduce((prev, curr) =>
-            prev.concat(curr), []
-        )
-        .filter((item, i, arr) =>
-            arr.indexOf(item) === i
-        )
-        .includes(item.terminal)
-      )
-      .classed('selected', d => d)
-
-    // Select the edges
-    d3.selectAll('.link-edge-network')
-      .filter(item => selectedData
+      // show a node if it is serviced by a selected carrier
+      selectableElements
+        .filter(item => selectedData
           .map(selected =>
-              selected.lookup.transport_edge_no
+              selected.lookup.terminal
           )
           .reduce((prev, curr) =>
               prev.concat(curr), []
@@ -358,10 +338,38 @@ function onMouseOut() {
           .filter((item, i, arr) =>
               arr.indexOf(item) === i
           )
-          .includes(item.transport_edge_no)
+          .includes(item.terminal)
         )
-      .style("opacity", 1)
-  };
+        .classed('selected', d => d)
+
+      // show an edge if it belongs to a selected carrier's service
+      d3.selectAll('.link-edge-network')
+        .filter(item => selectedData
+            .map(selected =>
+                selected.lookup.transport_edge_no
+            )
+            .reduce((prev, curr) =>
+                prev.concat(curr), []
+            )
+            .filter((item, i, arr) =>
+                arr.indexOf(item) === i
+            )
+            .includes(item.transport_edge_no)
+          )
+        .style("opacity", 1)
+      }
+    };
+
+  // Deselect all nodes and edges
+  chart.clearSelection = function (_) {
+    selectableElements
+      // clear all selected nodes
+      .classed('selected', false);
+
+    // hide all edges
+    d3.selectAll('.link-edge-network')
+      .style("opacity", 0.2)
+  }
 
   return chart
 }

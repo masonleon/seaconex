@@ -39,43 +39,41 @@
 
   }).then(data => {
 
-    // console.log(data.api);
     console.log(data);
 
     // General event type for selections, used by d3-dispatch
     // https://github.com/d3/d3-dispatch
     const dispatchString = 'selectionUpdated';
 
-    let visControls = carrierFilter()
+    let filtersCarriers = carrierFilter()
       .selectionDispatcher(d3.dispatch(dispatchString))
-      ('#filters-carriers-component', data)
+      ('#filters-carriers', data)
 
-    let nodeViz = network()
+    let filtersVessels = vesselTable()
+      .selectionDispatcher(d3.dispatch(dispatchString))
+      ('#filters-vessels', data);
+
+    let visNetwork = network()
       .selectionDispatcher(d3.dispatch(dispatchString))
       ('#vis-network', data);
 
-    // let visMap1 = svgMap()
-    //   .selectionDispatcher(d3.dispatch(dispatchString))
-    //   ('#vis-map-2', data);
-
-    let visMap2 = leafletMap()
-      ('#vis-map-1', data);
-
-    let visVesselTable = vesselTable()
+    let visMap = leafletMap()
       .selectionDispatcher(d3.dispatch(dispatchString))
-      ('#table-vessels', data);
+      ('#vis-map', data);
 
     // let visDetails = detailPane()
     //   ('#detail-pane', data);
 
     let charts = [
-      visControls,
-      nodeViz,
-      // visMap1,
-      visVesselTable,
-      visMap2
-    // visDetails
+      filtersCarriers,
+      filtersVessels,
+      visNetwork,
+      visMap
     ];
+
+    let reset = resetBtn()
+      // .selectionDispatcher(d3.dispatch(dispatchString))
+      ('#button-clear-filters', charts);
 
     // https://neu-cs-7250-s21-staff.github.io/Assignment--Brushing_and_Linking--Solution/
     // When any chart selection is updated via brushing,

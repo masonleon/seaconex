@@ -1,0 +1,18 @@
+/* Clear all selections button */
+#button-clear-filters {
+  background-color: #FFF;
+  border: #282828;
+  color: #282828;
+  padding: 6px 8px;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+  font-size: 16px;
+  font-weight: 700;
+  border-radius: 3px;
+}
+
+#button-clear-filters:hover {
+  background-color: #DCDCDC;
+  color: #282828;
+}
