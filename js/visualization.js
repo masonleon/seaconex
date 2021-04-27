@@ -45,9 +45,13 @@
     // https://github.com/d3/d3-dispatch
     const dispatchString = 'selectionUpdated';
 
-    let visControls = carrierFilter()
+    let filtersCarriers = carrierFilter()
       .selectionDispatcher(d3.dispatch(dispatchString))
-      ('#filters-carriers-component', data)
+      ('#filters-carriers', data)
+
+    let filtersVessels = vesselTable()
+      .selectionDispatcher(d3.dispatch(dispatchString))
+      ('#filters-vessels', data);
 
     let visNetwork = network()
       .selectionDispatcher(d3.dispatch(dispatchString))
@@ -57,24 +61,19 @@
       .selectionDispatcher(d3.dispatch(dispatchString))
       ('#vis-map', data);
 
-    let visVesselTable = vesselTable()
-      .selectionDispatcher(d3.dispatch(dispatchString))
-      ('#table-vessels', data);
-
     // let visDetails = detailPane()
     //   ('#detail-pane', data);
 
     let charts = [
-      visControls,
+      filtersCarriers,
+      filtersVessels,
       visNetwork,
-      visMap,
-      visVesselTable,
-    // visDetails
+      visMap
     ];
 
     let reset = resetBtn()
       // .selectionDispatcher(d3.dispatch(dispatchString))
-      ('#clear-selection-button-div', charts);
+      ('#button-clear-filters', charts);
 
     // https://neu-cs-7250-s21-staff.github.io/Assignment--Brushing_and_Linking--Solution/
     // When any chart selection is updated via brushing,

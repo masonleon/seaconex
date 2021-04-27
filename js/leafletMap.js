@@ -15,17 +15,22 @@ function leafletMap() {
   //https://codepen.io/tforward/pen/ZPeZxd?editors=1010
   function chart(selector, data) {
 
-    // let container = d3.select('#center-component'),
-    let container = d3.select('#vis-network'),
-        width = 960 - margin.left - margin.right,
-        height = 450 - margin.top - margin.bottom
+    // // let container = d3.select('#center-component'),
+    // let container = d3.select('#vis-network'),
+    //     width = 960 - margin.left - margin.right,
+    //     height = 450 - margin.top - margin.bottom
         // width = 960,
         // height = 400
+    //
+    // d3.select(selector)
+    //   .style("width", '100%')
+    //   // .style("height", height * 2 + "px")
+    //   .style("height", height + "px")
 
-    d3.select(selector)
+       d3.select(selector)
       .style("width", '100%')
       // .style("height", height * 2 + "px")
-      .style("height", height + "px")
+      .style("height", 450 - margin.top - margin.bottom + "px")
 
 
     let esriWorldImageryLayer = L
@@ -209,25 +214,25 @@ function leafletMap() {
     //   .style("stroke-width", 2)
     //   .style("opacity", 1);
 
-    function trajectoryStyle(feature) {
-      return {
-          stroke: color(feature.properties.vessel_mmsi),
-          strokeWidth: 1,
-          color: color(feature.properties.vessel_mmsi),
-          opacity: 1
-          // className:"vessel-trajectories"
-      };
-    }
+    // function trajectoryStyle(feature) {
+    //   return {
+    //       stroke: color(feature.properties.vessel_mmsi),
+    //       strokeWidth: 1,
+    //       color: color(feature.properties.vessel_mmsi),
+    //       opacity: 1
+    //       // className:"vessel-trajectories"
+    //   };
+    // }
 
-    let vesselTrajectoriesLayer = L
-      .geoJSON(data['timestamped_trajectory'].features, {
-          style: trajectoryStyle
-        }
-      ).addTo(map);
-
-    map.fitBounds(vesselTrajectoriesLayer.getBounds());
-
-    layerControl.addOverlay(vesselTrajectoriesLayer, "Vessel Trajectories");
+    // let vesselTrajectoriesLayer = L
+    //   .geoJSON(data['timestamped_trajectory'].features, {
+    //       style: trajectoryStyle
+    //     }
+    //   ).addTo(map);
+    //
+    // map.fitBounds(vesselTrajectoriesLayer.getBounds());
+    //
+    // layerControl.addOverlay(vesselTrajectoriesLayer, "Vessel Trajectories");
 
 
   //   let myStyle = {

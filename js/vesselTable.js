@@ -5,44 +5,34 @@
 // Reusable Chart framework https://bost.ocks.org/mike/chart/
 function vesselTable() {
 
-  let margin = {
-        top: 60,
-        left: 50,
-        right: 30,
-        bottom: 35
-      },
-      // width = 500 - margin.left - margin.right,
-      width = 400,
-      height = 500 - margin.top - margin.bottom,
+  // let margin = {
+  //       top: 60,
+  //       left: 50,
+  //       right: 30,
+  //       bottom: 35
+  //     },
+  //     // width = 500 - margin.left - margin.right,
+  //     width = 400,
+  //     height = 500 - margin.top - margin.bottom,
+  let
       selectableElements = d3.select(null),
       dispatcher;
 
-  function chart(selector, data) {
+  let currentlyBrushing = false,
+      startIndex = null,
+      endIndex = null;
 
-    // let carrierHdgParent = document
-    //   .getElementById(selector.slice(1))
-    //   .parentElement
-    //
-    // let carrierTitle = document
-    //   .createElement('div')
-    //
-    // carrierTitle
-    //   .innerHTML =
-    //   `
-    //   <h3>Vessels<h3>
-    //   <hr>
-    //   `
-    //
-    // carrierHdgParent
-    //   .insertBefore(carrierTitle, carrierHdgParent.childNodes[0])
+  function chart(selector, data) {
 
     let svg = d3.select(selector)
       .append('table')
-      .attr('preserveAspectRatio', 'xMidYMid meet')
-      .attr('viewBox', [0, 0, width + margin.left + margin.right,
-        height + margin.top + margin.bottom].join(' '))
-      .classed('svg-content', true)
-      .style("cursor", "crosshair");
+      // .attr('preserveAspectRatio', 'xMidYMid meet')
+      // .attr('viewBox', [0, 0, width + margin.left + margin.right,
+      //   height + margin.top + margin.bottom].join(' '))
+      // .classed('svg-content', true)
+      // .style("cursor", "crosshair");
+      .classed('table-content', true)
+      .classed('text-unselectable', true);
 
     // Add table head and body elements
     let thead = svg.append('thead');
@@ -62,8 +52,8 @@ function vesselTable() {
       // "vessel_capacity_teu",
       // "vessel_capacity_vehicle_units",
       // "vessel_stern_ramp_capacity_tons",
-      "carrier",
-      "service"
+      // "carrier",
+      // "service"
     ]
 
 
@@ -103,9 +93,9 @@ function vesselTable() {
     // https://neu-cs-7250-s21-staff.github.io/Assignment--Brushing_and_Linking--Solution/
     // Figure out brushing-like behavior using mousedown,
     // mouseover, mouseout, and mouseup events
-    let currentlyBrushing = false,
-        startIndex = null,
-        endIndex = null;
+    // let currentlyBrushing = false,
+    //     startIndex = null,
+    //     endIndex = null;
 
     selectableElements
       .on('mousedown', mouseDown)
@@ -114,17 +104,18 @@ function vesselTable() {
       .on('mouseup', mouseUp);
 
 
-    // Adds an invisible svg over the 'clear selections' button, and then clears selected elements when clicked
-    d3.select("clear-selection-button-div")
-      .append("svg")
-
-    d3.select("#clear-all-selections").on("click.vtable", clearSelections)
-    
-    function clearSelections() {
-      console.log("Clearing table selections....");
-      selectableElements.classed('selected', false);
-      selectElements([])
-    }
+    // // Adds an invisible svg over the 'clear selections' button, and then clears selected elements when clicked
+    // d3.select("clear-selection-button-div")
+    //   .append("svg")
+    //
+    // d3.select("#clear-all-selections")
+    //   .on("click.vtable", clearSelections)
+    //
+    // function clearSelections() {
+    //   console.log("Clearing table selections....");
+    //   selectableElements.classed('selected', false);
+    //   selectElements([])
+    // }
 
     function mouseDown(event, d) {
       startIndex = getElementIndex(this);
@@ -185,8 +176,6 @@ function vesselTable() {
     }
 
     function selectElements(elements){
-       // console.log(selectableElements
-       //          .selectAll('.selected').data())
       selectableElements.classed('selected', function(d){
         return elements.includes(this);
       });
@@ -243,9 +232,9 @@ function vesselTable() {
     if (!arguments.length) return;
 
     // hide all vessels
-     selectableElements
-      .classed('visible', false)
-      .classed('hidden', true);
+    //  selectableElements
+    //   .classed('visible', false)
+    //   .classed('hidden', true);
 
      // unhide a vessel if its carrier was selected
       selectableElements
@@ -275,6 +264,13 @@ function vesselTable() {
 
    // Deselect everything
   chart.clearSelection = function (_) {
+
+    currentlyBrushing = false;
+    startIndex = null;
+    endIndex = null;
+
+    selectableElements.classed('selected', false);
+      // selectElements([])
 
     // hide all vessels
      selectableElements

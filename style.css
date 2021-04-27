@@ -5,7 +5,7 @@
   flex-wrap: nowrap;
 }
 
-#center-component {
+#center-container {
   display: flex;
   width: 100%;
   /*height: 100%;*/
@@ -34,11 +34,7 @@
   justify-content: space-between;
 } */
 
-#vis-map-1 {
-  width: 100%;
-}
-
-#vis-map-2 {
+#vis-map {
   width: 100%;
 }
 
@@ -53,11 +49,12 @@
 /*  padding: 10px;*/
 /*}*/
 
-#table-vessels {
+#filters-vessels {
   background-color: #f8f5f1;
   width: 100%;
   color: #343f56;
   padding: 10px;
+  margin-right: 10px;
 }
 
 #detail-pane {
@@ -107,12 +104,12 @@ circle.point-terminal-facility.selected {
 }
 
 /* Carrier h5, Carrier Name and Logos Flexbox */
-#filters-carriers-component {
-    column-count: 2;
+#filters-carriers {
+  column-count: 2;
 }
 
 /* Clear all selections button */
-#clear-all-selections {
+#button-clear-filters {
   background-color: #FFF;
   border: #282828;
   color: #282828;
@@ -122,11 +119,11 @@ circle.point-terminal-facility.selected {
   display: inline-block;
   font-size: 16px;
   font-weight: 700;
-  border-radius:3px;
+  border-radius: 3px;
 }
 
-#clear-all-selections:hover {
-  background-color: #DCDCDC; 
+#button-clear-filters:hover {
+  background-color: #DCDCDC;
   color: #282828;
 }
 
@@ -202,15 +199,10 @@ img {
 }
 
 /* ...but add a darker selected and brushed color. */
-.mouseover.selected{
+.mouseover.selected {
   background-color: #7FD0BC;
 }
 
-/*path {*/
-/*  stroke: white;*/
-/*  stroke-width: .25px;*/
-/*  fill: grey;*/
-/*}*/
 
 .port-names {
   font-size: small;
@@ -228,17 +220,24 @@ html.tooltip {
 
 /* Table formatting */
 table {
-  text-align: left;
+  /*text-align: left;*/
+  font-size: 10px;
+  border-collapse: separate;
+  /* vertical | horizontal */
+  border-spacing: 0 0;
+  text-align: right;
+  margin: 0 auto;
 }
 
-th {
-  background-color: #f2f2f2;
-  font-size: 10pt;
+th, td {
+  /*background-color: #f2f2f2;*/
+  /*font-size: 10pt;*/
+  padding: 0 8px;
 }
 
-tr {
-  font-size: 10pt;
-}
+/*tr {*/
+/*  font-size: 10pt;*/
+/*}*/
 
 tr:nth-child(even) {
   background-color: #f2f2f2;
@@ -259,20 +258,20 @@ tr.mouseover {
 }
 
 /* ...but add a darker selected and brushed color. */
-tr.mouseover.selected{
+tr.mouseover.selected {
   background-color: #e08fa3;
 }
 
-tr.hidden{
+tr.hidden {
   visibility: hidden;
 }
 
-tr.visible{
+tr.visible {
   visibility: visible;
 }
 
 /* Don't also do text drag selection */
-table {
+table.text-unselectable {
   -webkit-touch-callout: none;
   -webkit-user-select: none;
   -khtml-user-select: none;
