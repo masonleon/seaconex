@@ -1,30 +1,18 @@
 /* global D3 */
 // adapted from https://neu-cs-7250-s21-staff.github.io/Assignment--Brushing_and_Linking--Solution/
 
-// Initialize a carrier filter. Modeled after Mike Bostock's
+// Initialize a vessel filter. Modeled after Mike Bostock's
 // Reusable Chart framework https://bost.ocks.org/mike/chart/
 function vesselTable() {
 
-  // let margin = {
-  //       top: 60,
-  //       left: 50,
-  //       right: 30,
-  //       bottom: 35
-  //     },
-  //     // width = 500 - margin.left - margin.right,
-  //     width = 400,
-  //     height = 500 - margin.top - margin.bottom,
-  let
-      selectableElements = d3.select(null),
+  let selectableElements = d3.select(null),
       dispatcher;
-
-  // let currentlyBrushing = false,
-  //     startIndex = null,
-  //     endIndex = null;
 
   function chart(selector, data) {
 
     let svg = d3.select(selector)
+
+    // svg
       .append('table')
       // .attr('preserveAspectRatio', 'xMidYMid meet')
       // .attr('viewBox', [0, 0, width + margin.left + margin.right,
@@ -56,9 +44,8 @@ function vesselTable() {
       // "service"
     ]
 
-
     thead
-    // svg.select('thead')
+      // svg.select('thead')
       .append('tr')
       .selectAll('th')
       .data(columns)
@@ -84,8 +71,8 @@ function vesselTable() {
           };
         });
       })
-    .enter()
-    .append('td')
+      .enter()
+      .append('td')
       .html(d => `${d.value}`);
 
     selectableElements = rows;
@@ -102,7 +89,6 @@ function vesselTable() {
       .on('mouseover', mouseOver)
       .on('mouseout', mouseOut)
       .on('mouseup', mouseUp);
-
 
     // // Adds an invisible svg over the 'clear selections' button, and then clears selected elements when clicked
     // d3.select("clear-selection-button-div")
@@ -147,6 +133,7 @@ function vesselTable() {
         endIndex = getElementIndex(this);
         let e = getElementsInRange(startIndex, endIndex);
         selectElements(e);
+        // currentlyBrushing = false;
       }
 
       selectableElements.classed('mouseover', false);
@@ -157,16 +144,16 @@ function vesselTable() {
       endIndex = null;
     }
 
-    function getElementIndex(element){
+    function getElementIndex(element) {
       const e = selectableElements.nodes(),
-            i = e.indexOf(element);
+          i = e.indexOf(element);
       return i;
     }
 
-     // Inclusive range [start, stop]
-    function getElementsInRange(start, stop){
+    // Inclusive range [start, stop]
+    function getElementsInRange(start, stop) {
       // If we brushed up instead of down swap them for slice
-      if (start > stop){
+      if (start > stop) {
         let tmp = start;
         start = stop;
         stop = tmp;
@@ -175,8 +162,8 @@ function vesselTable() {
       return selectableElements.nodes().slice(start, stop + 1);
     }
 
-    function selectElements(elements){
-      selectableElements.classed('selected', function(d){
+    function selectElements(elements) {
+      selectableElements.classed('selected', function (d) {
         return elements.includes(this);
       });
 
@@ -186,23 +173,38 @@ function vesselTable() {
       // console.log(svg.data());
 
       // if (elements.length > 0){
-      //   let selectedVesselArr = Array.from(
-      //       new Set(
-      //           svg
-      //             // .selectAll('.selected')
-      //             .data()
-      //             .map(d => d.vessel_mmsi)
-      //       )
-      //   )
-      //   console.log(selectedVesselArr)
+      let selectedVesselArr = Array.from(
+          new Set(
+              svg
+                .selectAll('.selected')
+                .data()
+                .map(d => d.vessel_mmsi)
+          )
+      )
+      // console.log(selectedVesselArr)
 
       // }
       // else {
-      //   let selectedVesselArr = []
-      //   selectableElements
-      //     .classed('visible', false)
-      //     .classed('hidden', true);
-      //   }
+      let result = []
+
+      // selectableElements
+      //   .classed('visible', false)
+      //   .classed('hidden', true);
+      // }
+
+      selectedVesselArr
+        .map(vessel_mmsi => {
+          // console.log(vessel_mmsi)
+
+          let lookup_record = data
+            .api_callback_lookup
+            .vessel_mmsi
+            .find(record =>
+                record.vessel_mmsi === vessel_mmsi
+            )
+
+          result.push(lookup_record)
+        })
 
       // console.log(selectableElements
       //           .selectAll('.selected'))
@@ -211,7 +213,7 @@ function vesselTable() {
       dispatcher.call(
           dispatchString,
           this,
-          tbody.selectAll('.selected').data()
+          result
       );
       // dispatcher.call(dispatchString, this, tbody.selectAll('.selected').data().map(x => x.properties).map(r => r.terminal));
     }
@@ -221,7 +223,9 @@ function vesselTable() {
 
   // Gets or sets the dispatcher we use for selection events
   chart.selectionDispatcher = function (_) {
-    if (!arguments.length) return dispatcher;
+    if (!arguments.length) {
+      return dispatcher;
+    }
     dispatcher = _;
     return chart;
   };
@@ -229,40 +233,42 @@ function vesselTable() {
   // Given selected data from another visualization
   // select the relevant elements here (linking)
   chart.updateSelection = function (selectedData) {
-    if (!arguments.length) return;
+    if (!arguments.length) {
+      return;
+    }
 
     // hide all vessels
     //  selectableElements
     //   .classed('visible', false)
     //   .classed('hidden', true);
 
-     // unhide a vessel if its carrier was selected
-      selectableElements
-        .filter(item => selectedData
-          .map(selected =>
-              selected.lookup.vessel_mmsi
-          )
-          .reduce((prev, curr) =>
-              prev.concat(curr), []
-          )
-          .filter((item, i, arr) =>
-              arr.indexOf(item) === i
-          )
-          .includes(item.vessel_mmsi)
+    // unhide a vessel if its carrier was selected
+    selectableElements
+      .filter(item => selectedData
+        .map(selected =>
+            selected.lookup.vessel_mmsi
         )
-        .classed('visible', d => d);
+        .reduce((prev, curr) =>
+            prev.concat(curr), []
+        )
+        .filter((item, i, arr) =>
+            arr.indexOf(item) === i
+        )
+        .includes(item.vessel_mmsi)
+      )
+      .classed('visible', d => d);
 
-      // Select an element if its datum was selected
-      // selectableElements
-      //   .classed('selected', d => {
-      //     // console.log(d.properties)
-      //     // console.log(d.properties)
-      //
-      //     selectedData.includes(d)
-      //   });
+    // Select an element if its datum was selected
+    // selectableElements
+    //   .classed('selected', d => {
+    //     // console.log(d.properties)
+    //     // console.log(d.properties)
+    //
+    //     selectedData.includes(d)
+    //   });
   };
 
-   // Deselect everything
+  // Deselect everything
   chart.clearSelection = function (_) {
 
     // currentlyBrushing = false;
@@ -270,13 +276,13 @@ function vesselTable() {
     // endIndex = null;
 
     selectableElements
-      .classed('selected', false);
-      // selectElements([])
+    .classed('selected', false);
+    // selectElements([])
 
     // hide all vessels
-     selectableElements
-      .classed('visible', false)
-      .classed('hidden', true);
+    selectableElements
+    .classed('visible', false)
+    .classed('hidden', true);
 
   }
 

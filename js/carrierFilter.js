@@ -1,4 +1,5 @@
 /* global D3 */
+// adapted from https://neu-cs-7250-s21-staff.github.io/Assignment--Brushing_and_Linking--Solution/
 
 // Initialize a carrier filter. Modeled after Mike Bostock's
 // Reusable Chart framework https://bost.ocks.org/mike/chart/
@@ -52,7 +53,9 @@ function carrierFilter() {
       .on('mousedown', mouseDown)
       .on('mouseover', mouseOver)
       .on('mouseout', mouseOut)
-      .on('mouseup', mouseUp);
+      // .on('mouseup', mouseUp2);
+          .on('mouseup', mouseUp);
+
 
     function mouseDown(event, d) {
       startIndex = getElementIndex(this);
@@ -97,6 +100,25 @@ function carrierFilter() {
       endIndex = null;
     }
 
+    function mouseUp2(event, d) {
+      if (currentlyBrushing) {
+        endIndex = getElementIndex(this);
+        let e = getElementsInRange(startIndex, endIndex);
+        selectElements(e);
+      }
+
+      selectableElements.classed('mouseover', false);
+
+      let x = d3.select(this)
+        // .selectAll('div')
+        .classed('mouseover', true);
+
+      console.log(x)
+      currentlyBrushing = false;
+      startIndex = null;
+      endIndex = null;
+    }
+
     function getElementIndex(element){
       const e = selectableElements.nodes(),
             i = e.indexOf(element);
@@ -136,7 +158,7 @@ function carrierFilter() {
 
       selectedCarrierArr
         .map(carrier => {
-          console.log(carrier)
+          // console.log(carrier)
 
           let lookup_record = data
             .api_callback_lookup
