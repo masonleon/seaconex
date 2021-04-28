@@ -30,7 +30,7 @@ function carrierFilter() {
      // create a tooltip
     let tooltip = d3.select("body")
       .append("div")
-      .attr("class", "tooltip")
+      .attr("class", "carrier-selector-tooltip")
 
     // https://neu-cs-7250-s21-staff.github.io/Assignment--Brushing_and_Linking--Solution/
     // Figure out brushing-like behavior using mousedown,
@@ -69,16 +69,54 @@ function carrierFilter() {
       d3.select(this)
         .classed('mouseover', true);
 
+
+      console.log(
+          data
+            .api_callback_lookup
+            .carrier
+            .find(record => record.carrier === "ICL")
+            .lookup
+            .service
+            .join(", ")
+
+      );
       tooltip
         .style("left", event.pageX + 18 + "px")
         .style("top", event.pageY + 18 + "px")
         .style("display", "block")
         .html(
           `
-            <strong>Carrier:</strong> ${d.carrier_name}</br>
-            <strong>ID:</strong> ${d.carrier_id}</br>
-            <strong>SMDG Code:</strong> ${d.carrier_smdg_code}</br>
-            <strong>NMFTA Code:</strong> ${d.carrier_nmfta_code}</br>
+            <strong>Carrier: </strong>
+              ${d.carrier_name}</br>
+            <strong>ID: </strong>
+              ${d.carrier_id}</br>
+            <strong>SMDG Code: </strong>
+              ${d.carrier_smdg_code !== null ? d.carrier_smdg_code : "N/A"}</br>
+            <strong>NMFTA Code: </strong>
+              ${d.carrier_nmfta_code}</br>
+            <strong>Website: </strong>
+              ${d.carrier_website}</br>
+            <br>
+            <strong>"In-Network" Trade(s): </strong>
+              ${
+                data
+                  .api_callback_lookup
+                  .carrier
+                  .find(record => record.carrier === d.carrier_id)
+                  .lookup
+                  .trade
+                  .join(", ")
+              }</br>
+            <strong>"In-Network" Service(s): </strong>
+              ${
+                data
+                  .api_callback_lookup
+                  .carrier
+                  .find(record => record.carrier === d.carrier_id)
+                  .lookup
+                  .service
+                  .join(", ")
+              }</br>
           `
         );
 
