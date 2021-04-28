@@ -411,6 +411,77 @@ function leafletMap() {
       //     )
       //   .style("opacity", 1)
     }
+    if (selectedData.some(e => e.hasOwnProperty('carrier'))) {
+      chart.clearSelection();
+
+      // Select the edges
+      d3.selectAll('.link-edge-searoute')
+        .filter(item => selectedData
+            .map(selected =>
+                selected.lookup.transport_edge_no
+            )
+            .reduce((prev, curr) =>
+                prev.concat(curr), []
+            )
+            .filter((item, i, arr) =>
+                arr.indexOf(item) === i
+            )
+            .includes(item.properties.transport_edge_no)
+        )
+        .style("opacity", 1)
+
+      // function trajectoryStyle(feature) {
+      //   return {
+      //       stroke: color(feature.properties.vessel_mmsi),
+      //       strokeWidth: 1,
+      //       color: color(feature.properties.vessel_mmsi),
+      //       // className:"vessel-trajectories"
+      //   };
+      // }
+
+      // var selectedTrajectories = data["timestamped_trajectory"].features
+      // .filter(
+      //   item => selectedData
+      //   .map(selected =>
+      //     selected.vessel_mmsi
+      //   )
+      //   .filter((item, i, arr) =>
+      //             arr.indexOf(item) === i
+      //         )
+      //         .includes(item.vessel_mmsi)
+      // );
+
+      // console.log(selectedTrajectories);
+
+      // vesselTrajectoriesLayer = L.geoJSON(selectedTrajectories.features, {
+      //     style: trajectoryStyle
+
+      //   }).addTo(map);
+      //   map.fitBounds(vesselTrajectoriesLayer.getBounds());
+
+      // Deselect everything
+      // selectableElements
+      //   .classed('selected', false);
+
+      // d3.selectAll('.vessel-trajectories')
+      //   .style("opacity", 0)
+
+      // Select the edges
+      // d3.selectAll('.vessel-trajectories')
+      //   .filter(item => selectedData
+      //       .map(selected =>
+      //           selected.lookup.vessel_name
+      //       )
+      //       .reduce((prev, curr) =>
+      //           prev.concat(curr), []
+      //       )
+      //       .filter((item, i, arr) =>
+      //           arr.indexOf(item) === i
+      //       )
+      //       .includes(item.vessel_name)
+      //     )
+      //   .style("opacity", 1)
+    }
   };
 
   // Deselect everything

@@ -17,26 +17,20 @@ function carrierFilter() {
       .data(data['carriers'])
       .enter()
       .append('div')
-        .attr('id', d =>
-          `${d.carrier_id}`
-        )
         .attr('class', 'carrier-selector')
-        .html(d =>
-          `
-            <img src="./img/logo-${d.carrier_nmfta_code}.svg"
-                 alt="${d.carrier_nmfta_code}Logo"
-                 width="100px"
-                 height="auto">
-          `
-        )
+        .attr('id', d =>
+          `${d.carrier_id}`)
+        .attr('alt', d =>
+          `${d.carrier_nmfta_code}Logo`)
+        .attr('style', d =>
+          `background-image: url('./img/logo-${d.carrier_nmfta_code}.svg')`)
 
     selectableElements = d3.selectAll('.carrier-selector')
 
-    // Adds an invisible svg over the 'clear selections' button, and then clears selected elements when clicked
-    // d3.select("clear-selection-button-div")
-    //   .append("svg")
-    // d3.select("#clear-all-selections")
-    //   .on("click.cfilter", clearSelections)
+     // create a tooltip
+    let tooltip = d3.select("body")
+      .append("div")
+      .attr("class", "tooltip")
 
     // https://neu-cs-7250-s21-staff.github.io/Assignment--Brushing_and_Linking--Solution/
     // Figure out brushing-like behavior using mousedown,
@@ -50,7 +44,6 @@ function carrierFilter() {
       .on('mouseover', mouseOver)
       .on('mouseout', mouseOut)
       .on('mouseup', mouseUp);
-
 
     function mouseDown(event, d) {
       startIndex = getElementIndex(this);
@@ -75,11 +68,36 @@ function carrierFilter() {
 
       d3.select(this)
         .classed('mouseover', true);
+
+      tooltip
+        .style("left", event.pageX + 18 + "px")
+        .style("top", event.pageY + 18 + "px")
+        .style("display", "block")
+        .html(
+          `
+            <strong>Carrier:</strong> ${d.carrier_name}</br>
+            <strong>ID:</strong> ${d.carrier_id}</br>
+            <strong>SMDG Code:</strong> ${d.carrier_smdg_code}</br>
+            <strong>NMFTA Code:</strong> ${d.carrier_nmfta_code}</br>
+          `
+        );
+
+      // Optional cursor change on target
+      d3.select(event.target)
+        .style("cursor", "pointer");
     }
 
     function mouseOut(event, d) {
       d3.select(this)
         .classed('mouseover', false);
+
+      // Hide tooltip on mouse out
+      tooltip
+        .style("display", "none"); // Hide toolTip
+
+      // Optional cursor change removed
+      d3.select(event.target)
+        .style("cursor", "default");
     }
 
     function mouseUp(event, d) {
