@@ -189,6 +189,14 @@ function network() {
       .style("display", "none");
     }
 
+    svg
+      .append("text")
+        .attr("x", width-10)
+        .attr("y", 50)
+        .text("Trade Lanes")
+        .attr("text-anchor", "left")
+        .style("alignment-baseline", "middle");
+
     // Add a legend
     var size = 20
     svg.selectAll("legend-squares")
@@ -196,7 +204,7 @@ function network() {
       .enter()
       .append("rect")
         .attr("x", width)
-        .attr("y", function(d,i){ return 50 + i*(size+5)})
+        .attr("y", function(d,i){ return 75 + i*(size+5)})
         .attr("width", size)
         .attr("height", size)
         .style("fill", function(d){ return color(d)})
@@ -207,7 +215,7 @@ function network() {
       .enter()
       .append("text")
         .attr("x", width + size*1.2)
-        .attr("y", function(d,i){ return 50 + i*(size+5) + (size/2)})
+        .attr("y", function(d,i){ return 75 + i*(size+5) + (size/2)})
         .style("fill", function(d){ return color(d)})
         .text(function(d){
            if(d==='E')
