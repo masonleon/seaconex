@@ -66,7 +66,7 @@ function network() {
     let force = d3.forceSimulation(graph.nodes)
       .force("charge",
           d3.forceManyBody()
-            .strength(-300))
+            .strength(-500))
       .force("link",
           d3.forceLink(graph.links)
             .id(d => d.terminal)
