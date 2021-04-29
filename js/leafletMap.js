@@ -214,15 +214,25 @@ function leafletMap() {
     //   .style("stroke-width", 2)
     //   .style("opacity", 1);
 
-    // function trajectoryStyle(feature) {
-    //   return {
-    //       stroke: color(feature.properties.vessel_mmsi),
-    //       strokeWidth: 1,
-    //       color: color(feature.properties.vessel_mmsi),
-    //       opacity: 1
-    //       // className:"vessel-trajectories"
-    //   };
-    // }
+    function trajectoryStyle(feature) {
+      return {
+          stroke: color(feature.properties.vessel_mmsi),
+          strokeWidth: 1,
+          color: color(feature.properties.vessel_mmsi),
+          opacity: 1
+          // className:"vessel-trajectories"
+      };
+    }
+
+    function onEachFeature(feature){
+        feature.bindTootlip(feature.propreties.vessel_mmsi);
+    }
+
+    var vesselTrajectoriesLayer = L.geoJSON(data['timestamped_trajectory'].features, {
+      style: trajectoryStyle,
+      onEachFeature: onEachFeature
+    }).addTo(map);
+    map.fitBounds(vesselTrajectoriesLayer.getBounds());
 
     // let vesselTrajectoriesLayer = L
     //   .geoJSON(data['timestamped_trajectory'].features, {
@@ -294,17 +304,17 @@ function leafletMap() {
         .classed('legend', true)
         .text('Vessel Trajectories between ' + dateRange.min + ' - ' + dateRange.max)
 
-      let p = div.selectAll('p')
-       .data(vesselNames)
-       .enter()
-       .append('p')
+      // let p = div.selectAll('p')
+      //  .data(vesselNames)
+      //  .enter()
+      //  .append('p')
 
-      p.append('span')
-        .classed('legend-item', true)
-        .style('background-color', d => color(d));
+      // p.append('span')
+      //   .classed('legend-item', true)
+      //   .style('background-color', d => color(d));
 
-      p.append('span')
-        .text(d => d);
+      // p.append('span')
+      //   .text(d => d);
 
       return div.node();
     };
