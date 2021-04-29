@@ -229,20 +229,12 @@ function leafletMap() {
     }
 
     var vesselTrajectoriesLayer = L.geoJSON(data['timestamped_trajectory'].features, {
-      style: trajectoryStyle,
-      onEachFeature: onEachFeature
+      style: trajectoryStyle
+      // onEachFeature: onEachFeature
     }).addTo(map);
     map.fitBounds(vesselTrajectoriesLayer.getBounds());
-
-    // let vesselTrajectoriesLayer = L
-    //   .geoJSON(data['timestamped_trajectory'].features, {
-    //       style: trajectoryStyle
-    //     }
-    //   ).addTo(map);
-    //
-    // map.fitBounds(vesselTrajectoriesLayer.getBounds());
-    //
-    // layerControl.addOverlay(vesselTrajectoriesLayer, "Vessel Trajectories");
+    
+    layerControl.addOverlay(vesselTrajectoriesLayer, "Vessel Trajectories");
 
 
   //   let myStyle = {
