@@ -2,6 +2,16 @@
   width: 100%;
 }
 
+circle.node-terminal-facility {
+  fill: #0000FF;
+}
+
+circle.node-terminal-facility.mouseover {
+  fill: red;
+  /*stroke: red;*/
+  /*opacity: .5;*/
+}
+
 /* Style for selected marks (circles) in network */
 circle.node-terminal-facility.selected {
   fill: pink;
@@ -9,12 +19,43 @@ circle.node-terminal-facility.selected {
   opacity: .5;
 }
 
-html.tooltip {
+text.node-terminal-facility-label {
   font-family: sans-serif;
   font-size: 12px;
+  fill: black;
 }
 
-text.label {
+div.node-terminal-facility-tooltip {
+  position: absolute;
+  background-color: white;
+  max-width: 100px;
+  height: auto;
+  padding: 1px;
+  border-style: solid;
+  border-radius: 4px;
+  border-width: 1px;
+  box-shadow: 3px 3px 10px rgba(0, 0, 0, .5);
+  pointer-events: none;
+
+  /*display: none;*/
+  /*display: inline;*/
+
   font-family: sans-serif;
-  font-size: 12px;
+  font-size: 10px;
+  fill: black;
 }
+
+path.link-edge-network {
+  opacity: 0.2;
+}
+
+path.link-edge-network.selected {
+  opacity: 1;
+}
+
+/*text.vis-network-legend {*/
+/*  text-anchor: start;*/
+/*  alignment-baseline: middle;*/
+
+/*}*/
+

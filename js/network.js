@@ -81,7 +81,8 @@ function network() {
     force.on('tick', ticked);
 
     // Arrowheads for directional links
-    svg.append("defs").selectAll("marker")
+    svg.append("defs")
+      .selectAll("marker")
       .data(lanes)
       .join("marker")
       .attr("id", d => `arrow-${d}`)
@@ -115,7 +116,6 @@ function network() {
       .attr('carrier', d => `${d.carrier}`)
       .attr("stroke", d => color(d.lane))
       .attr("marker-end", d => `url(${new URL(`#arrow-${d.lane}`, location)})`)
-      .style("opacity", 0.2);
 
     let node = svg.append("g")
       .selectAll("circle")
@@ -124,9 +124,8 @@ function network() {
       .attr('class', 'node-terminal-facility')
       .attr('terminal', d => `${d.terminal}`)
       .attr("r", 5)
-      .attr("fill", '#0000FF')
-      .on("mouseover", onMouseOver)
-      .on("mouseout", onMouseOut)
+      .on("mouseover", mouseOver)
+      .on("mouseout", mouseOut)
       .call(
         d3.drag()
           .on("start", dragstarted)
@@ -136,69 +135,63 @@ function network() {
 
     selectableElements = node;
 
-    // console.log(selectableElements.data())
-
-    // console.log(selectableElements.nodes())
-
-    let labels = svg.selectAll("text.label")
+    let labels = svg.selectAll("text")
       .data(graph.nodes)
       .enter()
       .append("text")
-      .attr("class", "label")
-      .attr("fill", "black")
+      .attr("class", "node-terminal-facility-label")
       .text(d => {
         return d.terminal;
       });
 
     let tooltip = d3.select(selector)
       .append("div")
-      .attr("class", "tooltip")
-      .style('font-size', '10px')
-      .style("display", "none");
+      .attr("class", "node-terminal-facility-tooltip")
 
-    function onMouseOver(e, d) {
+    function mouseOver(e, d) {
       d3.select(this)
-      .transition()
-      .duration(300)
-      .attr("r", 12)
-      .attr("fill", "red");
+        .classed('mouseover', true)
+        .transition()
+        .duration(300)
+        .attr("r", 12)
+
+      tooltip
+        .html(
+            "Terminal: " + d.terminal_name + "<br/>" +
+            "Address: " + d.terminal_address
+        )
+        .transition()
+        .duration(300)
+        .style("left", (e.pageX + 10) + "px")
+        .style("top",  (e.pageY - 10) + "px" )
+        .style("display", "block")
+      // .style("display", "inline");
+    }
+
+    function mouseOut() {
+      d3.select(this)
+        .classed('mouseover', false)
+        .transition()
+        .duration(300)
+        .attr("r", 4)
 
       tooltip
         .transition()
         .duration(300)
-        .style("display", "inline");
-
-      tooltip
-      .html(
-          "Terminal: " + d.terminal_name + "<br/>" +
-          "Address: " + d.terminal_address
-      )
-      .style("left", (e.pageX + 10) + "px")
-      .style("top",  (e.pageY - 10) + "px" );
+        .style("display", "none")
     }
 
-    function onMouseOut() {
-      d3.select(this)
-      .transition()
-      .duration(300)
-      .attr("r", 4)
-      .attr("fill", "blue");
-
-      tooltip.transition()
-      .duration(300)
-      .style("display", "none");
-    }
-
-    svg
-      .append("text")
-        .attr("x", width-10)
-        .attr("y", 50)
-        .text("Trade Lanes")
-        .attr("text-anchor", "left")
-        .style("alignment-baseline", "middle");
+    svg.append("text")
+      // .attr("class", "vis-network-legend")
+      .attr("x", width-10)
+      .attr("y", 50)
+      .text("Trade Lanes")
+      .attr("text-anchor", "left")
+      .style("alignment-baseline", "middle");
 
     // Add a legend
-    var size = 20
+    let size = 20
+
     svg.selectAll("legend-squares")
       .data(lanes)
       .enter()
@@ -218,9 +211,8 @@ function network() {
         .attr("y", function(d,i){ return 75 + i*(size+5) + (size/2)})
         .style("fill", function(d){ return color(d)})
         .text(function(d){
-           if(d==='E')
-            return 'East';
-           return 'West';
+           if ( d === 'E' ) return 'East';
+           else return 'West';
           })
         .attr("text-anchor", "left")
         .style("alignment-baseline", "middle")
@@ -287,7 +279,8 @@ function network() {
     // }
 
     function ticked() {
-      link.attr("d", linkArc)
+      link
+        .attr("d", linkArc)
 
       node
         .attr("cx", d =>
@@ -295,9 +288,10 @@ function network() {
         .attr("cy", d =>
             d.y = Math.max(10, Math.min(height - 10, d.y)));
 
-      labels.attr("transform", function (d) {
-        return "translate(" + (d.x + 17) + "," + (d.y + 5) + ")";
-      });
+      labels
+        .attr("transform", function (d) {
+          return "translate(" + (d.x + 17) + "," + (d.y + 5) + ")";
+        });
     }
 
     // Function from Mike Bostock's Mobile patent suits and stackoverflowto generate arc paths for links so they don't collide with each other.
@@ -392,7 +386,7 @@ function network() {
             )
             .includes(item.transport_edge_no)
           )
-        .style("opacity", 1)
+          .classed('selected', true);
       }
     };
 
@@ -404,7 +398,7 @@ function network() {
 
     // hide all edges
     d3.selectAll('.link-edge-network')
-      .style("opacity", 0.2)
+      .classed('selected', false);
   }
 
   return chart
