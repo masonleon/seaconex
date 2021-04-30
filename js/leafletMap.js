@@ -303,7 +303,8 @@ function leafletMap() {
     }
 
     if (selectedData.some(e => e.hasOwnProperty('vessel_mmsi'))) {
-      layerControl.removeLayer(vesselTrajectoriesLayer);
+
+      //TODO clear trajectories from map
 
       let v = selectedData.map(e => e.vessel_mmsi)
 
@@ -311,10 +312,16 @@ function leafletMap() {
 
       let geojson = traj
 
-      geojson.features = geojson.features.filter(item => {
-        if(v.includes(item.properties.vessel_mmsi)){
-          return item;
-        }})
+      geojson.features = geojson.features
+        .filter(item => {
+          if(
+              selectedData
+                .map(data => data.vessel_mmsi)
+                .includes(item.properties.vessel_mmsi)
+          ){
+            return item;
+          }
+        })
 
 
       // let vesselNames = data['timestamped_trajectory'].features
@@ -340,7 +347,10 @@ function leafletMap() {
 
       let color = d3
         .scaleOrdinal(d3.schemeSet3)
-        .domain(v)
+        .domain(
+            selectedData
+              .map(data => data.vessel_mmsi)
+        )
 
       function trajectoryStyle(feature) {
         return {
