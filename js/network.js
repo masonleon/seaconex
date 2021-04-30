@@ -6,13 +6,13 @@ function network() {
     // Based on Mike Bostock's margin convention
   // https://bl.ocks.org/mbostock/3019563
   let margin = {
-      top: 30,
+      top: 40,
       left: 40,
       right: 20,
       bottom: 30
     },
     width = 960 - margin.left - margin.right,
-    height = 450 - margin.top - margin.bottom,
+    height = 550 - margin.top - margin.bottom,
     // ourBrush = null,
     selectableElements = d3.select(null),
     dispatcher;
@@ -66,7 +66,7 @@ function network() {
     let force = d3.forceSimulation(graph.nodes)
       .force("charge",
           d3.forceManyBody()
-            .strength(-300))
+            .strength(-750))
       .force("link",
           d3.forceLink(graph.links)
             .id(d => d.terminal)
@@ -188,6 +188,42 @@ function network() {
       .duration(300)
       .style("display", "none");
     }
+
+    svg
+      .append("text")
+        .attr("x", width-10)
+        .attr("y", 50)
+        .text("Trade Lanes")
+        .attr("text-anchor", "left")
+        .style("alignment-baseline", "middle");
+
+    // Add a legend
+    var size = 20
+    svg.selectAll("legend-squares")
+      .data(lanes)
+      .enter()
+      .append("rect")
+        .attr("x", width)
+        .attr("y", function(d,i){ return 75 + i*(size+5)})
+        .attr("width", size)
+        .attr("height", size)
+        .style("fill", function(d){ return color(d)})
+
+    // Add one square in the legend for each lane.
+    svg.selectAll("legend-text")
+      .data(lanes)
+      .enter()
+      .append("text")
+        .attr("x", width + size*1.2)
+        .attr("y", function(d,i){ return 75 + i*(size+5) + (size/2)})
+        .style("fill", function(d){ return color(d)})
+        .text(function(d){
+           if(d==='E')
+            return 'East';
+           return 'West';
+          })
+        .attr("text-anchor", "left")
+        .style("alignment-baseline", "middle")
 
     // svg.call(brush);
 
