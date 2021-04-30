@@ -10,7 +10,9 @@ function leafletMap() {
   width = 100,
   selectableElements = d3.select(null),
   dispatcher,
+  layerControl,
   map,
+  vesselTrajectoriesLayer,
   traj;
 
   //http://bl.ocks.org/nitaku/047a77e256de17f25e72
@@ -63,7 +65,7 @@ function leafletMap() {
     };
 
     //https://gis.stackexchange.com/questions/64385/making-leaflet-control-open-by-default
-    let layerControl = L.control
+    layerControl = L.control
       .layers(
         baseMaps,
         overlayMaps,
@@ -195,6 +197,23 @@ function leafletMap() {
       //   .style("opacity", 0);
     // }
 
+      function trajectoryStyle(feature) {
+        return {
+            strokeWidth: 1,
+            opacity: 0
+            // className:"vessel-trajectories"
+        };
+      }
+
+      vesselTrajectoriesLayer = L
+         .geoJSON(traj.features, {
+              style: trajectoryStyle,
+              // onEachFeature: onEachFeature
+            }
+        ).addTo(map);
+
+      map.fitBounds(vesselTrajectoriesLayer.getBounds());
+
     // let legend = L
     //   .control({position: 'bottomright'});
 
@@ -282,6 +301,7 @@ function leafletMap() {
     }
 
     if (selectedData.some(e => e.hasOwnProperty('vessel_mmsi'))) {
+      layerControl.removeLayer(vesselTrajectoriesLayer);
 
       let v = selectedData.map(e => e.vessel_mmsi)
 
@@ -330,11 +350,7 @@ function leafletMap() {
         };
       }
 
-      // function onEachFeature(feature){
-      //     feature.bindTootlip(feature.properties.vessel_mmsi);
-      // }
-
-      let vesselTrajectoriesLayer = L
+      vesselTrajectoriesLayer = L
          .geoJSON(geojson.features, {
               style: trajectoryStyle,
               // onEachFeature: onEachFeature
