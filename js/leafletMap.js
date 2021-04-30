@@ -199,7 +199,7 @@ function leafletMap() {
 
       function trajectoryStyle(feature) {
         return {
-            strokeWidth: 1,
+            strokeWidth: 0.5,
             opacity: 0
             // className:"vessel-trajectories"
         };
@@ -213,6 +213,8 @@ function leafletMap() {
         ).addTo(map);
 
       map.fitBounds(vesselTrajectoriesLayer.getBounds());
+
+      layerControl.addOverlay(vesselTrajectoriesLayer, "Vessel Trajectories");
 
     // let legend = L
     //   .control({position: 'bottomright'});
@@ -343,9 +345,9 @@ function leafletMap() {
       function trajectoryStyle(feature) {
         return {
             stroke: color(feature.properties.vessel_mmsi),
-            strokeWidth: 1,
+            strokeWidth: 0.2,
             color: color(feature.properties.vessel_mmsi),
-            opacity: 1
+            opacity: 0.8
             // className:"vessel-trajectories"
         };
       }
@@ -357,9 +359,9 @@ function leafletMap() {
             }
         ).addTo(map);
 
-      map.fitBounds(vesselTrajectoriesLayer.getBounds());
+      // map.fitBounds(vesselTrajectoriesLayer.getBounds());
 
-      // layerControl.addOverlay(vesselTrajectoriesLayer, "Vessel Trajectories");
+      layerControl.addOverlay(vesselTrajectoriesLayer, "Vessel Trajectories");
     }
   };
 
