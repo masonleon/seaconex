@@ -96,6 +96,10 @@ function leafletMap() {
     let g = svg.append('g')
       .attr('class', 'leaflet-zoom-hide');
 
+    //TODO add svg to layercontrol
+    // layerControl
+    //   .addOverlay(overlay, "D3");
+
     let tooltip = d3.select(selector)
       .append("div")
       .attr("class", "tooltip")
@@ -322,6 +326,7 @@ function leafletMap() {
       // chart.clearSelection();
       vesselTrajectoriesLayer.clearLayers();
 
+      //TODO need state for vessels
       let v = selectedData.map(e => e.vessel_mmsi)
 
       console.log(v)
@@ -380,12 +385,12 @@ function leafletMap() {
 
       // vesselTrajectoriesLayer = L
       L
-         .geoJSON(geojson_features, {
-              style: trajectoryStyle,
-              // onEachFeature: onEachFeature
-            }
-        // ).addTo(map);
-        ).addTo(vesselTrajectoriesLayer);
+       .geoJSON(geojson_features, {
+            style: trajectoryStyle,
+            // onEachFeature: onEachFeature
+          }
+      // ).addTo(map);
+      ).addTo(vesselTrajectoriesLayer);
 
       // map.fitBounds(vesselTrajectoriesLayer.getBounds());
 
