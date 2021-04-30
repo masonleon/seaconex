@@ -147,9 +147,9 @@ function leafletMap() {
           .attr("cx", d => map.latLngToLayerPoint([d.geometry.coordinates[1],d.geometry.coordinates[0]]).x)
           .attr("cy", d => map.latLngToLayerPoint([d.geometry.coordinates[1],d.geometry.coordinates[0]]).y)
           .attr("r", 5)
-          .attr("fill", "red");
-        // .on("mouseover", onMouseOver)
-        // .on("mouseout", onMouseOut);
+          .attr("fill", "red")
+        .on("mouseover", onMouseOver)
+        .on("mouseout", onMouseOut);
 
     selectableElements = terminals;
 
@@ -165,37 +165,37 @@ function leafletMap() {
         .append("path")
         .attr("d", pathCreator)
         .attr('class', 'link-edge-searoute')
-        .attr('id', d => `${d.properties.route_name}`)
+        .attr('id', d => `${d.properties.transport_edge_no}`)
         .attr('stroke', 'red')
         // .attr('marker-end', 'url(#end)')
         .attr('fill', 'none')
         .style("opacity", 0);
 
-    // function onMouseOver(e, d){
-    //   d3.select(this).transition()
-    //     .duration(300)
-    //     .attr("r", 12)
-    //     .attr("fill", "pink");
+    function onMouseOver(e, d){
+      d3.select(this).transition()
+        .duration(300)
+        .attr("r", 12)
+        .attr("fill", "pink");
 
-    //     tooltip.transition()
-    //     .duration(300)
-    //     .style("opacity", 1);
+      tooltip.transition()
+        .duration(300)
+        .style("opacity", 1);
 
-    //     tooltip.html("Terminal: " + d.terminal_name)
-    //     .style("left", (d3.pointer(this)[0] + 10) + "px")     
-    //     .style("top",  (d3.pointer(this)[1]) + "px" );
-    // }
+      tooltip.html("Terminal: " + d.terminal)
+        .style("left", (d3.pointer(this)[0] + 10) + "px")
+        .style("top",  (d3.pointer(this)[1]) + "px" );
+    }
 
-    // function onMouseOut() {
-    //   d3.select(this).transition()
-    //   .duration(300)
-    //   .attr("r", 5)
-    //   .attr("fill", "red");
+    function onMouseOut() {
+      d3.select(this).transition()
+        .duration(300)
+        .attr("r", 5)
+        .attr("fill", "red");
 
-    // tooltip.transition()
-      //   .duration(300)
-      //   .style("opacity", 0);
-    // }
+      tooltip.transition()
+        .duration(300)
+        .style("opacity", 0);
+    }
 
       function trajectoryStyle(feature) {
         return {
