@@ -197,24 +197,30 @@ function leafletMap() {
         .style("opacity", 0);
     }
 
-      function trajectoryStyle(feature) {
-        return {
-            strokeWidth: 0.5,
-            opacity: 0
-            // className:"vessel-trajectories"
-        };
-      }
+    // function trajectoryStyle(feature) {
+    //   return {
+    //       strokeWidth: 0.5,
+    //       opacity: 0
+    //       // className:"vessel-trajectories"
+    //   };
+    // }
 
-      vesselTrajectoriesLayer = L
-         .geoJSON(traj.features, {
-              style: trajectoryStyle,
-              // onEachFeature: onEachFeature
-            }
-        ).addTo(map);
+    // set initial vesselTrajectories layer with empty geojson features
+    vesselTrajectoriesLayer = L
+       // .geoJSON(traj.features, {
+       //      style: trajectoryStyle,
+       //      // onEachFeature: onEachFeature
+       //    }
+      .geoJSON([], {
+            // style: trajectoryStyle,
+            // onEachFeature: onEachFeature
+          }
+      ).addTo(map);
 
-      map.fitBounds(vesselTrajectoriesLayer.getBounds());
+    // map.fitBounds(vesselTrajectoriesLayer.getBounds());
 
-      layerControl.addOverlay(vesselTrajectoriesLayer, "Vessel Trajectories");
+    layerControl
+      .addOverlay(vesselTrajectoriesLayer, "Vessel Trajectories");
 
     // let legend = L
     //   .control({position: 'bottomright'});
@@ -302,6 +308,7 @@ function leafletMap() {
         .style("opacity", 1)
     }
 
+    // only update vessel trajectories if data was for a vessel_mmsi
     if (selectedData.some(e => e.hasOwnProperty('vessel_mmsi'))) {
 
       //TODO clear trajectories from map
@@ -314,15 +321,15 @@ function leafletMap() {
 
       geojson.features = geojson.features
         .filter(item => {
-          if(
-              selectedData
-                .map(data => data.vessel_mmsi)
-                .includes(item.properties.vessel_mmsi)
-          ){
+          if(selectedData
+              .map(data => data.vessel_mmsi)
+              .includes(item.properties.vessel_mmsi)){
+
             return item;
           }
         })
 
+      // TODO get vessel names from vessels/api lookup for the legend
 
       // let vesselNames = data['timestamped_trajectory'].features
       //   .map((feature, i) =>
@@ -348,8 +355,8 @@ function leafletMap() {
       let color = d3
         .scaleOrdinal(d3.schemeSet3)
         .domain(
-            selectedData
-              .map(data => data.vessel_mmsi)
+          selectedData
+            .map(data => data.vessel_mmsi)
         )
 
       function trajectoryStyle(feature) {
@@ -362,16 +369,18 @@ function leafletMap() {
         };
       }
 
-      vesselTrajectoriesLayer = L
+      // vesselTrajectoriesLayer = L
+      L
          .geoJSON(geojson.features, {
               style: trajectoryStyle,
               // onEachFeature: onEachFeature
             }
-        ).addTo(map);
+        // ).addTo(map);
+        ).addTo(vesselTrajectoriesLayer);
 
       // map.fitBounds(vesselTrajectoriesLayer.getBounds());
 
-      layerControl.addOverlay(vesselTrajectoriesLayer, "Vessel Trajectories");
+      // layerControl.addOverlay(vesselTrajectoriesLayer, "Vessel Trajectories");
     }
   };
 
