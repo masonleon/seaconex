@@ -203,8 +203,8 @@ function leafletMap() {
 
       tooltip
         .html(
-          "Terminal: " + d.terminal_name + "<br/>" +
-          "Address: " + d.terminal_address
+          "Terminal: " + d.properties.terminal_name + "<br/>" +
+          "Address: " + d.properties.terminal_address
         )
         // .transition()
         // .duration(300)
