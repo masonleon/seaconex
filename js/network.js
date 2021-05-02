@@ -157,8 +157,8 @@ function network() {
 
       tooltip
         .html(
-            "Terminal: " + d.terminal_name + "<br/>" +
-            "Address: " + d.terminal_address
+          "Terminal: " + d.terminal_name + "<br/>" +
+          "Address: " + d.terminal_address
         )
         .transition()
         .duration(300)

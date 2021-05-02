@@ -2,11 +2,57 @@
   width: 100%;
 }
 
+circle.point-terminal-facility {
+  fill: #0000FF;
+  /*fill: red;*/
+  /*stroke: #000;*/
+  /*stroke-width: 1;*/
+}
+
+circle.point-terminal-facility.mouseover {
+  fill: red;
+  /*fill: pink;*/
+  /*stroke: red;*/
+  /*opacity: .5;*/
+}
+
 /* Style for selected marks (circles) in leaflet*/
 circle.point-terminal-facility.selected {
   fill: pink;
   stroke: red;
   opacity: .5;
+}
+
+div.point-terminal-selector-tooltip {
+  position: absolute;
+  display: none;
+  min-width: 30px;
+  max-width: 900px;
+  border-radius: 4px;
+  height: auto;
+  background: rgba(250,250,250, 0.9);
+  border: 1px solid #DDD;
+  padding: 4px 8px;
+  font-size: .85rem;
+  text-align: left;
+  z-index: 1000;
+
+  /* position: absolute;*/
+  /*background-color: white;*/
+  /*max-width: 100px;*/
+  /*height: auto;*/
+  /*padding: 1px;*/
+  /*border-style: solid;*/
+  /*border-radius: 4px;*/
+  /*border-width: 1px;*/
+  /*box-shadow: 3px 3px 10px rgba(0, 0, 0, .5);*/
+  /*pointer-events: none;*/
+}
+
+path.link-edge-searoute {
+  stroke: red;
+  fill: none;
+  opacity: 0;
 }
 
 /* Leaflet Map Legend*/
@@ -28,15 +74,7 @@ circle.point-terminal-facility.selected {
   opacity: 0.7;
 }
 
-div.tooltip {
-  position: absolute;
-  background-color: white;
-  max-width: 100px;
-  height: auto;
-  padding: 1px;
-  border-style: solid;
-  border-radius: 4px;
-  border-width: 1px;
-  box-shadow: 3px 3px 10px rgba(0, 0, 0, .5);
-  pointer-events: none;
-}
+
+
+
+

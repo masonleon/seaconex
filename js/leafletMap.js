@@ -100,11 +100,15 @@ function leafletMap() {
     // layerControl
     //   .addOverlay(overlay, "D3");
 
-    let tooltip = d3.select(selector)
+    // let tooltip = d3.select(selector)
+    //   .append("div")
+    //   .attr("class", "tooltip")
+    //   .style('font-size', '10px')
+      // .style("opacity", 0);
+
+     let tooltip = d3.select("body")
       .append("div")
-      .attr("class", "tooltip")
-      .style('font-size', '10px')
-      .style("opacity", 0);
+      .attr("class", "point-terminal-selector-tooltip")
 
     // Use Leaflets projection API for drawing svg path (creates a stream of projected points)
     let projectPoint = function(x, y) {
@@ -150,16 +154,13 @@ function leafletMap() {
       .data(data['terminals'].features)
       .enter()
         .append('circle')
-          .style("stroke", '#000')
-          .style("stroke-width", 1)
           .attr('class', 'point-terminal-facility')
           .attr('id', d => `${d.properties.terminal}`)
           .attr("cx", d => map.latLngToLayerPoint([d.geometry.coordinates[1],d.geometry.coordinates[0]]).x)
           .attr("cy", d => map.latLngToLayerPoint([d.geometry.coordinates[1],d.geometry.coordinates[0]]).y)
           .attr("r", 5)
-          .attr("fill", "red")
-        .on("mouseover", onMouseOver)
-        .on("mouseout", onMouseOut);
+        .on("mouseover", mouseOver)
+        .on("mouseout", mouseOut);
 
     selectableElements = terminals;
 
@@ -176,35 +177,65 @@ function leafletMap() {
         .attr("d", pathCreator)
         .attr('class', 'link-edge-searoute')
         .attr('id', d => `${d.properties.transport_edge_no}`)
-        .attr('stroke', 'red')
         // .attr('marker-end', 'url(#end)')
-        .attr('fill', 'none')
-        .style("opacity", 0);
 
-    function onMouseOver(e, d){
-      d3.select(this).transition()
+    function mouseOver(e, d){
+      //  d3.select(this)
+      //   .transition()
+      //   .duration(300)
+      //   .attr("r", 12)
+      //   // .classed('mouseover', true);
+      //   .attr('class', 'point-terminal-facility mouseover');
+      //
+      // // tooltip.transition()
+      // //   .duration(300)
+      // //   .style("opacity", 1);
+      //
+      // // tooltip.html("Terminal: " + d.terminal)
+      //   // .style("left", (d3.pointer(this)[0] + 10) + "px")
+      //   // .style("top",  (d3.pointer(this)[1]) + "px" );
+
+       d3.select(this)
+        .classed('mouseover', true)
+        .transition()
         .duration(300)
         .attr("r", 12)
-        .attr("fill", "pink");
 
-      tooltip.transition()
-        .duration(300)
-        .style("opacity", 1);
-
-      tooltip.html("Terminal: " + d.terminal)
-        .style("left", (d3.pointer(this)[0] + 10) + "px")
-        .style("top",  (d3.pointer(this)[1]) + "px" );
+      tooltip
+        .html(
+          "Terminal: " + d.terminal_name + "<br/>" +
+          "Address: " + d.terminal_address
+        )
+        // .transition()
+        // .duration(300)
+        .style("left", (e.pageX + 10) + "px")
+        .style("top",  (e.pageY - 10) + "px" )
+        .style("display", "block")
+      // .style("display", "inline");
     }
 
-    function onMouseOut() {
-      d3.select(this).transition()
-        .duration(300)
-        .attr("r", 5)
-        .attr("fill", "red");
+    function mouseOut() {
+      //  d3.select(this)
+      //   .transition()
+      //   .duration(300)
+      //   .attr("r", 5)
+      //   // .classed('mouseover', false)
+      //   .attr('class', 'point-terminal-facility');
+      //
+      // // tooltip.transition()
+      // //   .duration(300)
+      // //   .style("opacity", 0);
 
-      tooltip.transition()
+      d3.select(this)
+        .classed('mouseover', false)
+        .transition()
         .duration(300)
-        .style("opacity", 0);
+        .attr("r", 4)
+
+      tooltip
+        // .transition()
+        // .duration(300)
+        .style("display", "none")
     }
 
     // function trajectoryStyle(feature) {
