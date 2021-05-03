@@ -91,7 +91,8 @@ function leafletMap() {
       );
 
     let svg = overlay.select('svg')
-      .attr("pointer-events", "auto");
+      .attr("pointer-events", "auto")
+      .style("cursor", "crosshair");
 
     let g = svg.append('g')
       .attr('class', 'leaflet-zoom-hide');
@@ -100,15 +101,9 @@ function leafletMap() {
     // layerControl
     //   .addOverlay(overlay, "D3");
 
-    // let tooltip = d3.select(selector)
-    //   .append("div")
-    //   .attr("class", "tooltip")
-    //   .style('font-size', '10px')
-      // .style("opacity", 0);
-
      let tooltip = d3.select("body")
       .append("div")
-      .attr("class", "point-terminal-selector-tooltip")
+        .attr("class", "point-terminal-selector-tooltip")
 
     // Use Leaflets projection API for drawing svg path (creates a stream of projected points)
     let projectPoint = function(x, y) {
@@ -155,51 +150,32 @@ function leafletMap() {
       .enter()
         .append('circle')
           .attr('class', 'point-terminal-facility')
-          .attr('id', d => `${d.properties.terminal}`)
+          // .attr('id', d => `${d.properties.terminal}`)
+          .attr('terminal', d => `${d.properties.terminal}`)
           .attr("cx", d => map.latLngToLayerPoint([d.geometry.coordinates[1],d.geometry.coordinates[0]]).x)
           .attr("cy", d => map.latLngToLayerPoint([d.geometry.coordinates[1],d.geometry.coordinates[0]]).y)
-          .attr("r", 5)
+          .attr("r", 8)
         .on("mouseover", mouseOver)
         .on("mouseout", mouseOut);
 
     selectableElements = terminals;
 
-  //   let myStyle = {
-  //     "color": "red",
-  //     "opacity": 0.65,
-  //     "stroke-width": 1
-  // };
-
     let searouteEdges = g.selectAll('link')
       .data(data['searoute_edges'].features)
       .enter()
         .append("path")
-        .attr("d", pathCreator)
-        .attr('class', 'link-edge-searoute')
-        .attr('id', d => `${d.properties.transport_edge_no}`)
-        // .attr('marker-end', 'url(#end)')
+          .attr("d", pathCreator)
+          .attr('class', 'link-edge-searoute')
+          .attr('id', d => `${d.properties.transport_edge_no}`)
+          // .attr('marker-end', 'url(#end)')
 
     function mouseOver(e, d){
-      //  d3.select(this)
-      //   .transition()
-      //   .duration(300)
-      //   .attr("r", 12)
-      //   // .classed('mouseover', true);
-      //   .attr('class', 'point-terminal-facility mouseover');
-      //
-      // // tooltip.transition()
-      // //   .duration(300)
-      // //   .style("opacity", 1);
-      //
-      // // tooltip.html("Terminal: " + d.terminal)
-      //   // .style("left", (d3.pointer(this)[0] + 10) + "px")
-      //   // .style("top",  (d3.pointer(this)[1]) + "px" );
-
        d3.select(this)
         .classed('mouseover', true)
         .transition()
         .duration(300)
-        .attr("r", 12)
+        .attr("r", 15)
+        // .attr('class', 'point-terminal-facility mouseover');
 
       tooltip
         .html(
@@ -209,28 +185,21 @@ function leafletMap() {
         // .transition()
         // .duration(300)
         .style("left", (e.pageX + 10) + "px")
-        .style("top",  (e.pageY - 10) + "px" )
+        .style("top",  (e.pageY - 10) + "px")
+        // .style("left", (d3.pointer(this)[0] + 10) + "px")
+        // .style("top",  (d3.pointer(this)[1]) + "px" )
         .style("display", "block")
       // .style("display", "inline");
+      // .style("opacity", 1)
     }
 
     function mouseOut() {
-      //  d3.select(this)
-      //   .transition()
-      //   .duration(300)
-      //   .attr("r", 5)
-      //   // .classed('mouseover', false)
-      //   .attr('class', 'point-terminal-facility');
-      //
-      // // tooltip.transition()
-      // //   .duration(300)
-      // //   .style("opacity", 0);
-
       d3.select(this)
         .classed('mouseover', false)
         .transition()
         .duration(300)
-        .attr("r", 4)
+        .attr("r", 8)
+        // .attr('class', 'point-terminal-facility');
 
       tooltip
         // .transition()
@@ -326,13 +295,11 @@ function leafletMap() {
   chart.updateSelection = function (selectedData) {
     if (!arguments.length) return;
 
-    console.log(selectedData)
-
     // only update searoute edges if data was for a carrier
     if (selectedData.some(e => e.hasOwnProperty('carrier'))) {
       // chart.clearSelection();
       d3.selectAll('.link-edge-searoute')
-        .style("opacity", 0);
+        .classed('selected', false);
 
       // Select the edges
       d3.selectAll('.link-edge-searoute')
@@ -348,7 +315,32 @@ function leafletMap() {
           )
           .includes(item.properties.transport_edge_no)
         )
-        .style("opacity", 1)
+        .classed('selected', true);
+
+      // selectableElements
+      //   // clear all selected nodes
+      //   .classed('selected', false);
+
+      d3.selectAll('.point-terminal-facility')
+        // clear all selected nodes
+        .classed('selected', false);
+
+      // show a node if it is serviced by a selected carrier
+      // selectableElements
+      d3.selectAll('.point-terminal-facility')
+        .filter(item => selectedData
+          .map(selected =>
+              selected.lookup.terminal
+          )
+          .reduce((prev, curr) =>
+              prev.concat(curr), []
+          )
+          .filter((item, i, arr) =>
+              arr.indexOf(item) === i
+          )
+          .includes(item.properties.terminal)
+        )
+        .classed('selected', d => d)
     }
 
     // only update vessel trajectories if data was for a vessel_mmsi
@@ -363,8 +355,6 @@ function leafletMap() {
       console.log(v)
 
       let geojson_features = traj.features
-
-      // geojson.features = geojson.features
         .filter(item => {
           if(selectedData
               .map(data => data.vessel_mmsi)
@@ -431,10 +421,15 @@ function leafletMap() {
 
   // Deselect everything
   chart.clearSelection = function (_) {
+    d3.selectAll('.point-terminal-facility')
+      // clear all selected nodes
+      .classed('selected', false);
 
     d3.selectAll('.link-edge-searoute')
-      .style("opacity", 0);
+      // hide all selected edges
+      .classed('selected', false);
 
+    // clear trajectories on leaflet canvas
     vesselTrajectoriesLayer.clearLayers();
   }
 

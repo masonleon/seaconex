@@ -22,14 +22,18 @@ function network() {
   function chart(selector, data) {
     let svg = d3.select(selector)
       .append("svg")
-        .attr("height", height)
         .attr('preserveAspectRatio', 'xMidYMid meet') // this will scale your visualization according to the size of its parent element and the page.
+        .attr("height", height)
         .attr('width', '100%') // this is now required by Chrome to ensure the SVG shows up at all
-        .style('background-color', '#ccc') // change the background color to light gray
-        .attr('viewBox', [0, 0, width + margin.left + margin.right,
-          height + margin.top + margin.bottom].join(' '))
-        //  .attr('viewBox', [0, 0, 960, 600].join(' '))
-        .style("cursor", "crosshair");
+        .attr('viewBox', [
+            0,
+            0,
+            width + margin.left + margin.right, //960
+            height + margin.top + margin.bottom //600
+          ].join(' '))
+        .style("cursor", "crosshair")
+        .style('background-color', '#ccc'); // change the background color to light gray
+
 
        // //http://www.d3noob.org/2013/01/adding-title-to-your-d3js-graph.html
        // svg.append("text")
@@ -123,7 +127,7 @@ function network() {
       .join("circle")
       .attr('class', 'node-terminal-facility')
       .attr('terminal', d => `${d.terminal}`)
-      .attr("r", 5)
+      .attr("r", 8)
       .on("mouseover", mouseOver)
       .on("mouseout", mouseOut)
       .call(
@@ -153,15 +157,15 @@ function network() {
         .classed('mouseover', true)
         .transition()
         .duration(300)
-        .attr("r", 12)
+        .attr("r", 15)
 
       tooltip
         .html(
           "Terminal: " + d.terminal_name + "<br/>" +
           "Address: " + d.terminal_address
         )
-        .transition()
-        .duration(300)
+        // .transition()
+        // .duration(300)
         .style("left", (e.pageX + 10) + "px")
         .style("top",  (e.pageY - 10) + "px" )
         .style("display", "block")
@@ -173,11 +177,11 @@ function network() {
         .classed('mouseover', false)
         .transition()
         .duration(300)
-        .attr("r", 4)
+        .attr("r", 8)
 
       tooltip
-        .transition()
-        .duration(300)
+        // .transition()
+        // .duration(300)
         .style("display", "none")
     }
 
@@ -209,12 +213,12 @@ function network() {
       .append("text")
         .attr("x", width + size*1.2)
         .attr("y", function(d,i){ return 75 + i*(size+5) + (size/2)})
-        .style("fill", function(d){ return color(d)})
         .text(function(d){
            if ( d === 'E' ) return 'East';
            else return 'West';
           })
         .attr("text-anchor", "left")
+        .style("fill", function(d){ return color(d)})
         .style("alignment-baseline", "middle")
 
     // svg.call(brush);

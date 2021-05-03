@@ -70,16 +70,16 @@ function carrierFilter() {
         .classed('mouseover', true);
 
 
-      console.log(
-          data
-            .api_callback_lookup
-            .carrier
-            .find(record => record.carrier === "ICL")
-            .lookup
-            .service
-            .join(", ")
+      // console.log(
+      //     data
+      //       .api_callback_lookup
+      //       .carrier
+      //       .find(record => record.carrier === "ICL")
+      //       .lookup
+      //       .service
+      //       .join(", ")
+      // );
 
-      );
       tooltip
         .style("left", event.pageX + 18 + "px")
         .style("top", event.pageY + 18 + "px")

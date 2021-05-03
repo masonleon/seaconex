@@ -3,24 +3,27 @@
 }
 
 circle.point-terminal-facility {
-  fill: #0000FF;
-  /*fill: red;*/
-  /*stroke: #000;*/
-  /*stroke-width: 1;*/
+  stroke: #616161;
+  stroke-width: 2;
+  fill: white;
 }
 
 circle.point-terminal-facility.mouseover {
   fill: red;
-  /*fill: pink;*/
   /*stroke: red;*/
   /*opacity: .5;*/
 }
 
-/* Style for selected marks (circles) in leaflet*/
 circle.point-terminal-facility.selected {
   fill: pink;
   stroke: red;
   opacity: .5;
+}
+
+text.point-terminal-facility-label {
+  font-family: sans-serif;
+  font-size: 12px;
+  fill: black;
 }
 
 div.point-terminal-selector-tooltip {
@@ -50,9 +53,13 @@ div.point-terminal-selector-tooltip {
 }
 
 path.link-edge-searoute {
+  opacity: 0;
+}
+
+path.link-edge-searoute.selected {
   stroke: red;
   fill: none;
-  opacity: 0;
+  opacity: 1;
 }
 
 /* Leaflet Map Legend*/
