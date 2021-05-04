@@ -22,7 +22,7 @@ function leafletMap() {
     // deep copy trajectories so they are accessible in chart.updateSelection()
     //https://medium.com/@gamshan001/javascript-deep-copy-for-array-and-object-97e3d4bc401a
     traj = JSON.parse(
-        JSON.stringify(data['timestamped_trajectory'])
+      JSON.stringify(data['timestamped_trajectory'])
     );
 
     let container = d3.select(selector)
@@ -150,15 +150,31 @@ function leafletMap() {
       .enter()
         .append('circle')
           .attr('class', 'point-terminal-facility')
-          // .attr('id', d => `${d.properties.terminal}`)
-          .attr('terminal', d => `${d.properties.terminal}`)
-          .attr("cx", d => map.latLngToLayerPoint([d.geometry.coordinates[1],d.geometry.coordinates[0]]).x)
-          .attr("cy", d => map.latLngToLayerPoint([d.geometry.coordinates[1],d.geometry.coordinates[0]]).y)
-          .attr("r", 8)
-        .on("mouseover", mouseOver)
-        .on("mouseout", mouseOut);
+          .attr('terminal', d =>
+              `${d.properties.terminal}`)
+          .attr("cx", d =>
+            map
+              .latLngToLayerPoint(
+                [
+                  d.geometry.coordinates[1],
+                  d.geometry.coordinates[0]
+                ])
+              .x)
+          .attr("cy", d =>
+            map
+              .latLngToLayerPoint(
+                [
+                  d.geometry.coordinates[1],
+                  d.geometry.coordinates[0]
+                ])
+              .y)
+          .attr("r", 8);
 
     selectableElements = terminals;
+
+    selectableElements
+      .on("mouseover", mouseOver)
+      .on("mouseout", mouseOut);
 
     let searouteEdges = g.selectAll('link')
       .data(data['searoute_edges'].features)
@@ -166,44 +182,39 @@ function leafletMap() {
         .append("path")
           .attr("d", pathCreator)
           .attr('class', 'link-edge-searoute')
-          .attr('id', d => `${d.properties.transport_edge_no}`)
+          .attr('id', d =>
+            `${d.properties.transport_edge_no}`
+          );
           // .attr('marker-end', 'url(#end)')
 
-    function mouseOver(e, d){
+    function mouseOver(event, d){
        d3.select(this)
         .classed('mouseover', true)
         .transition()
         .duration(300)
-        .attr("r", 15)
-        // .attr('class', 'point-terminal-facility mouseover');
+          .attr("r", 15)
 
       tooltip
-        .html(
-          "Terminal: " + d.properties.terminal_name + "<br/>" +
-          "Address: " + d.properties.terminal_address
-        )
-        // .transition()
-        // .duration(300)
-        .style("left", (e.pageX + 10) + "px")
-        .style("top",  (e.pageY - 10) + "px")
-        // .style("left", (d3.pointer(this)[0] + 10) + "px")
-        // .style("top",  (d3.pointer(this)[1]) + "px" )
+        .style("left", (event.pageX + 10) + "px")
+        .style("top",  (event.pageY - 10) + "px")
         .style("display", "block")
-      // .style("display", "inline");
-      // .style("opacity", 1)
+      // .style("display", "inline")
+        .html(
+          `
+            <strong>Terminal: </strong>${d.properties.terminal_name}</br>
+            <strong>Address: </strong>${d.properties.terminal_address}</br>     
+          `
+        );
     }
 
-    function mouseOut() {
+    function mouseOut(event, d) {
       d3.select(this)
         .classed('mouseover', false)
         .transition()
         .duration(300)
-        .attr("r", 8)
-        // .attr('class', 'point-terminal-facility');
+          .attr("r", 8)
 
       tooltip
-        // .transition()
-        // .duration(300)
         .style("display", "none")
     }
 
@@ -317,14 +328,13 @@ function leafletMap() {
         )
         .classed('selected', true);
 
+      //TODO selectableElements
       // selectableElements
-      //   // clear all selected nodes
-      //   .classed('selected', false);
-
       d3.selectAll('.point-terminal-facility')
         // clear all selected nodes
         .classed('selected', false);
 
+      //TODO selectableElements
       // show a node if it is serviced by a selected carrier
       // selectableElements
       d3.selectAll('.point-terminal-facility')

@@ -119,45 +119,49 @@ function network() {
       .attr('lane', d => `${d.lane}`)
       .attr('carrier', d => `${d.carrier}`)
       .attr("stroke", d => color(d.lane))
-      .attr("marker-end", d => `url(${new URL(`#arrow-${d.lane}`, location)})`)
+      .attr("marker-end", d =>
+          `url(${new URL(`#arrow-${d.lane}`, location)})`)
 
     let node = svg.append("g")
       .selectAll("circle")
       .data(graph.nodes)
       .join("circle")
-      .attr('class', 'node-terminal-facility')
-      .attr('terminal', d => `${d.terminal}`)
-      .attr("r", 8)
-      .on("mouseover", mouseOver)
-      .on("mouseout", mouseOut)
-      .call(
-        d3.drag()
-          .on("start", dragstarted)
-          .on("drag", dragged)
-          .on("end", dragended)
-      );
+        .attr('class', 'node-terminal-facility')
+        .attr('terminal', d =>
+            `${d.terminal}`)
+        .attr("r", 8)
+        .call(
+          d3.drag()
+            .on("start", dragstarted)
+            .on("drag", dragged)
+            .on("end", dragended)
+        );
 
     selectableElements = node;
+
+    selectableElements
+      .on("mouseover", mouseOver)
+      .on("mouseout", mouseOut);
 
     let labels = svg.selectAll("text")
       .data(graph.nodes)
       .enter()
       .append("text")
-      .attr("class", "node-terminal-facility-label")
-      .text(d => {
-        return d.terminal;
-      });
+        .attr("class", "node-terminal-facility-label")
+        .text(d =>
+          `${d.terminal}`
+        );
 
     let tooltip = d3.select(selector)
       .append("div")
-      .attr("class", "node-terminal-facility-tooltip")
+        .attr("class", "node-terminal-facility-tooltip")
 
-    function mouseOver(e, d) {
+    function mouseOver(event, d) {
       d3.select(this)
         .classed('mouseover', true)
         .transition()
         .duration(300)
-        .attr("r", 15)
+          .attr("r", 15)
 
       tooltip
         .html(
@@ -166,18 +170,18 @@ function network() {
         )
         // .transition()
         // .duration(300)
-        .style("left", (e.pageX + 10) + "px")
-        .style("top",  (e.pageY - 10) + "px" )
+        .style("left", (event.pageX + 10) + "px")
+        .style("top",  (event.pageY - 10) + "px" )
         .style("display", "block")
       // .style("display", "inline");
     }
 
-    function mouseOut() {
+    function mouseOut(event, d) {
       d3.select(this)
         .classed('mouseover', false)
         .transition()
         .duration(300)
-        .attr("r", 8)
+          .attr("r", 8)
 
       tooltip
         // .transition()
@@ -189,8 +193,8 @@ function network() {
       // .attr("class", "vis-network-legend")
       .attr("x", width-10)
       .attr("y", 50)
-      .text("Trade Lanes")
       .attr("text-anchor", "left")
+      .text("Trade Lanes")
       .style("alignment-baseline", "middle");
 
     // Add a legend
