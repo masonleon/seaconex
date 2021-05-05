@@ -10,6 +10,7 @@ function leafletMap() {
   width = 100,
   selectableElements = d3.select(null),
   dispatcher,
+
   layerControl,
   map,
   vesselTrajectoriesLayer,
@@ -17,12 +18,12 @@ function leafletMap() {
   vesselTrajectoryColor,
   vesselColor;
 
-  //http://bl.ocks.org/nitaku/047a77e256de17f25e72
-  //https://codepen.io/tforward/pen/ZPeZxd?editors=1010
+  // http://bl.ocks.org/nitaku/047a77e256de17f25e72
+  // https://codepen.io/tforward/pen/ZPeZxd?editors=1010
   function chart(selector, data) {
 
     // deep copy trajectories so they are accessible in chart.updateSelection()
-    //https://medium.com/@gamshan001/javascript-deep-copy-for-array-and-object-97e3d4bc401a
+    // https://medium.com/@gamshan001/javascript-deep-copy-for-array-and-object-97e3d4bc401a
     traj = JSON.parse(
       JSON.stringify(data['timestamped_trajectory']));
 
@@ -142,66 +143,15 @@ function leafletMap() {
       .style("width", width + '%')
       .style("height", height + "px")
 
-    let esriWorldImageryLayer = L
-      .tileLayer(
-        'https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}', {
-        attribution: 'Esri, Maxar, GeoEye, Earthstar Geographics, CNES/Airbus DS, USDA, USGS, AeroGRID, IGN, and the GIS User Community '
-      });
+    let initL = initLeaflet(selector);
 
-    let noaaEncLayer = L
-      .tileLayer(
-        'https://tileservice.charts.noaa.gov/tiles/50000_1/{z}/{x}/{y}.png', {
-        attribution: 'NOAA'
-      });
+    map = initL.map;
+    layerControl = initL.layerControl;
 
-    map = L
-      .map(selector.slice(1), {
-        center: [30, 0],
-        preferCanvas: true,
-        updateWhenZooming: false,
-        updateWhenIdle: true,
-        zoom: 3,
-        layers: [
-          esriWorldImageryLayer,
-          // noaaEncLayer
-        ],
-      });
-
-    let baseMaps = {
-      // 'Noaa_EncTileService': noaaEncLayer,
-      'Esri_WorldImagery': esriWorldImageryLayer,
-    };
-
-    let overlayMaps = {
-      'Noaa_EncTileService': noaaEncLayer,
-      // 'Esri_WorldImagery': esriWorldImageryLayer,
-    };
-
-    let controlOptions = {
-      collapsed:true
-    };
-
-    //https://gis.stackexchange.com/questions/64385/making-leaflet-control-open-by-default
-    layerControl = L
-      .control
-      .layers(
-        baseMaps,
-        overlayMaps,
-        controlOptions)
-      .addTo(
-        map);
-
-    L.svg({
-        clickable: true
-      })
-      .addTo(
-        map);
-
-    let overlay = d3
-      .select(
-        map
-          .getPanes()
-          .overlayPane);
+    let overlay = d3.select(
+      map.getPanes()
+        .overlayPane
+    );
 
     let svg = overlay.select('svg')
       .attr("pointer-events", "auto")
@@ -213,8 +163,7 @@ function leafletMap() {
     //TODO add svg to layercontrol
     // layerControl
     //   .addOverlay(overlay, "D3");
-
-     let tooltip = d3.select("body")
+    let tooltip = d3.select("body")
       .append("div")
         .attr("class", "point-terminal-selector-tooltip")
 
@@ -258,30 +207,7 @@ function leafletMap() {
     //     }
     // }).addTo(map);
 
-    let terminals = g.selectAll("circle")
-      .data(data['terminals'].features)
-      .enter()
-        .append('circle')
-          .attr('class', 'point-terminal-facility')
-          .attr('terminal', d =>
-              `${d.properties.terminal}`)
-          .attr("cx", d =>
-            map
-              .latLngToLayerPoint(
-                [
-                  d.geometry.coordinates[1],
-                  d.geometry.coordinates[0]
-                ])
-              .x)
-          .attr("cy", d =>
-            map
-              .latLngToLayerPoint(
-                [
-                  d.geometry.coordinates[1],
-                  d.geometry.coordinates[0]
-                ])
-              .y)
-          .attr("r", 8);
+    let terminals = initSvgOverlayTerminals(data, g, map);
 
     selectableElements = terminals;
 
@@ -289,16 +215,7 @@ function leafletMap() {
       .on("mouseover", mouseOver)
       .on("mouseout", mouseOut);
 
-    let searouteEdges = g.selectAll('link')
-      .data(data['searoute_edges'].features)
-      .enter()
-        .append("path")
-          .attr("d", pathCreator)
-          .attr('class', 'link-edge-searoute')
-          .attr('id', d =>
-            `${d.properties.transport_edge_no}`
-          );
-          // .attr('marker-end', 'url(#end)')
+    let searouteEdges = initSvgOverlaySearouteEdges(data, g, map, pathCreator);
 
     function mouseOver(event, d){
        d3.select(this)
@@ -344,14 +261,15 @@ function leafletMap() {
     // set initial vesselTrajectories layer with empty geojson features
     vesselTrajectoriesLayer = L
       .geoJSON(
-  [],
-      // traj.features,
-  {
-      // style: trajectoryStyle,
-      // onEachFeature: onEachFeature
-      })
-      .addTo(
-        map);
+        [],
+        // traj.features,
+        {
+          // style: trajectoryStyle,
+          // onEachFeature: onEachFeature
+        })
+        .addTo(
+          map
+        );
 
     // map.fitBounds(vesselTrajectoriesLayer.getBounds());
 
@@ -360,7 +278,11 @@ function leafletMap() {
       .addOverlay(vesselTrajectoriesLayer, "Vessel Trajectories");
 
     let legend = L
-      .control({position: 'bottomright'});
+      .control(
+      {
+          position: 'bottomright'
+        }
+      );
 
     //TODO legend
 
@@ -423,6 +345,128 @@ function leafletMap() {
     map.on('zoomend', onZoom)
 
     return chart;
+  }
+
+  const initLeaflet = (selector) => {
+    let esriWorldImageryLayer = L
+      .tileLayer(
+        'https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}',
+          {
+          attribution: 'Esri, Maxar, GeoEye, Earthstar Geographics, CNES/Airbus DS, USDA, USGS, AeroGRID, IGN, and the GIS User Community '
+        }
+      );
+
+    let noaaEncLayer = L
+      .tileLayer(
+        'https://tileservice.charts.noaa.gov/tiles/50000_1/{z}/{x}/{y}.png',
+          {
+          attribution: 'NOAA'
+        }
+      );
+
+    let map = L
+      .map(
+        selector.slice(1),
+        {
+          center: [30, 0],
+          preferCanvas: true,
+          updateWhenZooming: false,
+          updateWhenIdle: true,
+          zoom: 3,
+          layers: [
+            esriWorldImageryLayer,
+            // noaaEncLayer
+          ],
+        }
+      );
+
+    let baseMaps = {
+      // 'Noaa_EncTileService': noaaEncLayer,
+      'Esri_WorldImagery': esriWorldImageryLayer,
+    };
+
+    let overlayMaps = {
+      'Noaa_EncTileService': noaaEncLayer,
+      // 'Esri_WorldImagery': esriWorldImageryLayer,
+    };
+
+    //https://gis.stackexchange.com/questions/64385/making-leaflet-control-open-by-default
+    let layerControl = L
+      .control
+      .layers(
+        baseMaps,
+        overlayMaps,
+        controlOptions = {
+          collapsed: false
+        }
+      )
+      .addTo(
+        map
+      );
+
+    L
+    .svg(
+      {
+        clickable: true
+      }
+    )
+    .addTo(
+      map
+    );
+
+    return {
+      map: map,
+      layerControl: layerControl
+    }
+  }
+
+  const initSvgOverlayTerminals = (data, g, map) => {
+    let terminals = g.selectAll("circle")
+      .data(data['terminals'].features)
+      .enter()
+        .append('circle')
+          .attr('class', 'point-terminal-facility')
+          .attr('terminal', d =>
+            `${d.properties.terminal}`
+          )
+          .attr("cx", d =>
+            map
+            .latLngToLayerPoint(
+              [
+                d.geometry.coordinates[1],
+                d.geometry.coordinates[0]
+              ]
+            )
+            .x
+          )
+          .attr("cy", d =>
+            map
+            .latLngToLayerPoint(
+              [
+                d.geometry.coordinates[1],
+                d.geometry.coordinates[0]
+              ]
+            )
+            .y
+          )
+          .attr("r", 8);
+
+    return terminals;
+  }
+
+  const initSvgOverlaySearouteEdges = (data, g, map, pathCreator) => {
+    let searouteEdges = g.selectAll('link')
+      .data(data['searoute_edges'].features)
+      .enter()
+        .append("path")
+          .attr("d", pathCreator)
+          .attr('class', 'link-edge-searoute')
+          .attr('id', d =>
+            `${d.properties.transport_edge_no}`
+          );
+          // .attr('marker-end', 'url(#end)')
+
+    return searouteEdges;
   }
 
    // Gets or sets the dispatcher we use for selection events
