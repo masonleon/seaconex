@@ -69,15 +69,18 @@ function network() {
 
     let force = d3.forceSimulation(graph.nodes)
       .force("charge",
-          d3.forceManyBody()
-            .strength(-750))
+        d3.forceManyBody()
+          .strength(-750))
       .force("link",
-          d3.forceLink(graph.links)
-            .id(d => d.terminal)
-            .distance(100))
+        d3.forceLink(graph.links)
+          .id(d => d.terminal)
+          .distance(100))
       .force('center',
-          // d3.forceCenter(width / 2, (height + margin.top + margin.bottom) / 2))
-          d3.forceCenter((width + margin.left + margin.right) / 2, (height + margin.top + margin.bottom + 50) / 2))
+        d3.forceCenter(
+      //  (width / 2)
+      (width + margin.left + margin.right) / 2,
+      //  (height + margin.top + margin.bottom) / 2)
+      (height + margin.top + margin.bottom + 50) / 2))
       .force("x", d3.forceX())
       .force("y", d3.forceY())
       .alphaTarget(1);
@@ -89,16 +92,17 @@ function network() {
       .selectAll("marker")
       .data(lanes)
       .join("marker")
-      .attr("id", d => `arrow-${d}`)
-      .attr("viewBox", "0 -5 10 10")
-      .attr("refX", 15)
-      .attr("refY", -0.5)
-      .attr("markerWidth", 6)
-      .attr("markerHeight", 6)
-      .attr("orient", "auto")
+        .attr("id", d =>
+          `arrow-${d}`)
+        .attr("viewBox", "0 -5 10 10")
+        .attr("refX", 15)
+        .attr("refY", -0.5)
+        .attr("markerWidth", 6)
+        .attr("markerHeight", 6)
+        .attr("orient", "auto")
       .append("path")
-      .attr("fill", color)
-      .attr("d", "M0,-5L10,0L0,5");
+        .attr("fill", color)
+        .attr("d", "M0,-5L10,0L0,5");
 
     let link = svg.append("g")
       .attr("fill", "none")
@@ -106,20 +110,21 @@ function network() {
       .selectAll("path")
       .data(graph.links)
       .join("path")
-      .attr('class', 'link-edge-network')
-      // .attr("d", d => {
-      //   console.log([[d.source.x, d.source.y],[d.target.x, d.target.y]])
-      //   return d3.line().curve(d3.curveBasis)([[d.source.x, d.source.y],[d.target.x, d.target.y]])
-      // })
-      .attr("d", d => {
-        // console.log([[d.source.x, d.source.y],[d.target.x, d.target.y]])
-        return linkArc(d)
-      })
-      .attr('id', d => `${d.transport_edge_no}`)
-      .attr('lane', d => `${d.lane}`)
-      .attr('carrier', d => `${d.carrier}`)
-      .attr("stroke", d => color(d.lane))
-      .attr("marker-end", d =>
+        .attr('class', 'link-edge-network')
+        .attr("d", d => {
+          // console.log([[d.source.x, d.source.y],[d.target.x, d.target.y]])
+          // return d3.line().curve(d3.curveBasis)([[d.source.x, d.source.y],[d.target.x, d.target.y]])
+          return linkArc(d)
+        })
+        .attr('id', d =>
+          `${d.transport_edge_no}`)
+        .attr('lane', d =>
+          `${d.lane}`)
+        .attr('carrier', d =>
+          `${d.carrier}`)
+        .attr("stroke", d =>
+          color(d.lane))
+        .attr("marker-end", d =>
           `url(${new URL(`#arrow-${d.lane}`, location)})`)
 
     let node = svg.append("g")
@@ -128,7 +133,7 @@ function network() {
       .join("circle")
         .attr('class', 'node-terminal-facility')
         .attr('terminal', d =>
-            `${d.terminal}`)
+          `${d.terminal}`)
         .attr("r", 8)
         .call(
           d3.drag()
@@ -168,8 +173,6 @@ function network() {
           "Terminal: " + d.terminal_name + "<br/>" +
           "Address: " + d.terminal_address
         )
-        // .transition()
-        // .duration(300)
         .style("left", (event.pageX + 10) + "px")
         .style("top",  (event.pageY - 10) + "px" )
         .style("display", "block")
@@ -184,8 +187,6 @@ function network() {
           .attr("r", 8)
 
       tooltip
-        // .transition()
-        // .duration(300)
         .style("display", "none")
     }
 
@@ -216,13 +217,14 @@ function network() {
       .enter()
       .append("text")
         .attr("x", width + size*1.2)
-        .attr("y", function(d,i){ return 75 + i*(size+5) + (size/2)})
+        .attr("y", function(d,i){
+          return 75 + i*(size+5) + (size/2)})
         .text(function(d){
-           if ( d === 'E' ) return 'East';
-           else return 'West';
-          })
+          if ( d === 'E' ) return 'East';
+          else return 'West';})
         .attr("text-anchor", "left")
-        .style("fill", function(d){ return color(d)})
+        .style("fill", function(d){
+          return color(d)})
         .style("alignment-baseline", "middle")
 
     // svg.call(brush);
@@ -292,9 +294,9 @@ function network() {
 
       node
         .attr("cx", d =>
-            d.x = Math.max(10, Math.min(width - 10, d.x))) // Bounded force layout example from blocks
+          d.x = Math.max(10, Math.min(width - 10, d.x))) // Bounded force layout example from blocks
         .attr("cy", d =>
-            d.y = Math.max(10, Math.min(height - 10, d.y)));
+          d.y = Math.max(10, Math.min(height - 10, d.y)));
 
       labels
         .attr("transform", function (d) {
@@ -368,13 +370,13 @@ function network() {
       selectableElements
         .filter(item => selectedData
           .map(selected =>
-              selected.lookup.terminal
+            selected.lookup.terminal
           )
           .reduce((prev, curr) =>
-              prev.concat(curr), []
+            prev.concat(curr), []
           )
           .filter((item, i, arr) =>
-              arr.indexOf(item) === i
+            arr.indexOf(item) === i
           )
           .includes(item.terminal)
         )
@@ -383,18 +385,18 @@ function network() {
       // show an edge if it belongs to a selected carrier's service
       d3.selectAll('.link-edge-network')
         .filter(item => selectedData
-            .map(selected =>
-                selected.lookup.transport_edge_no
-            )
-            .reduce((prev, curr) =>
-                prev.concat(curr), []
-            )
-            .filter((item, i, arr) =>
-                arr.indexOf(item) === i
-            )
-            .includes(item.transport_edge_no)
+          .map(selected =>
+            selected.lookup.transport_edge_no
           )
-          .classed('selected', true);
+          .reduce((prev, curr) =>
+            prev.concat(curr), []
+          )
+          .filter((item, i, arr) =>
+            arr.indexOf(item) === i
+          )
+          .includes(item.transport_edge_no)
+        )
+        .classed('selected', true);
       }
     };
 

@@ -14,7 +14,8 @@ function leafletMap() {
   map,
   vesselTrajectoriesLayer,
   traj,
-  vesselTrajectoryColor
+  vesselTrajectoryColor,
+  vesselColor;
 
   //http://bl.ocks.org/nitaku/047a77e256de17f25e72
   //https://codepen.io/tforward/pen/ZPeZxd?editors=1010
@@ -39,17 +40,17 @@ function leafletMap() {
     // console.log(vesselTrajectoryColor.domain())
     // console.log(vesselTrajectoryColor.range())
 
-    let colorMap = {
-      "ACL": "#2C0D82",
-      "BCL": "#054087",
-      "BISL": "#F12A00",
-      "HLUS": "#F27300",
-      "ICL": "#FDAF00",
-      "SISL": "#108F41"
-    }
+    // let colorMap = {
+    //   "ACL": "#2C0D82",
+    //   "BCL": "#054087",
+    //   "BISL": "#F12A00",
+    //   "HLUS": "#F27300",
+    //   "ICL": "#FDAF00",
+    //   "SISL": "#108F41"
+    // }
 
-    let colorValues = Object.values(colorMap)
-    let colorKeys = Object.keys(colorMap)
+    // let colorValues = Object.values(colorMap)
+    // let colorKeys = Object.keys(colorMap)
 
     // let c =
     //   d3.scaleOrdinal()
@@ -108,7 +109,7 @@ function leafletMap() {
       }
     ]
 
-    let v = data
+    vesselColor = data
       .vessels
       .map(
         (
@@ -136,8 +137,6 @@ function leafletMap() {
           }
         )
       )
-
-    console.log(v)
 
     let container = d3.select(selector)
       .style("width", width + '%')
@@ -398,14 +397,22 @@ function leafletMap() {
     function onZoom () {
       terminals
         .attr("cx", d =>
-            map.latLngToLayerPoint(
-                [d.geometry.coordinates[1],d.geometry.coordinates[0]]
-            ).x
+          map
+          .latLngToLayerPoint(
+            [
+              d.geometry.coordinates[1],
+              d.geometry.coordinates[0]
+            ])
+          .x
         )
         .attr("cy", d =>
-            map.latLngToLayerPoint(
-                [d.geometry.coordinates[1],d.geometry.coordinates[0]]
-            ).y
+          map
+          .latLngToLayerPoint(
+            [
+              d.geometry.coordinates[1],
+              d.geometry.coordinates[0]
+            ])
+          .y
         );
 
       searouteEdges
@@ -529,21 +536,31 @@ function leafletMap() {
       //   max : dates[dates.length -1].toDateString()
       // }
 
-      let trajectoryColor = d3
-        .scaleOrdinal(d3.schemeSet3)
-        .domain(selectedData
-          .map(data =>
-            data.vessel_mmsi
+      // let trajectoryColor = d3
+      //   .scaleOrdinal(d3.schemeSet3)
+      //   .domain(selectedData
+      //     .map(data =>
+      //       data.vessel_mmsi
+      //     )
+      //   )
+
+      function trajectoryColor(vessel_mmsi){
+        let trajectoryColor = vesselColor
+          .find(record =>
+            record.vessel_mmsi === vessel_mmsi
           )
-        )
+
+        return trajectoryColor.brand_color;
+      }
 
       function trajectoryStyle(feature) {
         return {
           stroke: trajectoryColor(feature.properties.vessel_mmsi),
-          strokeWidth: 0.2,
+          // strokeWidth: 0.2,
+          strokeWidth: 10,
           color: trajectoryColor(feature.properties.vessel_mmsi),
-          opacity: 0.8
-          // className:"vessel-trajectories"
+          opacity: 0.8,
+          className:"vessel-trajectories"
         };
       }
 
