@@ -17,7 +17,8 @@ function leafletMap() {
   traj,
   // vesselTrajectoryColor,
   // vesselColor;
-  trajectoryLayerGroup;
+  trajectoryLayerGroup,
+  trajectoryState;
 
   // http://bl.ocks.org/nitaku/047a77e256de17f25e72
   // https://codepen.io/tforward/pen/ZPeZxd?editors=1010
@@ -64,6 +65,9 @@ function leafletMap() {
 
     map = initL.map;
     layerControl = initL.layerControl;
+    trajectoryLayerGroup = initL.trajectoryLayerGroup;
+
+    // trajectoryState = []
 
     let overlay = d3.select(
       map.getPanes()
@@ -168,6 +172,7 @@ function leafletMap() {
         .style("display", "none")
     }
 
+
     initCanvasOverlayTrajectory(data, map, layerControl, trajectoryLayerGroup);
 
     let legend = L
@@ -261,6 +266,7 @@ function leafletMap() {
         {
           center: [30, 0],
           preferCanvas: true,
+          // preferCanvas: false,
           updateWhenZooming: false,
           updateWhenIdle: true,
           zoom: 3,
@@ -305,9 +311,16 @@ function leafletMap() {
       map
     );
 
+   let trajectoryLayerGroup = L
+    .layerGroup()
+    .addTo(
+      map
+    );
+
     return {
       map: map,
-      layerControl: layerControl
+      layerControl: layerControl,
+      trajectoryLayerGroup: trajectoryLayerGroup
     }
   }
 
@@ -438,16 +451,54 @@ function leafletMap() {
           )
       )
 
+    // function getStyleSheet(sheetName) {
+    //   for (let i=0; i<document.styleSheets.length; i++) {
+    //     let sheet = document.styleSheets[i];
+    //
+    //     if (sheet.ownerNode.attributes.href.value === sheetName) return sheet;
+    //   }
+    // }
+
+    // function getStyle(className) {
+    //   let sheet = getStyleSheet("style.leafletMap.css");
+    //   let classes = sheet.rules || sheet.cssRules;
+    //   let cssText = "";
+    //   for (let i=0; i<classes.length; i++) {
+    //     if (classes[i].selectorText === className) {
+    //       cssText += classes[i].cssText || classes[i].style.cssText;
+    //     }
+    //   }
+    //   return cssText;
+    // }
+
+    // function getStyle2(className) {
+    //   let sheet = getStyleSheet("style.leafletMap.css");
+    //   let classes = sheet.cssRules;
+    //
+    //
+    //
+    //   for (let i=0; i<classes.length; i++) {
+    //
+    //     if (classes[i].selectorText === className) return classes[i].style.cssText;
+    // }
+
     function trajectoryStyle(feature) {
         return {
           stroke: trajectoryColor(feature.properties.vessel_mmsi),
-          strokeWidth: 0.9,
           color: trajectoryColor(feature.properties.vessel_mmsi),
-          // opacity: 0.8,
           opacity: 0,
-          className: "vessel-trajectories"
+          // className: 'vessel-trajectory'
         };
       }
+
+    // function onEachFeature(feature, layer) {
+    //   layer
+    //     .setStyle(
+    //       {
+    //         className: 'vessel-trajectory'
+    //       }
+    //     );
+    // }
 
     let trajectoryHashMap = new Map();
 
@@ -467,7 +518,8 @@ function leafletMap() {
       );
 
     // let trajectoryLayerGroup = L.layerGroup();
-    trajectoryLayerGroup = L.layerGroup();
+    // trajectoryLayerGroup = L.layerGroup();
+    // trajectoryLayerGroup = L.layerGroup().addTo(map);
 
     trajectoryHashMap
       .forEach((value, key) =>
@@ -477,19 +529,35 @@ function leafletMap() {
               value,
               {
                 style: trajectoryStyle,
+                // onEachFeature: onEachFeature
               }
             )
-            layer.id = key.vessel_mmsi
 
-          layer
-            .addTo(
-              trajectoryLayerGroup
-            );
+          layer.id = key.vessel_mmsi
+          // layer
+          //   // ._path
+          //   .classList
+          //   .add('vessel-trajectory')
+            // .setStyle(
+            //   {
+            //     className: 'vessel-trajectory'
+            //   }
+            // );
+          // layer
+          //   ._layers
+
+          // layer
+          //   .addTo(
+          //     trajectoryLayerGroup
+          //   );
+          trajectoryLayerGroup.addLayer(layer);
         }
       )
 
-    layerControl
-      .addOverlay(trajectoryLayerGroup, "Trajectories");
+    // map.addLayer(trajectoryLayerGroup);
+
+    // layerControl
+    //   .addOverlay(trajectoryLayerGroup, "Vessel Trajectories", true);
     // trajectoryLayerGroup
     //   .addTo(
     //     map
@@ -566,35 +634,111 @@ function leafletMap() {
           e.vessel_mmsi
         )
 
-      Object
-        .values(
-          layerControl
-            ._layers
-              .find(layer =>
-                layer.name === "Trajectories"
-              )
-              .layer
-              ._layers
-        )
-        .filter(item =>
-          {
-            if(
-              selectedMmsi
-                .includes(item.id)
-            ){
-              return item;
-            }
-          }
+
+
+      // trajectoryLayerGroup.getLayers()
+
+      // trajectoryLayerGroup.getLayer(selectedMmsi[0])
+
+      // console.log(trajectoryLayerGroup.getLayers()[0])
+
+      // console.log(
+      trajectoryLayerGroup
+        .getLayers()
+        .filter(item => selectedData
+          .map(e =>
+            e.vessel_mmsi
+          )
+          .reduce((prev, curr) =>
+            prev.concat(curr), []
+          )
+          .filter((item, i, arr) =>
+            arr.indexOf(item) === i
+          )
+          .includes(item.id)
         )
         .forEach(layer => {
+
+          if(
+            trajectoryState.includes())
+
           layer
             .setStyle(
               {
                 opacity: 1,
+                // className: "vessel-trajectory.selected"
+                // className: "selected"
               }
-            );
-          }
-        );
+            )}
+          )
+      // )
+
+      // Object
+      //   .values(
+      //     layerControl
+      //       ._layers
+      //         .find(layer =>
+      //           layer.name === "Vessel Trajectories"
+      //         )
+      //         .layer
+      //         ._layers
+      //   )
+      //   .filter(item =>
+      //     {
+      //       if(
+      //         selectedMmsi
+      //           .includes(item.id)
+      //       ){
+      //         return item;
+      //       }
+      //     }
+      //   )
+        // .forEach(layer => {
+        //   // layer
+        //   //   .setStyle(
+        //   //     {
+        //   //       // opacity: 1,
+        //   //       // className: "vessel-trajectory.selected"
+        //   //       className: "selected"
+        //   //     }
+        //   //   );
+        //   // Object
+        //   //   .values(
+        //   //     layer
+        //   //       ._layers
+        //   //       // .setStyle(
+        //   //       //   {
+        //   //       //     // opacity: 1,
+        //   //       //     // className: "vessel-trajectory.selected"
+        //   //       //     className: "selected"
+        //   //       //   }
+        //   //       );
+        //     // console.log(
+        //     console.log(layer);
+        //
+        //       Object
+        //         .values(
+        //           layer
+        //             ._layers
+        //         )
+        //         .map(l =>
+        //           // l._path
+        //           l.options
+        //         )
+        //         // .forEach(path =>
+        //         //   path.classList.add('selected')
+        //         // );
+        //   .forEach(path =>
+        //           path.className = 'vessel-trajectory selected'
+        //         );
+        //     // )
+        //   }
+        // );
+
+      // console.log(map.getLayers())
+      // console.log(map.hasLayer(trajectoryLayerGroup));
+      // console.log(trajectoryLayerGroup.getLayers());
+
 
     // TODO get vessel names from vessels/api lookup for the legend
 
@@ -630,7 +774,9 @@ function leafletMap() {
       .classed('selected', false);
 
     // clear trajectories on leaflet canvas
-    vesselTrajectoriesLayer.clearLayers();
+    // vesselTrajectoriesLayer.clearLayers();
+
+
   }
 
   return chart;

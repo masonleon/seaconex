@@ -83,5 +83,26 @@ path.link-edge-searoute.selected {
 
 
 
+/*path.vessel-trajectory.leaflet-interactive {*/
+/*  opacity: 0;*/
+/*}*/
 
+/*path.vessel-trajectory.leaflet-interactive.selected {*/
+/*  opacity: 1;*/
+/*}*/
 
+/*path.vessel-trajectory {*/
+/*  opacity: 0;*/
+/*}*/
+
+/*path.vessel-trajectory.selected {*/
+/*  opacity: 1;*/
+/*}*/
+
+.leaflet-interactive.vessel-trajectory {
+  opacity: 0;
+}
+
+.leaflet-interactive.vessel-trajectory.selected {
+  opacity: 1;
+}
