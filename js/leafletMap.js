@@ -278,18 +278,19 @@ function leafletMap() {
       `;
 
       div.innerHTML += `
-        <u>
-          Vessel Trajectories between <strong>${dateRange.min} - ${dateRange.max}</strong>
-        </u>
+        <h5>Interactive Map Elements</h5>
         <br>
+        <div class="legend-svg-elements" id="legend-svg-elements"></div>
+        <hr>
       `;
 
-      div.innerHTML += '<i style="background: #477AC2"></i><span>Water</span><br>';
-      div.innerHTML += '<i style="background: #448D40"></i><span>Forest</span><br>';
-      div.innerHTML += '<i style="background: #E6E696"></i><span>Land</span><br>';
-      div.innerHTML += '<i style="background: #E8E6E0"></i><span>Residential</span><br>';
-      div.innerHTML += '<i style="background: #FFFFFF"></i><span>Ice</span><br>';
-      div.innerHTML += '<i class="icon" style="background-image: url(https://d30y9cdsu7xlg0.cloudfront.net/png/194515-200.png);background-repeat: no-repeat;"></i><span>Grænse</span><br>';
+      div.innerHTML += `
+        <h5>
+          Vessel Trajectories between <u><strong>${dateRange.min} - ${dateRange.max}</strong></u>
+        </h5>
+        <br>
+        <div class="legend-vessel-trajectories" id="legend-vessel-trajectories"></div>
+      `;
 
       return div
     };
