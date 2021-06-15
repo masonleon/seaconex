@@ -74,7 +74,8 @@ function network() {
       .force("link",
         d3.forceLink(graph.links)
           .id(d => d.terminal)
-          .distance(100))
+          .distance(100)
+          .strength(1).iterations(20))
       .force('center',
         d3.forceCenter(
       //  (width / 2)
@@ -82,8 +83,7 @@ function network() {
       //  (height + margin.top + margin.bottom) / 2)
       (height + margin.top + margin.bottom + 50) / 2))
       .force("x", d3.forceX())
-      .force("y", d3.forceY())
-      .alphaTarget(1);
+      .force("y", d3.forceY());
 
     force.on('tick', ticked);
 
@@ -324,8 +324,8 @@ function network() {
       if (!d.active) {
         force.alphaTarget(0.3).restart();
       }
-      d.subject.fx = d.subject.x;
-      d.subject.fy = d.subject.y;
+      d.subject.fx = d.x;
+      d.subject.fy = d.y;
     }
 
     function dragged(d) {
@@ -339,11 +339,6 @@ function network() {
       }
       d.subject.fx = null;
       d.subject.fy = null;
-    }
-
-    function releasenode(d) {
-      d.fx = null;
-      d.fy = null;
     }
 
     return chart;
