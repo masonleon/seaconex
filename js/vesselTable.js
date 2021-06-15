@@ -119,6 +119,8 @@ function vesselTable() {
         endIndex = getElementIndex(this);
         let e = getElementsInRange(startIndex, endIndex);
         selectElements(e);
+
+        // console.log(selectableElements.filter('.selected').data())
       }
 
       selectableElements
