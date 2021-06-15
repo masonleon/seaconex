@@ -10,52 +10,20 @@ function leafletMap() {
   width = 100,
   selectableElements = d3.select(null),
   dispatcher,
-
   layerControl,
   map,
-  // vesselTrajectoriesLayer,
-  traj,
-  // vesselTrajectoryColor,
-  // vesselColor;
+  vesselLegend,
+  // traj,
   trajectoryLayerGroup,
-  trajectoryState;
+  trajectoryHashMap = new Map();
 
   // http://bl.ocks.org/nitaku/047a77e256de17f25e72
   // https://codepen.io/tforward/pen/ZPeZxd?editors=1010
   function chart(selector, data) {
-
     // deep copy trajectories so they are accessible in chart.updateSelection()
     // https://medium.com/@gamshan001/javascript-deep-copy-for-array-and-object-97e3d4bc401a
-    traj = JSON.parse(
-      JSON.stringify(data['timestamped_trajectory']));
-
-    //TODO remove colors
-    // let carrierColors = [
-    //   {
-    //     carrier: "ACL",
-    //     brand_color: "#2C0D82"
-    //   },
-    //   {
-    //     carrier: "BCL",
-    //     brand_color: "#054087"
-    //   },
-    //   {
-    //     carrier: "BISL",
-    //     brand_color: "#F12A00"
-    //   },
-    //   {
-    //     carrier: "HLUS",
-    //     brand_color: "#F27300"
-    //   },
-    //   {
-    //     carrier: "ICL",
-    //     brand_color: "#FDAF00"
-    //   },
-    //   {
-    //     carrier: "SISL",
-    //     brand_color: "#108F41"
-    //   }
-    // ]
+    // traj = JSON.parse(
+    //   JSON.stringify(data['timestamped_trajectory']));
 
     let container = d3.select(selector)
       .style("width", width + '%')
@@ -66,8 +34,6 @@ function leafletMap() {
     map = initL.map;
     layerControl = initL.layerControl;
     trajectoryLayerGroup = initL.trajectoryLayerGroup;
-
-    // trajectoryState = []
 
     let overlay = d3.select(
       map.getPanes()
@@ -95,39 +61,14 @@ function leafletMap() {
       this.stream.point(point.x, point.y);
     }
 
-    let projection = d3
-      .geoTransform(
-    {
-          point: projectPoint
-        }
-      );
+    let projection = d3.geoTransform(
+  {
+        point: projectPoint
+      }
+    );
 
     let pathCreator = d3.geoPath()
-      .projection(projection);    
-
-    // let geojsonMarkerOptions = {
-    //     radius: 6,
-    //     fillColor: "red",
-    //     color: "#000",
-    //     weight: 1,
-    //     opacity: 1,
-    //     fillOpacity: 0.8
-    // };
-    
-    // let terminals = L.geoJSON(data['terminals'].features, {
-    //     pointToLayer: function (feature, latlng) {
-    //       console.log(feature);
-    //         circleMarker = L.circleMarker(latlng, geojsonMarkerOptions);
-    //         circleMarker.bindTooltip(feature.properties.terminal_name);
-    //         // circleMarker.on('mouseover', function (e) {
-    //         //     this.openPopup();
-    //         // });
-    //         // circleMarker.on('mouseout', function (e) {
-    //         //     this.closePopup();
-    //         // });
-    //         return circleMarker;
-    //     }
-    // }).addTo(map);
+      .projection(projection);
 
     let terminals = initSvgOverlayTerminals(data, g, map);
 
@@ -152,8 +93,7 @@ function leafletMap() {
         .style("display", "block")
         .html(
           `
-            <strong>Terminal: </strong>
-            ${d.properties.terminal_name}
+            <strong>Terminal: </strong>${d.properties.terminal_name}
             </br>
             <strong>Address: </strong>${d.properties.terminal_address}
             </br>     
@@ -172,10 +112,9 @@ function leafletMap() {
         .style("display", "none")
     }
 
+    initCanvasOverlayTrajectory(data, trajectoryHashMap);
 
-    initCanvasOverlayTrajectory(data, map, layerControl, trajectoryLayerGroup);
-
-    let legend = L
+    let vesselLegend = L
       .control(
       {
           position: 'bottomright'
@@ -320,7 +259,8 @@ function leafletMap() {
     return {
       map: map,
       layerControl: layerControl,
-      trajectoryLayerGroup: trajectoryLayerGroup
+      trajectoryLayerGroup: trajectoryLayerGroup,
+      vesselLegend:
     }
   }
 
@@ -373,34 +313,7 @@ function leafletMap() {
     return searouteEdges;
   }
 
-  const initCanvasOverlayTrajectory = (data, map, layerControl, trajectoryLayerGroup) => {
-
-    // let carrierColors = [
-    //   {
-    //     carrier: "ACL",
-    //     brand_color: "#2C0D82"
-    //   },
-    //   {
-    //     carrier: "BCL",
-    //     brand_color: "#054087"
-    //   },
-    //   {
-    //     carrier: "BISL",
-    //     brand_color: "#F12A00"
-    //   },
-    //   {
-    //     carrier: "HLUS",
-    //     brand_color: "#F27300"
-    //   },
-    //   {
-    //     carrier: "ICL",
-    //     brand_color: "#FDAF00"
-    //   },
-    //   {
-    //     carrier: "SISL",
-    //     brand_color: "#108F41"
-    //   }
-    // ]
+  const initCanvasOverlayTrajectory = (data, trajectoryHashMap) => {
 
     let vesselColor = data
       .vessels
@@ -421,26 +334,6 @@ function leafletMap() {
           }
         )
       )
-      // .map(vessel =>
-      //   (
-      //     {
-      //       ...vessel,
-      //       ...carrierColors
-      //       .find(color =>
-      //         color.carrier === vessel.carrier
-      //       )
-      //     }
-      //   )
-      // )
-
-    // function trajectoryColor(vessel_mmsi){
-    //   let trajectoryColor = vesselColor
-    //     .find(record =>
-    //       record.vessel_mmsi === vessel_mmsi
-    //     )
-    //
-    //   return trajectoryColor.brand_color;
-    // }
 
     trajectoryColor = d3
       .scaleOrdinal(d3.schemeSet3)
@@ -451,117 +344,43 @@ function leafletMap() {
           )
       )
 
-    // function getStyleSheet(sheetName) {
-    //   for (let i=0; i<document.styleSheets.length; i++) {
-    //     let sheet = document.styleSheets[i];
-    //
-    //     if (sheet.ownerNode.attributes.href.value === sheetName) return sheet;
-    //   }
-    // }
-
-    // function getStyle(className) {
-    //   let sheet = getStyleSheet("style.leafletMap.css");
-    //   let classes = sheet.rules || sheet.cssRules;
-    //   let cssText = "";
-    //   for (let i=0; i<classes.length; i++) {
-    //     if (classes[i].selectorText === className) {
-    //       cssText += classes[i].cssText || classes[i].style.cssText;
-    //     }
-    //   }
-    //   return cssText;
-    // }
-
-    // function getStyle2(className) {
-    //   let sheet = getStyleSheet("style.leafletMap.css");
-    //   let classes = sheet.cssRules;
-    //
-    //
-    //
-    //   for (let i=0; i<classes.length; i++) {
-    //
-    //     if (classes[i].selectorText === className) return classes[i].style.cssText;
-    // }
-
     function trajectoryStyle(feature) {
         return {
           stroke: trajectoryColor(feature.properties.vessel_mmsi),
+          strokeWidth: 0.2,
           color: trajectoryColor(feature.properties.vessel_mmsi),
-          opacity: 0,
-          // className: 'vessel-trajectory'
+          opacity: 0.8,
+          className: 'vessel-trajectory'
+          // className: "vessel-trajectory.selected"
+          // className: "selected"
         };
       }
-
-    // function onEachFeature(feature, layer) {
-    //   layer
-    //     .setStyle(
-    //       {
-    //         className: 'vessel-trajectory'
-    //       }
-    //     );
-    // }
-
-    let trajectoryHashMap = new Map();
 
     vesselColor
       .forEach(vessel =>
         {
-          let tr = data
+          let trajectory = data
             .timestamped_trajectory
             .features
               .filter(item =>
                 item.properties.vessel_mmsi === vessel.vessel_mmsi
               )
 
-          trajectoryHashMap
-            .set(vessel, tr)
-        }
-      );
-
-    // let trajectoryLayerGroup = L.layerGroup();
-    // trajectoryLayerGroup = L.layerGroup();
-    // trajectoryLayerGroup = L.layerGroup().addTo(map);
-
-    trajectoryHashMap
-      .forEach((value, key) =>
-        {
           let layer = L
             .geoJSON(
-              value,
+              trajectory,
               {
                 style: trajectoryStyle,
-                // onEachFeature: onEachFeature
               }
             )
 
-          layer.id = key.vessel_mmsi
-          // layer
-          //   // ._path
-          //   .classList
-          //   .add('vessel-trajectory')
-            // .setStyle(
-            //   {
-            //     className: 'vessel-trajectory'
-            //   }
-            // );
-          // layer
-          //   ._layers
+          layer.id = vessel.vessel_mmsi
 
-          // layer
-          //   .addTo(
-          //     trajectoryLayerGroup
-          //   );
-          trajectoryLayerGroup.addLayer(layer);
+          trajectoryHashMap
+            .set(vessel, layer)
         }
-      )
+      );
 
-    // map.addLayer(trajectoryLayerGroup);
-
-    // layerControl
-    //   .addOverlay(trajectoryLayerGroup, "Vessel Trajectories", true);
-    // trajectoryLayerGroup
-    //   .addTo(
-    //     map
-    //   );
   }
 
   // Gets or sets the dispatcher we use for selection events
@@ -578,7 +397,8 @@ function leafletMap() {
 
     // only update searoute edges if data was for a carrier
     if (selectedData.some(e => e.hasOwnProperty('carrier'))) {
-      // chart.clearSelection();
+      chart.clearSelection();
+
       d3.selectAll('.link-edge-searoute')
         .classed('selected', false);
 
@@ -598,15 +418,10 @@ function leafletMap() {
         )
         .classed('selected', true);
 
-      //TODO selectableElements
-      // selectableElements
       d3.selectAll('.point-terminal-facility')
         // clear all selected nodes
         .classed('selected', false);
 
-      //TODO selectableElements
-      // show a node if it is serviced by a selected carrier
-      // selectableElements
       d3.selectAll('.point-terminal-facility')
         .filter(item => selectedData
           .map(selected =>
@@ -623,143 +438,22 @@ function leafletMap() {
         .classed('selected', d => d)
     }
 
-    // // only update vessel trajectories if data was for a vessel_mmsi
     if (selectedData.some(e => e.hasOwnProperty('vessel_mmsi'))) {
-    //TODO clear trajectories from map
-    //  chart.clearSelection();
-    //   vesselTrajectoriesLayer.clearLayers();
+      let selectedMmsi = selectedData.map(e => e.vessel_mmsi)
 
-      let selectedMmsi = selectedData
-        .map(e =>
-          e.vessel_mmsi
-        )
+      removeTrajectories(trajectoryLayerGroup, trajectoryHashMap, selectedMmsi)
+      addTrajectories(trajectoryLayerGroup, trajectoryHashMap, selectedMmsi)
 
-
-
-      // trajectoryLayerGroup.getLayers()
-
-      // trajectoryLayerGroup.getLayer(selectedMmsi[0])
-
-      // console.log(trajectoryLayerGroup.getLayers()[0])
-
-      // console.log(
-      trajectoryLayerGroup
-        .getLayers()
-        .filter(item => selectedData
-          .map(e =>
-            e.vessel_mmsi
-          )
-          .reduce((prev, curr) =>
-            prev.concat(curr), []
-          )
-          .filter((item, i, arr) =>
-            arr.indexOf(item) === i
-          )
-          .includes(item.id)
-        )
-        .forEach(layer => {
-
-          if(
-            trajectoryState.includes())
-
-          layer
-            .setStyle(
-              {
-                opacity: 1,
-                // className: "vessel-trajectory.selected"
-                // className: "selected"
-              }
-            )}
-          )
-      // )
-
-      // Object
-      //   .values(
-      //     layerControl
-      //       ._layers
-      //         .find(layer =>
-      //           layer.name === "Vessel Trajectories"
-      //         )
-      //         .layer
-      //         ._layers
+      // let dates = data['timestamped_trajectory'].features
+      //   .flatMap((c) =>
+      //       c.properties.times.map((x) =>
+      //           new Date(x))
       //   )
-      //   .filter(item =>
-      //     {
-      //       if(
-      //         selectedMmsi
-      //           .includes(item.id)
-      //       ){
-      //         return item;
-      //       }
-      //     }
-      //   )
-        // .forEach(layer => {
-        //   // layer
-        //   //   .setStyle(
-        //   //     {
-        //   //       // opacity: 1,
-        //   //       // className: "vessel-trajectory.selected"
-        //   //       className: "selected"
-        //   //     }
-        //   //   );
-        //   // Object
-        //   //   .values(
-        //   //     layer
-        //   //       ._layers
-        //   //       // .setStyle(
-        //   //       //   {
-        //   //       //     // opacity: 1,
-        //   //       //     // className: "vessel-trajectory.selected"
-        //   //       //     className: "selected"
-        //   //       //   }
-        //   //       );
-        //     // console.log(
-        //     console.log(layer);
-        //
-        //       Object
-        //         .values(
-        //           layer
-        //             ._layers
-        //         )
-        //         .map(l =>
-        //           // l._path
-        //           l.options
-        //         )
-        //         // .forEach(path =>
-        //         //   path.classList.add('selected')
-        //         // );
-        //   .forEach(path =>
-        //           path.className = 'vessel-trajectory selected'
-        //         );
-        //     // )
-        //   }
-        // );
 
-      // console.log(map.getLayers())
-      // console.log(map.hasLayer(trajectoryLayerGroup));
-      // console.log(trajectoryLayerGroup.getLayers());
-
-
-    // TODO get vessel names from vessels/api lookup for the legend
-
-    // let vesselNames = data['timestamped_trajectory'].features
-    //   .map((feature, i) =>
-    //       feature.properties.vessel_name
-    //   )
-    //   .filter ((item, i, ar) =>
-    //       ar.indexOf(item) === i
-    //   );
-
-    // let dates = data['timestamped_trajectory'].features
-    //   .flatMap((c) =>
-    //       c.properties.times.map((x) =>
-    //           new Date(x))
-    //   )
-
-    // let dateRange = {
-    //   min : dates[0].toDateString(),
-    //   max : dates[dates.length -1].toDateString()
-    // }
+      // let dateRange = {
+      //   min : dates[0].toDateString(),
+      //   max : dates[dates.length -1].toDateString()
+      // }
     }
   };
 
@@ -774,10 +468,31 @@ function leafletMap() {
       .classed('selected', false);
 
     // clear trajectories on leaflet canvas
-    // vesselTrajectoriesLayer.clearLayers();
-
-
+    trajectoryLayerGroup.clearLayers();
   }
 
   return chart;
+}
+
+function addTrajectories(trajectoryLayerGroup, trajectoryHashMap, selectedMmsi){
+  selectedMmsi.forEach(mmsi => {
+    let record = Array.from(trajectoryHashMap.keys())
+      .filter(i =>
+        i.vessel_mmsi === mmsi
+      );
+
+    let trajLayer = trajectoryHashMap.get(record[0]);
+
+    trajectoryLayerGroup.addLayer(trajLayer);
+  })
+}
+
+function removeTrajectories(trajectoryLayerGroup, trajectoryHashMap, selectedMmsi){
+  let layersToRemove = trajectoryLayerGroup
+    .getLayers()
+    .filter(i => !selectedMmsi.includes(i.id))
+
+  layersToRemove.forEach(trajLayer => {
+    trajectoryLayerGroup.removeLayer(trajLayer);
+  })
 }
