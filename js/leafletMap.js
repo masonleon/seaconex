@@ -260,7 +260,6 @@ function leafletMap() {
       map: map,
       layerControl: layerControl,
       trajectoryLayerGroup: trajectoryLayerGroup,
-      vesselLegend:
     }
   }
 
