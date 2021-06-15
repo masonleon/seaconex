@@ -1,17 +1,6 @@
-# Project Template
+# SeaCONEX
 
-This repository is your starting point for your project. Please look through all these materials so you know how to organize your project.
-
-Link to your GitHub pages website: https://neu-cs-7250-s21.github.io/project-group-09-seaconex
-
-# Aim of the assignment
-
-This assignment will make sure you and your group memebers are all set up correctly with a project repo.
-Moreover, it gives you a good and consistent starting point to begin coding.
-
-# Instructions
-
-Please look through **all** the materials below so you understand the setup instructions; how to run, organize, and submit your code; and our requirements for the visualization.
+Link to your GitHub pages website: https://github.com/VisDunneRight/SeaCONEX
 
 ## Setup
 
