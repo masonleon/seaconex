@@ -10,9 +10,10 @@ function leafletMap() {
   width = 100,
   selectableElements = d3.select(null),
   dispatcher,
-  layerControl,
+
   map,
-  vesselLegend,
+  layerControl,
+  leafletLegend,
   // traj,
   trajectoryLayerGroup,
   trajectoryHashMap = new Map();
@@ -29,11 +30,12 @@ function leafletMap() {
       .style("width", width + '%')
       .style("height", height + "px")
 
-    let initL = initLeaflet(selector);
+    let initL = initLeaflet(selector, data);
 
     map = initL.map;
     layerControl = initL.layerControl;
     trajectoryLayerGroup = initL.trajectoryLayerGroup;
+    leafletLegend = initL.leafletLegend;
 
     let overlay = d3.select(
       map.getPanes()
@@ -56,9 +58,16 @@ function leafletMap() {
 
     // Use Leaflets projection API for drawing svg path (creates a stream of projected points)
     let projectPoint = function(x, y) {
-      let point = map
-        .latLngToLayerPoint(new L.LatLng(y, x));
-      this.stream.point(point.x, point.y);
+      let point = map.latLngToLayerPoint(
+        new L.LatLng(y, x)
+      );
+
+      this
+      .stream
+      .point(
+        point.x,
+        point.y
+      );
     }
 
     let projection = d3.geoTransform(
@@ -114,61 +123,24 @@ function leafletMap() {
 
     initCanvasOverlayTrajectory(data, trajectoryHashMap);
 
-    let vesselLegend = L
-      .control(
-      {
-          position: 'bottomright'
-        }
-      );
-
-    // TODO legend
-    // legend.onAdd = () => {
-    //   let div = d3.select(document.createElement("div"))
-    //     .classed('legend', true)
-    //     .text(
-    //       `
-    //         <u>
-    //           Vessel Trajectories between <strong>${dateRange.min} - ${dateRange.max}</strong>
-    //         </u>
-    //       `
-    //     )
-    //
-    //   let p = div.selectAll('p')
-    //    .data(vesselNames)
-    //    .enter()
-    //     .append('p')
-    //
-    //   p.append('span')
-    //     .classed('legend-item', true)
-    //     .style('background-color', d =>
-    //       color(d));
-    //
-    //   p.append('span')
-    //     .text(d => d);
-    //
-    //   return div.node();
-    // };
-    // legend.addTo(map);
-    // legend.style("display", "none");
-
     function onZoom () {
       terminals
         .attr("cx", d =>
-          map
-          .latLngToLayerPoint(
+          map.latLngToLayerPoint(
             [
               d.geometry.coordinates[1],
               d.geometry.coordinates[0]
-            ])
+            ]
+          )
           .x
         )
         .attr("cy", d =>
-          map
-          .latLngToLayerPoint(
+          map.latLngToLayerPoint(
             [
               d.geometry.coordinates[1],
               d.geometry.coordinates[0]
-            ])
+            ]
+          )
           .y
         );
 
@@ -182,39 +154,35 @@ function leafletMap() {
     return chart;
   }
 
-  const initLeaflet = (selector) => {
-    let esriWorldImageryLayer = L
-      .tileLayer(
-        'https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}',
-          {
-          attribution: 'Esri, Maxar, GeoEye, Earthstar Geographics, CNES/Airbus DS, USDA, USGS, AeroGRID, IGN, and the GIS User Community '
-        }
-      );
-
-    let noaaEncLayer = L
-      .tileLayer(
-        'https://tileservice.charts.noaa.gov/tiles/50000_1/{z}/{x}/{y}.png',
-          {
-          attribution: 'NOAA'
-        }
-      );
-
-    let map = L
-      .map(
-        selector.slice(1),
+  const initLeaflet = (selector, data) => {
+    let esriWorldImageryLayer = L.tileLayer(
+      'https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}',
         {
-          center: [30, 0],
-          preferCanvas: true,
-          // preferCanvas: false,
-          updateWhenZooming: false,
-          updateWhenIdle: true,
-          zoom: 3,
-          layers: [
-            esriWorldImageryLayer,
-            // noaaEncLayer
-          ],
-        }
-      );
+        attribution: 'Esri, Maxar, GeoEye, Earthstar Geographics, CNES/Airbus DS, USDA, USGS, AeroGRID, IGN, and the GIS User Community '
+      }
+    );
+
+    let noaaEncLayer = L.tileLayer(
+      'https://tileservice.charts.noaa.gov/tiles/50000_1/{z}/{x}/{y}.png',
+        {
+        attribution: 'NOAA'
+      }
+    );
+
+    let map = L.map(
+      selector.slice(1),
+      {
+        center: [30, 0],
+        preferCanvas: true,
+        updateWhenZooming: false,
+        updateWhenIdle: true,
+        zoom: 3,
+        layers: [
+          esriWorldImageryLayer,
+          // noaaEncLayer
+        ],
+      }
+    );
 
     let baseMaps = {
       // 'Noaa_EncTileService': noaaEncLayer,
@@ -227,8 +195,7 @@ function leafletMap() {
     };
 
     //https://gis.stackexchange.com/questions/64385/making-leaflet-control-open-by-default
-    let layerControl = L
-      .control
+    let layerControl = L.control
       .layers(
         baseMaps,
         overlayMaps,
@@ -236,31 +203,104 @@ function leafletMap() {
           collapsed: false
         }
       )
-      .addTo(
-        map
-      );
+      .addTo(map);
 
-    L
-    .svg(
+    L.svg(
       {
         clickable: true
       }
     )
-    .addTo(
-      map
+    .addTo(map);
+
+   let trajectoryLayerGroup = L.layerGroup()
+    .addTo(map);
+
+   let leafletLegend = L.control(
+    {
+        position: 'bottomright'
+      }
     );
 
-   let trajectoryLayerGroup = L
-    .layerGroup()
-    .addTo(
-      map
-    );
+    leafletLegend.onAdd = () => {
+
+      let dates = data['timestamped_trajectory'].features
+        .flatMap((c) =>
+          c
+          .properties
+          .times
+          .map((x) =>
+            new Date(x)
+          )
+        )
+
+      let dateRange = {
+        min : dates[0].toDateString(),
+        max : dates[dates.length - 1].toDateString()
+      }
+
+      // let div = d3.select(document.createElement("div"))
+      //   .classed('legend', true)
+      //   // .text(
+      //   //   `
+      //   //     <u>
+      //   //       Vessel Trajectories between <strong>${dateRange.min} - ${dateRange.max}</strong>
+      //   //     </u>
+      //   //   `
+      //   // )
+      //   .text(
+      //     `
+      //     <u>
+      //       Vessel Trajectories between <strong>${dateRange.min} - ${dateRange.max}</strong>
+      //     </u>
+      //     `
+      //   )
+
+      // let p = div.selectAll('p')
+      //  .data(vesselNames)
+      //  .enter()
+      //   .append('p')
+
+      // p.append('span')
+      //   .classed('legend-item', true)
+      //   .style('background-color', d =>
+      //     color(d));
+
+      // p.append('span')
+      //   .text(d => d);
+
+      // return div.node();
+
+      //https://codepen.io/haakseth/pen/KQbjdO
+      let div = L.DomUtil.create("div", "legend");
+      div.innerHTML += `
+        <h4>Legend</h4>
+        <hr>
+      `;
+
+      div.innerHTML += `
+        <u>
+          Vessel Trajectories between <strong>${dateRange.min} - ${dateRange.max}</strong>
+        </u>
+        <br>
+      `;
+
+      div.innerHTML += '<i style="background: #477AC2"></i><span>Water</span><br>';
+      div.innerHTML += '<i style="background: #448D40"></i><span>Forest</span><br>';
+      div.innerHTML += '<i style="background: #E6E696"></i><span>Land</span><br>';
+      div.innerHTML += '<i style="background: #E8E6E0"></i><span>Residential</span><br>';
+      div.innerHTML += '<i style="background: #FFFFFF"></i><span>Ice</span><br>';
+      div.innerHTML += '<i class="icon" style="background-image: url(https://d30y9cdsu7xlg0.cloudfront.net/png/194515-200.png);background-repeat: no-repeat;"></i><span>Grænse</span><br>';
+
+      return div
+    };
+    leafletLegend.addTo(map);
+    // leafletLegend.style("display", "none");
 
     return {
       map: map,
       layerControl: layerControl,
       trajectoryLayerGroup: trajectoryLayerGroup,
-      vesselLegend:
+      leafletLegend: leafletLegend
     }
   }
 
@@ -335,8 +375,7 @@ function leafletMap() {
         )
       )
 
-    trajectoryColor = d3
-      .scaleOrdinal(d3.schemeSet3)
+    trajectoryColor = d3.scaleOrdinal(d3.schemeSet3)
       .domain(
         vesselColor
           .map(vessel =>
@@ -345,16 +384,16 @@ function leafletMap() {
       )
 
     function trajectoryStyle(feature) {
-        return {
-          stroke: trajectoryColor(feature.properties.vessel_mmsi),
-          strokeWidth: 0.2,
-          color: trajectoryColor(feature.properties.vessel_mmsi),
-          opacity: 0.8,
-          className: 'vessel-trajectory'
-          // className: "vessel-trajectory.selected"
-          // className: "selected"
-        };
-      }
+      return {
+        stroke: trajectoryColor(feature.properties.vessel_mmsi),
+        strokeWidth: 0.2,
+        color: trajectoryColor(feature.properties.vessel_mmsi),
+        opacity: 0.8,
+        className: 'vessel-trajectory'
+        // className: "vessel-trajectory.selected"
+        // className: "selected"
+      };
+    }
 
     vesselColor
       .forEach(vessel =>
@@ -366,13 +405,12 @@ function leafletMap() {
                 item.properties.vessel_mmsi === vessel.vessel_mmsi
               )
 
-          let layer = L
-            .geoJSON(
-              trajectory,
-              {
-                style: trajectoryStyle,
-              }
-            )
+          let layer = L.geoJSON(
+            trajectory,
+            {
+              style: trajectoryStyle,
+            }
+          )
 
           layer.id = vessel.vessel_mmsi
 
@@ -380,7 +418,6 @@ function leafletMap() {
             .set(vessel, layer)
         }
       );
-
   }
 
   // Gets or sets the dispatcher we use for selection events
