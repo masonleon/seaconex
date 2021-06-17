@@ -1,471 +1,631 @@
 <!DOCTYPE html>
-<html lang='en'>
+<html lang="en">
+  <!-- Metadata -->
+  <head>
+    <meta charset="utf-8" />
 
-<!-- Metadata -->
-<head>
-  <meta charset='utf-8'>
+    <!-- Title -->
+    <title>SeaCONEX</title>
 
-  <!-- Title -->
-  <title>SeaCONEX</title>
+    <!-- CSS Styling -->
 
-  <!-- CSS Styling -->
-  <link rel="stylesheet" href="style.neu.cs7250.s21.gh-pages.template.css">
-  <link rel="stylesheet" href="style.visualization.css">
-<!--  <link rel='stylesheet' href='style.css'>-->
-  <link rel="stylesheet" href="style.vesselTable.css">
-  <link rel="stylesheet" href="style.carrierFilter.css">
-  <link rel="stylesheet" href="style.leafletMap.css">
-  <link rel="stylesheet" href="style.network.css">
-  <link rel="stylesheet" href="style.resetBtn.css">
-  <link rel="stylesheet" href="lib/leaflet.v1.7.1/leaflet.css"/>
-  <script src="lib/leaflet.v1.7.1/leaflet.js"></script>
+    <!-- Bootstrap core CSS -->
+    <link rel="stylesheet" href="lib/bootstrap.v5.0.1/css/bootstrap.min.css" />
 
+    <!-- Bootstrap-Icons CSS -->
+    <link rel="stylesheet" href="lib/bootstrap-icons.v1.5.0/bootstrap-icons.css">
 
-  <!-- Favicons -->
-  <link rel='apple-touch-icon' sizes='180x180' href='favicons/apple-touch-icon.png'>
-  <link rel='icon' type='image/png' sizes='32x32' href='favicons/favicon-32x32.png'>
-  <link rel='icon' type='image/png' sizes='16x16' href='favicons/favicon-16x16.png'>
-  <link rel='manifest' href='favicons/site.webmanifest'>
-  <link rel='shortcut icon' href='favicons/favicon.ico'>
-  <meta name='msapplication-TileColor' content='#da532c'>
-  <meta name='msapplication-config' content='favicons/browserconfig.xml'>
-  <meta name='theme-color' content='#ffffff'>
+    <!-- SeaCONEX CSS -->
+    <link rel="stylesheet" href="style.neu.cs7250.s21.gh-pages.template.css" />
+    <link rel="stylesheet" href="style.visualization.css" />
+    <link rel="stylesheet" href="style.css" />
+    <link rel="stylesheet" href="style.vesselTable.css" />
+    <link rel="stylesheet" href="style.carrierFilter.css" />
+    <link rel="stylesheet" href="style.leafletMap.css" />
+    <link rel="stylesheet" href="style.network.css" />
+    <link rel="stylesheet" href="style.resetBtn.css" />
 
+    <!-- Leaflet CSS -->
+    <link rel="stylesheet" href="lib/leaflet.v1.7.1/leaflet.css" />
+    <script src="lib/leaflet.v1.7.1/leaflet.js"></script>
 
-</head>
+    <!-- Favicons -->
+    <link
+      rel="apple-touch-icon"
+      sizes="180x180"
+      href="favicons/apple-touch-icon.png"
+    />
+    <link
+      rel="icon"
+      type="image/png"
+      sizes="32x32"
+      href="favicons/favicon-32x32.png"
+    />
+    <link
+      rel="icon"
+      type="image/png"
+      sizes="16x16"
+      href="favicons/favicon-16x16.png"
+    />
+    <link rel="manifest" href="favicons/site.webmanifest" />
+    <link rel="shortcut icon" href="favicons/favicon.ico" />
+    <meta name="msapplication-TileColor" content="#da532c" />
+    <meta name="msapplication-config" content="favicons/browserconfig.xml" />
+    <meta name="theme-color" content="#ffffff" />
+  </head>
 
-<!-- Main page content -->
-<body>
+  <!-- Main page content -->
+  <body>
+    <!-- Update this with your GitHub repo URL -->
+    <span id="forkongithub">
+      <a href="https://github.com/VisDunneRight/SeaCONEX">
+        Fork me on GitHub
+      </a>
+    </span>
 
-<!-- Update this with your GitHub repo URL -->
-<span id='forkongithub'>
-  <a href='https://github.com/VisDunneRight/SeaCONEX'>
-    Fork me on GitHub
-  </a>
-</span>
+    <div class="container">
+      <div id="dashboard" class="mt-5">
+        <div class="row">
+          <div class="col-lg-3"></div>
 
-<!-- Writeup -->
-<div class='content-column'>
-  <h1>SeaCONEX: </h1>
+          <div class="col-lg-9">
+            <div id="card-vis-network" class="card">
+              <h6 class="card-header d-flex justify-content-between align-items-center">
+                Ocean Carrier Service Network Connectivity
+                <button type="button" class="btn btn-lg btn-light" aria-label="Information" data-bs-toggle="collapse" data-bs-target="#info-vis-network" aria-expanded="false" aria-controls="info-vis-network">
+                  <i class="bi bi-info-circle"></i>
+                </button>
+              </h6>
+              <div class="card-body">
+                <div class="collapse" id="info-vis-network">
+                  <div class="card card-body">
+                    <p class="card-text">
+                      Explore the marine terminal connectivity of publicly posted
+                      carrier master service schedules.
+                    </p>
+                  </div>
+                </div>
+                <div id="vis-network"></div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-lg-12">
 
-  <!-- <p>
-    <strong>Mason Leon</strong>,
-    <strong>Rithika Lakshminarayanan</strong>,
-    <strong>Alice Tilles</strong>
-  </p> -->
-
-  <!-- <p>
-    Service-Learning Course Project as part of
-    <a href='https://northeastern.instructure.com/courses/63405'>
-      CS 7250 S21 Information Visualization: Theory and Applications
-    </a>, taught by
-    <a href='https://cody.khoury.northeastern.edu/'>
-      Prof. Cody Dunne
-    </a>,
-    <a href='https://visualization.khoury.northeastern.edu/'>
-      Data Visualization @ Khoury
-    </a>,
-    <a href='https://www.khoury.northeastern.edu/'>
-      Northeastern University
-    </a>.
-  </p> -->
-
-
-  <h1>Abstract</h1>
-  <!-- <p>
-    The Container Express also known as the CONEX, was introduced by the United States Military during the Korean War as an intermodal logistics platform to improve cargo flows and operations throughout supply chain networks. 
-    The CONEX and Malcolm McLean's intermodal container were simple freight technology concepts that revolutionized supply chains. 
-    Containerization and the equipment utilized to transport goods efficiently have fostered globalization and made the modern world. 
-    However, supply chains remain vulnerable to disruption and are plagued by poor visibility and difficulty exchanging information about cargo and freight networks. 
-    Supply chain disruption and the complexity of maritime and hinterland networks remain key issues around the world. 
-    SeaCONEX is not just a portmanteau, but a visualization tool focused on this larger issue by allowing users to see the connections of maritime supply chain networks. 
-    In this paper, we present a visualization dashboard that allows users to evaluate carrier service rotation between terminals, view the shortest navigable marine route between connections, and investigate vessel trajectories and deviations from the optimal route. 
-  </p> -->
-
-  <h1>Visualization</h1>
-  <!-- <p>
-    The visualizations below depicts a hypothetical scenario where the UKMOD is trying to transport a shipment from London to the UK Overseas Territory of Bermuda. 
-    In this case study, UKMOD needs to evaluate commercial shipping options between the UK and Bermuda across 6 ocean carriers, 9 services, 18 deployed vessels, and their network of ports. 
-    The vessels include several Container/Roll-On Roll-Off (ConRo), geared container vessels, and fully-cellular container vessels actively deployed on the Trans-Atlantic and US-Bermuda trade lanes. 
-  </p> -->
-
-  <!-- <p>
-    To support the two important tasks of 1) examining connectivity between ports with seemingly disjoint carrier networks and 2) tracking vessel trajectories based on AIS data; we present two views that allow users to accomplish these tasks.
-    The first view shows connections between ports in a node-link diagram and allows users to filter routes based on carriers. 
-    The second view allows users to examine actual paths taken by vessels and their deviation from the shortest or most ideal routes in red.
-  </p> -->
-
-</div>
-
-<!-- Visualization goes here -->
-<div class='vis-holder'>
-
-  <div class='flex-box'>
-
-    <div id='filters-container'>
-
-       <div>
-        <h3>Visualization Controls</h3>
-        <hr>
-        <div id='button-clear-filters'></div>
-        <br>
+            <div id="card-vis-map" class="card">
+              <h6 class="card-header d-flex justify-content-between align-items-center">
+                Ocean Carrier Service Network Topography
+                <button type="button" class="btn btn-lg btn-light" aria-label="Information" data-bs-toggle="collapse" data-bs-target="#info-vis-map" aria-expanded="false" aria-controls="info-vis-map">
+                  <i class="bi bi-info-circle"></i>
+                </button>
+              </h6>
+              <div class="card-body">
+                <div class="collapse" id="info-vis-map">
+                  <div class="card card-body">
+                    <p class="card-text">
+                      Explore the shortest navigable maritime paths between marine
+                      terminals of publicly posted carrier master service schedules.
+                      <br />
+                      For a selected vessel, view the actual trajectory (historical
+                      path) over a set time period.
+                      <br />
+                      <br />
+                      *Note: the shortest paths paths may not reflect the ideal
+                      route.
+                    </p>
+                  </div>
+                </div>
+                <div id="vis-map"></div>
+              </div>
+            </div>
+          </div>
+        </div>
       </div>
-
-      <div>
-        <h3>Carriers</h3>
-        <hr>
-        <div id='filters-carriers'></div>
-        <br>
-      </div>
-
-      <div>
-        <h3>Vessels</h3>
-        <hr/>
-        <div id="filters-vessels"></div>
-        <br>
-      </div>
-
     </div>
+    
 
-    <div id='center-container'>
-      <div>
-        <h4>Ocean Carrier Service Network Connectivity</h4>
-        <p>
-          Explore the marine terminal connectivity of publicly posted carrier master service schedules. 
-        </p>
+    <!-- Writeup -->
+    <div class="content-column">
+      <div id="container-content-intro">
+        <div id="div-content-heading" class="d-none">
+          <h1>SeaCONEX:</h1>
+
+          <p>
+            <strong>Mason Leon</strong>,
+            <strong>Rithika Lakshminarayanan</strong>,
+            <strong>Alice Tilles</strong>
+          </p>
+
+          <p>
+            Service-Learning Course Project as part of
+            <a href="https://northeastern.instructure.com/courses/63405">
+              CS 7250 S21 Information Visualization: Theory and Applications </a
+            >, taught by
+            <a href="https://cody.khoury.northeastern.edu/">
+              Prof. Cody Dunne </a
+            >,
+            <a href="https://visualization.khoury.northeastern.edu/">
+              Data Visualization @ Khoury </a
+            >,
+            <a href="https://www.khoury.northeastern.edu/">
+              Northeastern University </a
+            >.
+          </p>
+        </div>
+
+        <div id="div-content-abstract" class="d-none">
+          <h1>Abstract</h1>
+          <p>
+            The Container Express also known as the CONEX, was introduced by the
+            United States Military during the Korean War as an intermodal
+            logistics platform to improve cargo flows and operations throughout
+            supply chain networks. The CONEX and Malcolm McLean's intermodal
+            container were simple freight technology concepts that
+            revolutionized supply chains. Containerization and the equipment
+            utilized to transport goods efficiently have fostered globalization
+            and made the modern world. However, supply chains remain vulnerable
+            to disruption and are plagued by poor visibility and difficulty
+            exchanging information about cargo and freight networks. Supply
+            chain disruption and the complexity of maritime and hinterland
+            networks remain key issues around the world. SeaCONEX is not just a
+            portmanteau, but a visualization tool focused on this larger issue
+            by allowing users to see the connections of maritime supply chain
+            networks. In this paper, we present a visualization dashboard that
+            allows users to evaluate carrier service rotation between terminals,
+            view the shortest navigable marine route between connections, and
+            investigate vessel trajectories and deviations from the optimal
+            route.
+          </p>
+        </div>
+
+        <div id="div-content-visualization" class="d-none">
+          <h1>Visualization</h1>
+          <p>
+            The visualizations below depicts a hypothetical scenario where the
+            UKMOD is trying to transport a shipment from London to the UK
+            Overseas Territory of Bermuda. In this case study, UKMOD needs to
+            evaluate commercial shipping options between the UK and Bermuda
+            across 6 ocean carriers, 9 services, 18 deployed vessels, and their
+            network of ports. The vessels include several Container/Roll-On
+            Roll-Off (ConRo), geared container vessels, and fully-cellular
+            container vessels actively deployed on the Trans-Atlantic and
+            US-Bermuda trade lanes.
+          </p>
+
+          <p>
+            To support the two important tasks of 1) examining connectivity
+            between ports with seemingly disjoint carrier networks and 2)
+            tracking vessel trajectories based on AIS data; we present two views
+            that allow users to accomplish these tasks. The first view shows
+            connections between ports in a node-link diagram and allows users to
+            filter routes based on carriers. The second view allows users to
+            examine actual paths taken by vessels and their deviation from the
+            shortest or most ideal routes in red.
+          </p>
+        </div>
       </div>
-      <div id='vis-network'></div>
-      <div>
-        <h4>Ocean Carrier Service Network Topography</h4>
-        <p>
-          Explore the shortest navigable maritime paths between marine terminals of publicly posted carrier master service schedules. 
-          <br>
-          For a selected vessel, view the actual trajectory (historical path) over a set time period. 
-          <br>
-          <br>
-          *Note: the shortest paths paths may not reflect the ideal route. 
-        </p>
-      </div>
-      <div id='vis-map'></div>
-    </div>
-    <!-- <div id='detail-pane'>
+
+      
+
+      <!-- Visualization goes here -->
+      <div class="vis-holder">
+        <div class="flex-box">
+          <div id="filters-container">
+            <div>
+              <h3>Visualization Controls</h3>
+              <hr />
+              <div id="button-clear-filters"></div>
+              <br />
+            </div>
+
+            <div>
+              <h3>Carriers</h3>
+              <hr />
+              <div id="filters-carriers"></div>
+              <br />
+            </div>
+
+            <div>
+              <h3>Vessels</h3>
+              <hr />
+              <div id="filters-vessels"></div>
+              <br />
+            </div>
+          </div>
+
+          <!-- <div id="center-container">
+          <div>
+            <h4>Ocean Carrier Service Network Connectivity</h4>
+            <p>
+              Explore the marine terminal connectivity of publicly posted
+              carrier master service schedules.
+            </p>
+          </div>
+          <div id="vis-network"></div> -->
+
+          <!-- <div>
+            <h4>Ocean Carrier Service Network Topography</h4>
+            <p>
+              Explore the shortest navigable maritime paths between marine
+              terminals of publicly posted carrier master service schedules.
+              <br />
+              For a selected vessel, view the actual trajectory (historical
+              path) over a set time period.
+              <br />
+              <br />
+              *Note: the shortest paths paths may not reflect the ideal route.
+            </p>
+          </div>
+          <div id="vis-map"></div> -->
+        </div>
+        <!-- <div id='detail-pane'>
       Detail Pane Here
     </div> -->
-  </div>
-</div>
+      </div>
+    </div>
 
+    <!-- Further writeup -->
+    <div class="content-column">
+      <div id="container-content-writeup">
+        <div id="div-content-video" class="d-none">
+          <h1>Demo Video</h1>
 
-<!-- Further writeup -->
-<div class='content-column'>
+          <p>See below for a quick demo of the above visualization.</p>
 
-  <h1>Demo Video</h1>
+          <!-- <video controls width="100%">
+            <source src="img/seaconex_demo.mp4" type="video/mp4" />
+            <p>
+              Your browser doesn't support HTML5 video. Here is a
+              <a href="img/seaconex_demo.mp4"> link to the video </a>
+              instead.
+            </p>
+          </video> -->
+        </div>
 
-  <p>
-    See below for a quick demo of the above visualization. 
-  </p>
+        <div id="div-content-explanation" class="d-none">
+          <h1>Visualization explanation</h1>
 
-  <video controls width='100%'>
-    <!-- <source src='img/seaconex_demo.mp4'
-            type='video/mp4'> -->
-    <!-- <p>
-      Your browser doesn't support HTML5 video. Here is a
-      <a href='img/seaconex_demo.mp4'>
-        link to the video
-      </a>
-      instead.
-    </p> -->
-  </video>
+          <p>
+            For the node-link diagram, we chose a very simple rendering. Marine
+            terminals are in blue and, and when selected, change color to red,
+            taking advantage of the pop-out effect which brings attention to
+            terminals of interest. On hovering over a marine terminal, users can
+            see more details like the name of the marine terminal and the
+            carriers that operate their vessels there. The advantage of the
+            node-link diagram is that it removes geographic interference,
+            allowing the user to focus clearly on which ports are connected,
+            without worrying about the distance between them, ocean conditions
+            between them, etc. This can help remove bias on "best" or "most
+            connected" ports, and just examine the data.
+          </p>
 
-  <h1>Visualization explanation</h1>
+          <p>
+            <a
+              href="https://docs.google.com/presentation/d/1oqcMSHFFXwJzNTfjltaHumTK51zBVicduE65jQskXr0/edit?usp=sharing"
+            >
+              Link to Slides
+            </a>
+          </p>
+        </div>
 
-  <!-- <p>
-    For the node-link diagram, we chose a very simple rendering. 
-    Marine terminals are in blue and, and when selected, change color to red, taking advantage of the pop-out effect which brings attention to terminals of interest. 
-    On hovering over a marine terminal, users can see more details like the name of the marine terminal and the carriers that operate their vessels there. 
-    The advantage of the node-link diagram is that it removes geographic interference, allowing the user to focus clearly on which ports are connected, without worrying about the distance between them, ocean conditions between them, etc. 
-    This can help remove bias on "best" or "most connected" ports, and just examine the data. 
-  </p> -->
+        <div id="div-content-acknowledgements" class="d-none">
+          <h1>Acknowledgments</h1>
 
-  <!-- <p>
-    <a href="https://docs.google.com/presentation/d/1oqcMSHFFXwJzNTfjltaHumTK51zBVicduE65jQskXr0/edit?usp=sharing">
-      Link to Slides
-    </a>
-  </p> -->
+          <p>
+            List here where any code, packages/libraries, text, images, designs,
+            etc. that you leverage come from.
+          </p>
 
-  <h1>Acknowledgments</h1>
+          <ul>
+            <li>
+              <a href="https://anitagraser.github.io/movingpandas/">
+                Moving Pandas: Python library for handling movement data based
+                on Pandas and GeoPandas.
+              </a>
+              by Anita Graser
+            </li>
+            <li>
+              <a href="https://github.com/anitagraser/movingpandas-examples">
+                Moving Pandas Examples: Example notebooks illustrating
+                MovingPandas use cases
+              </a>
+              by Anita Graser
+            </li>
+            <li>
+              <a
+                href="https://anitagraser.com/2021/03/28/movement-data-in-gis-35-stop-detection-analysis-with-movingpandas/"
+              >
+                Movement data in GIS #35: stop detection & analysis with
+                MovingPandas
+              </a>
+              by Anita Graser
+            </li>
+            <li>
+              <a
+                href="https://anitagraser.com/2021/03/17/movement-data-in-gis-34-a-protocol-for-exploring-movement-data/"
+              >
+                Movement data in GIS #34: a protocol for exploring movement data
+              </a>
+              by Anita Graser
+            </li>
+            <li>
+              <a
+                href="https://github.com/anitagraser/EDA-protocol-movement-data"
+              >
+                A protocol for identifying problems in continuous movement data
+              </a>
+              by Anita Graser
+            </li>
+            <li>
+              <a
+                href="https://anitagraser.com/2020/07/26/extracting-trajectories-from-massive-movement-datasets/"
+              >
+                Generating trajectories from massive movement datasets
+              </a>
+              by Anita Graser
+            </li>
+            <li>
+              <a
+                href="https://anitagraser.com/2020/01/12/movement-data-in-gis-27-extracting-trip-origin-clusters-from-movingpandas-trajectories/"
+              >
+                Movement data in GIS #27: extracting trip origin clusters from
+                MovingPandas trajectories
+              </a>
+              by Anita Graser
+            </li>
+            <li>
+              <a
+                href="https://anitagraser.com/2019/09/11/movement-data-in-gis-24-movingpandas-hands-on-tutorials/"
+              >
+                Movement data in GIS #24: MovingPandas hands-on tutorials
+              </a>
+              by Anita Graser
+            </li>
+            <li>
+              <a
+                href="https://anitagraser.com/2019/05/22/movement-data-in-gis-23-trajectories-in-context/"
+              >
+                Movement data in GIS #23: trajectories in context
+              </a>
+              by Anita Graser
+            </li>
+            <li>
+              <a href="https://d3js.org/"> D3: Data-Driven Documents </a>
+              by Mike Bostock is used for manipulating the DOM to create
+              visualizations.
+            </li>
+            <li>
+              <a href="https://codepo8.github.io/css-fork-on-github-ribbon/#">
+                Pure CSS responsive 'Fork me on GitHub' ribbon
+              </a>
+              by Chris Heilmann is used to create the banner that links back to
+              the source code repository.
+            </li>
+            <li>
+              <a
+                href="https://neu-cs-7250-s21-staff.github.io/Assignment--Brushing_and_Linking--Solution/"
+              >
+                Assignment: Brushing & Linking in D3 Solution
+              </a>
+              by Cody Dunne
+            </li>
+            <li>
+              <a href="https://github.com/topojson/world-atlas">
+                Pre-built TopoJSON from Natural Earth
+              </a>
+              by Mike Bostock is used for rendering vectors for the world
+              countries.
+            </li>
+            <li>
+              <a
+                href="https://bl.ocks.org/d3noob/f052595e2f92c0da677c67d5cf6f98a1"
+              >
+                Bl.ocks.org: World Map Centered v6
+              </a>
+              by d3noob is used for basic rendering of a TopoJSON svgMap.
+            </li>
+            <li>
+              <a
+                href="https://bl.ocks.org/d3noob/c056543aff74a0ac45bef099ee6f5ff4"
+              >
+                Bl.ocks.org: Map Pan / Zoom with Cities v6
+              </a>
+              by d3noob is used for plotting points for world cities while
+              allowing zoom and pan.
+            </li>
+            <li>
+              <a
+                href="https://www.d3-graph-gallery.com/graph/connectionmap_csv.html"
+              >
+                Connection Map from csv in d3.js
+              </a>
+              by d3 graph gallery is used for basic paths between ports on the
+              svgMap.
+            </li>
+            <li>
+              <a href="https://css-tricks.com/snippets/css/a-guide-to-flexbox/">
+                A Guide to Flexbox
+              </a>
+              by css-tricks for a css flexbox review.
+            </li>
+            <li>
+              <a
+                href="https://www.sohamkamani.com/blog/javascript/2019-02-18-d3-geo-projections-explained/"
+              >
+                D3 Geo Projections Explained
+              </a>
+              by Soham Kamani for processing GeoJSON with d3.
+            </li>
+            <li>
+              <a href="https://leafletjs.com/reference-1.7.1.html">
+                Leaflet: an open-source JavaScript library for mobile-friendly
+                interactive maps
+              </a>
+              by Vladimir Agafonkin is used for web mapping.
+            </li>
+            <li>
+              <a
+                href="https://geojson.org/geojson-spec.html#feature-collection-objects"
+              >
+                GeoJSON Spec
+              </a>
+            </li>
+            <li>
+              <a href="https://tools.ietf.org/html/rfc7946"> RFC 7946 </a>
+            </li>
+            <li>
+              <a
+                href="https://observablehq.com/@bernardoct/leaftlet-d3-js-map-zoom--and-data-dependent-map-display"
+              >
+                Observable: Leaflet + D3.js Map, zoom- and data-dependent svgMap
+                display
+              </a>
+              by bernardoct
+            </li>
+            <li>
+              <a
+                href="https://observablehq.com/@sfu-iat355/introduction-to-leaflet-and-d3"
+              >
+                Observable: Introduction to leaflet and D3
+              </a>
+              by IAT355
+            </li>
+            <li>
+              <a
+                href="https://observablehq.com/@valentinapremoli/week-10b-intro-to-d3-js-mapping-data-with-d3"
+              >
+                Observable: Week 10b - Intro to D3.js: Mapping Data with D3
+              </a>
+              by Valentina Premoli
+            </li>
+            <li>
+              <a
+                href="https://livebook.manning.com/book/d3-js-in-action/chapter-7/1"
+              >
+                D3.js In Action: Chapter 7. Geospatial information visualization
+              </a>
+              by Elijah Meeks
+            </li>
+            <li>
+              <a
+                href="http://bl.ocks.org/EE2dev/d17037089246a3b23cba1a3ca8ed0cc1"
+              >
+                Bl.ocks.org: leaflet and d3.legend
+              </a>
+              by EE2dev and
+              <a
+                href="https://www.d3-graph-gallery.com/graph/custom_legend.html"
+              >
+                d3 graph gallery: Custom legend in D3 graph gallery
+              </a>
+              by Yan Holtz for the legend in the network graph
+            </li>
+            <li>
+              <a href="http://bl.ocks.org/wrobstory/5762547">
+                Bl.ocks.org: Choropleth with Vincent
+              </a>
+              by Rob Story
+            </li>
+            <li>
+              <a href="http://bl.ocks.org/ndobie/336055eed95f62350ec3">
+                Bl.ocks.org: Building a table with D3
+              </a>
+              by Nathan Dobie
+            </li>
+            <li>
+              <a href="https://codepen.io/ryshackleton/pen/NpdNjJ">
+                Codepen.io: D3 Earthquakes on Leaflet Map
+              </a>
+              by Ryan Shackleton
+            </li>
+            <li>
+              <a
+                href="https://observablehq.com/@olemi/mapping-data-on-openstreetmap-using-leaflet"
+              >
+                Observable: Mapping data on OpenStreetMap (using LeafLet) Bubble
+                chart example
+              </a>
+              by olemi
+            </li>
+            <li>
+              <a
+                href="https://bl.ocks.org/almsuarez/fa9502b0087b829ef4d97e5d6d5ccfde"
+              >
+                Bl.ocks.org: Force layout v6
+              </a>
+              by almsuarez and
+              <a
+                href="https://observablehq.com/@brunolaranjeira/d3-v6-force-directed-graph-with-directional-straight-arrow"
+              >
+                Observable: D3 v6 force directed graph with directional arrows
+              </a>
+              by brunolaranjeira to render the force-directed graph of ports and
+              services
+            </li>
+            <li>
+              <a href="https://observablehq.com/@d3/mobile-patent-suits">
+                Mobile Patent Suits
+              </a>
+              by Mike Bostock and
+              <a href="https://stackoverflow.com/a/44316580">
+                Stack Overflow: d3 Network with Multiple Links in the Same
+                Direction
+              </a>
+              by andrew-reid for directional links in the node-link
+              visualization without overlap.
+            </li>
+            <li>
+              <a href="https://bl.ocks.org/mbostock/1129492">
+                Bounded force layout
+              </a>
+              by Mike Bostock so nodes don't go off screen
+            </li>
+            <li>
+              <a href="https://stackoverflow.com/a/13369282-m">
+                Stack Overflow: Labels / text on the nodes of a D3 force
+                directed graph
+              </a>
+              by Superboggly to add labels to nodes in the force directed layout
+            </li>
+            <li>
+              <a
+                href="https://d19jftygre6gh0.cloudfront.net/almsuarez/4333a12d2531d6c1f6f22b74f2c57102"
+              >
+                Force layout with highlights
+              </a>
+              by Alejandro Suarez to add tooltips to nodes.
+            </li>
+            <li>
+              <a
+                href="https://www.d3-graph-gallery.com/graph/interactivity_button.html"
+              >
+                Adding and using buttons in D3
+              </a>
+              by d3-graph-gallery
+            </li>
+            <li>
+              <a href="https://observablehq.com/@benoldenburg/patterns-tooltip">
+                Observable: Patterns- Tooltip
+              </a>
+              by Ben Oldenburg
+            </li>
+          </ul>
+        </div>
+      </div>
+    </div>
 
-  <p>
-    List here where any code, packages/libraries, text, images, designs, etc. that you leverage come from.
-  </p>
-
-  <ul>
-    <li>
-      <a href='https://anitagraser.github.io/movingpandas/'>
-        Moving Pandas: Python library for handling movement data based on Pandas and GeoPandas.
-      </a>
-      by Anita Graser
-    </li>
-    <li>
-      <a href='https://github.com/anitagraser/movingpandas-examples'>
-        Moving Pandas Examples: Example notebooks illustrating MovingPandas use cases
-      </a>
-      by Anita Graser
-    </li>
-    <li>
-      <a href='https://anitagraser.com/2021/03/28/movement-data-in-gis-35-stop-detection-analysis-with-movingpandas/'>
-        Movement data in GIS #35: stop detection & analysis with MovingPandas
-      </a>
-      by Anita Graser
-    </li>
-    <li>
-      <a href='https://anitagraser.com/2021/03/17/movement-data-in-gis-34-a-protocol-for-exploring-movement-data/'>
-        Movement data in GIS #34: a protocol for exploring movement data
-      </a>
-      by Anita Graser
-    </li>
-    <li>
-      <a href='https://github.com/anitagraser/EDA-protocol-movement-data'>
-        A protocol for identifying problems in continuous movement data
-      </a>
-      by Anita Graser
-    </li>
-    <li>
-      <a href='https://anitagraser.com/2020/07/26/extracting-trajectories-from-massive-movement-datasets/'>
-        Generating trajectories from massive movement datasets
-      </a>
-      by Anita Graser
-    </li>
-    <li>
-      <a href='https://anitagraser.com/2020/01/12/movement-data-in-gis-27-extracting-trip-origin-clusters-from-movingpandas-trajectories/'>
-        Movement data in GIS #27: extracting trip origin clusters from MovingPandas trajectories
-      </a>
-      by Anita Graser
-    </li>
-    <li>
-      <a href='https://anitagraser.com/2019/09/11/movement-data-in-gis-24-movingpandas-hands-on-tutorials/'>
-        Movement data in GIS #24: MovingPandas hands-on tutorials
-      </a>
-      by Anita Graser
-    </li>
-    <li>
-      <a href='https://anitagraser.com/2019/05/22/movement-data-in-gis-23-trajectories-in-context/'>
-        Movement data in GIS #23: trajectories in context
-      </a>
-      by Anita Graser
-    </li>
-    <li>
-      <a href='https://d3js.org/'>
-        D3: Data-Driven Documents
-      </a>
-      by Mike Bostock
-      is used for manipulating the DOM to create visualizations.
-    </li>
-    <li>
-      <a href='https://codepo8.github.io/css-fork-on-github-ribbon/#'>
-        Pure CSS responsive 'Fork me on GitHub' ribbon
-      </a>
-      by Chris Heilmann
-      is used to create the banner that links back to the source code repository.
-    </li>
-    <li>
-      <a href='https://neu-cs-7250-s21-staff.github.io/Assignment--Brushing_and_Linking--Solution/'>
-        Assignment: Brushing & Linking in D3 Solution
-      </a>
-      by Cody Dunne
-    </li>
-    <li>
-      <a href='https://github.com/topojson/world-atlas'>
-        Pre-built TopoJSON from Natural Earth
-      </a>
-      by Mike Bostock
-      is used for rendering vectors for the world countries.
-    </li>
-    <li>
-      <a href='https://bl.ocks.org/d3noob/f052595e2f92c0da677c67d5cf6f98a1'>
-        Bl.ocks.org: World Map Centered v6
-      </a>
-      by d3noob is used for basic rendering of a TopoJSON svgMap.
-    </li>
-    <li>
-      <a href='https://bl.ocks.org/d3noob/c056543aff74a0ac45bef099ee6f5ff4'>
-        Bl.ocks.org: Map Pan / Zoom with Cities v6
-      </a>
-      by d3noob
-      is used for plotting points for world cities while allowing zoom and pan.
-    </li>
-    <li>
-      <a href='https://www.d3-graph-gallery.com/graph/connectionmap_csv.html'>
-        Connection Map from csv in d3.js
-      </a>
-      by d3 graph gallery
-      is used for basic paths between ports on the svgMap.
-    </li>
-    <li>
-      <a href="https://css-tricks.com/snippets/css/a-guide-to-flexbox/">
-        A Guide to Flexbox
-      </a>
-      by css-tricks
-      for a css flexbox review.
-    </li>
-    <li>
-      <a href="https://www.sohamkamani.com/blog/javascript/2019-02-18-d3-geo-projections-explained/">
-        D3 Geo Projections Explained
-      </a>
-      by Soham Kamani
-      for processing GeoJSON with d3.
-    </li>
-    <li>
-      <a href="https://leafletjs.com/reference-1.7.1.html">
-        Leaflet: an open-source JavaScript library for mobile-friendly interactive maps
-      </a>
-      by Vladimir Agafonkin
-      is used for web mapping.
-    </li>
-    <li>
-      <a href="https://geojson.org/geojson-spec.html#feature-collection-objects">
-        GeoJSON Spec
-      </a>
-    </li>
-    <li>
-      <a href="https://tools.ietf.org/html/rfc7946">
-        RFC 7946
-      </a>
-    </li>
-    <li>
-      <a href="https://observablehq.com/@bernardoct/leaftlet-d3-js-map-zoom--and-data-dependent-map-display">
-        Observable: Leaflet + D3.js Map, zoom- and data-dependent svgMap display
-      </a>
-      by bernardoct
-    </li>
-    <li>
-      <a href="https://observablehq.com/@sfu-iat355/introduction-to-leaflet-and-d3">
-        Observable: Introduction to leaflet and D3
-      </a>
-      by IAT355
-    </li>
-    <li>
-      <a href="https://observablehq.com/@valentinapremoli/week-10b-intro-to-d3-js-mapping-data-with-d3">
-        Observable: Week 10b - Intro to D3.js: Mapping Data with D3
-      </a>
-      by Valentina Premoli
-    </li>
-    <li>
-      <a href="https://livebook.manning.com/book/d3-js-in-action/chapter-7/1">
-        D3.js In Action: Chapter 7. Geospatial information visualization
-      </a>
-      by Elijah Meeks
-    </li>
-    <li>
-      <a href="http://bl.ocks.org/EE2dev/d17037089246a3b23cba1a3ca8ed0cc1">
-        Bl.ocks.org: leaflet and d3.legend
-      </a>
-      by EE2dev 
-      and 
-      <a href="https://www.d3-graph-gallery.com/graph/custom_legend.html">
-        d3 graph gallery: Custom legend in D3 graph gallery
-      </a>
-      by Yan Holtz
-      for the legend in the network graph
-    </li>
-    <li>
-      <a href="http://bl.ocks.org/wrobstory/5762547">
-        Bl.ocks.org: Choropleth with Vincent
-      </a>
-      by Rob Story
-    </li>
-    <li>
-      <a href="http://bl.ocks.org/ndobie/336055eed95f62350ec3">
-        Bl.ocks.org: Building a table with D3
-      </a>
-      by Nathan Dobie
-    </li>
-    <li>
-      <a href="https://codepen.io/ryshackleton/pen/NpdNjJ">
-        Codepen.io: D3 Earthquakes on Leaflet Map
-      </a>
-      by Ryan Shackleton
-    </li>
-    <li>
-      <a href="https://observablehq.com/@olemi/mapping-data-on-openstreetmap-using-leaflet">
-        Observable: Mapping data on OpenStreetMap (using LeafLet) Bubble chart example
-      </a>
-      by olemi
-    </li>
-    <li>
-      <a href="https://bl.ocks.org/almsuarez/fa9502b0087b829ef4d97e5d6d5ccfde">
-        Bl.ocks.org: Force layout v6
-      </a>
-      by almsuarez
-
-      and
-      <a href="https://observablehq.com/@brunolaranjeira/d3-v6-force-directed-graph-with-directional-straight-arrow">
-        Observable: D3 v6 force directed graph with directional arrows
-      </a>
-      by brunolaranjeira
-      to render the force-directed graph of ports and services
-    </li>
-    <li>
-      <a href="https://observablehq.com/@d3/mobile-patent-suits">
-        Mobile Patent Suits
-      </a>
-      by Mike Bostock
-      and
-      <a href="https://stackoverflow.com/a/44316580">
-        Stack Overflow: d3 Network with Multiple Links in the Same Direction
-      </a>
-      by andrew-reid
-      for directional links in the node-link visualization without overlap.
-    </li>
-    <li>
-      <a href="https://bl.ocks.org/mbostock/1129492">
-        Bounded force layout
-      </a>
-      by Mike Bostock
-      so nodes don't go off screen
-    </li>
-    <li>
-      <a href="https://stackoverflow.com/a/13369282-m">
-        Stack Overflow: Labels / text on the nodes of a D3 force directed graph
-      </a>
-      by Superboggly
-      to add labels to nodes in the force directed layout
-    </li>
-    <li>
-      <a href="https://d19jftygre6gh0.cloudfront.net/almsuarez/4333a12d2531d6c1f6f22b74f2c57102">
-        Force layout with highlights
-      </a>
-      by Alejandro Suarez
-      to add tooltips to nodes.
-    </li>
-    <li>
-      <a href="https://www.d3-graph-gallery.com/graph/interactivity_button.html">
-        Adding and using buttons in D3
-      </a>
-      by d3-graph-gallery
-    </li>
-    <li>
-      <a href="https://observablehq.com/@benoldenburg/patterns-tooltip">
-       Observable: Patterns- Tooltip
-      </a>
-      by Ben Oldenburg
-    </li>
-  </ul>
-</div>
-
-
-
-<!-- Scripts at the end avoid need for dealing with async, defer, or onload event handlers -->
-<script src='lib/d3.v6.1.1/d3.min.js'></script>
-<script src='lib/topojson.v3.0.2/topojson.min.js'></script>
-<script src='js/svgMap.js'></script>
-<script src='js/leafletMap.js'></script>
-<script src='js/vesselTable.js'></script>
-<script src='js/network.js'></script>
-<!--<script src='js/detailPane.js'></script>-->
-<script src='js/carrierFilter.js'></script>
-<script src='js/resetBtn.js'></script>
-<script src='js/visualization.js'></script>
-
-</body>
-
+    <!-- Scripts at the end avoid need for dealing with async, defer, or onload event handlers -->
+    <script src="lib/bootstrap.v5.0.1/js/bootstrap.bundle.min.js"></script>
+    <script src="lib/d3.v6.1.1/d3.min.js"></script>
+    <script src="lib/topojson.v3.0.2/topojson.min.js"></script>
+    <script src="js/svgMap.js"></script>
+    <script src="js/leafletMap.js"></script>
+    <script src="js/vesselTable.js"></script>
+    <script src="js/network.js"></script>
+    <!--<script src='js/detailPane.js'></script>-->
+    <script src="js/carrierFilter.js"></script>
+    <script src="js/resetBtn.js"></script>
+    <script src="js/visualization.js"></script>
+  </body>
 </html>
