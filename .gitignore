@@ -1,5 +1,6 @@
 notebooks/tmp
 movingpandas
+lib
 
 # geopackage temp files
 *.gpkg-shm
