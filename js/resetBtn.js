@@ -17,6 +17,7 @@ function resetBtn() {
     let buttonEl = document.createElement('button');
     buttonEl.setAttribute("type", "button");
     buttonEl.setAttribute("id", "clear-all-selections");
+    buttonEl.setAttribute("class", "btn btn-primary");
     buttonEl.addEventListener('click', function(e) {
       data.forEach(element => element.clearSelection())
       // data.clearSelection();
