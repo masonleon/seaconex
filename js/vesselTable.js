@@ -14,44 +14,63 @@ function vesselTable() {
 
     // svg
       .append('table')
+
       // .attr('preserveAspectRatio', 'xMidYMid meet')
       // .attr('viewBox', [0, 0, width + margin.left + margin.right,
       //   height + margin.top + margin.bottom].join(' '))
       // .classed('svg-content', true)
       // .style("cursor", "crosshair");
-      .classed('table-content', true)
+      
+      .classed('table', true)
+      .classed('table-striped', true)
+
       .classed('text-unselectable', true);
 
     // Add table head and body elements
     let thead = svg.append('thead');
     let tbody = svg.append('tbody');
 
-    // let columns = Object.keys(data['vessels'][0])
-    // console.log(columns)
-    let columns = [
-      // "vessel_imo",
-      "vessel_name",
-      // "vessel_mmsi",
-      // "vessel_call_sign",
-      // "vessel_build_year",
-      // "vessel_gross_tonnage",
-      "vessel_type",
-      "vessel_flag_country",
-      // "vessel_capacity_teu",
-      // "vessel_capacity_vehicle_units",
-      // "vessel_stern_ramp_capacity_tons",
-      // "carrier",
-      // "service"
+    // let columns = [
+    //   "vessel_imo",
+    //   "vessel_name",
+    //   "vessel_mmsi",
+    //   "vessel_call_sign",
+    //   "vessel_build_year",
+    //   "vessel_gross_tonnage",
+    //   "vessel_type",
+    //   "vessel_flag_country",
+    //   "vessel_capacity_teu",
+    //   "vessel_capacity_vehicle_units",
+    //   "vessel_stern_ramp_capacity_tons",
+    //   "carrier",
+    //   "service"
+    // ]
+    let columns = Object.keys(data['vessels'][0])
+
+    let headerFields = [
+      "IMO",
+      "Name",
+      "MMSI",
+      "Call Sign",
+      "Build Yr.",
+      "Gross Tonnage (GT)",
+      "Type",
+      "Flag",
+      "Cargo Capacity (TEU)",
+      "Cargo Capacity (CEU)",
+      "Stern Ramp Capacity (Tons)",
+      "Carrier Operator",
+      "Carrier Service"
     ]
 
     thead
-      // svg.select('thead')
       .append('tr')
       .selectAll('th')
-      .data(columns)
+      .data(headerFields)
       .enter()
       .append('th')
-      .text(d => `${d}`);
+      .text(d => 
+        `${d}`);
 
     // Make one row (tr) for each line in data
     let rows = tbody.selectAll('tr')
@@ -73,7 +92,8 @@ function vesselTable() {
       })
       .enter()
       .append('td')
-      .html(d => `${d.value}`);
+      .html(d => 
+        `${d.value}`);
 
     selectableElements = rows;
 
@@ -89,19 +109,6 @@ function vesselTable() {
       .on('mouseover', mouseOver)
       .on('mouseout', mouseOut)
       .on('mouseup', mouseUp);
-
-    // // Adds an invisible svg over the 'clear selections' button, and then clears selected elements when clicked
-    // d3.select("clear-selection-button-div")
-    //   .append("svg")
-    //
-    // d3.select("#clear-all-selections")
-    //   .on("click.vtable", clearSelections)
-    //
-    // function clearSelections() {
-    //   console.log("Clearing table selections....");
-    //   selectableElements.classed('selected', false);
-    //   selectElements([])
-    // }
 
     function mouseDown(event, d) {
       startIndex = getElementIndex(this);
@@ -187,7 +194,8 @@ function vesselTable() {
               svg
                 .selectAll('.selected')
                 .data()
-                .map(d => d.vessel_mmsi)
+                .map(d => 
+                  d.vessel_mmsi)
           )
       )
 
@@ -199,7 +207,7 @@ function vesselTable() {
             .api_callback_lookup
             .vessel_mmsi
             .find(record =>
-                record.vessel_mmsi === vessel_mmsi
+              record.vessel_mmsi === vessel_mmsi
             )
 
           result.push(lookup_record)
@@ -207,9 +215,9 @@ function vesselTable() {
 
       // Let other charts know about our selection
       dispatcher.call(
-          dispatchString,
-          this,
-          result
+        dispatchString,
+        this,
+        result
       );
     }
 
@@ -237,13 +245,13 @@ function vesselTable() {
       selectableElements
         .filter(item => selectedData
           .map(selected =>
-              selected.lookup.vessel_mmsi
+            selected.lookup.vessel_mmsi
           )
           .reduce((prev, curr) =>
-              prev.concat(curr), []
+            prev.concat(curr), []
           )
           .filter((item, i, arr) =>
-              arr.indexOf(item) === i
+            arr.indexOf(item) === i
           )
           .includes(item.vessel_mmsi)
         )
