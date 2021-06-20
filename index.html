@@ -163,183 +163,6 @@
 
           <div id="dashboard" class="mt-3">
             <div class="row">
-              <div class="col-lg-4">
-                <div id="card-vis-network" class="card h-100">
-                  <h6
-                    class="
-                      card-header
-                      d-flex
-                      justify-content-between
-                      align-items-center
-                    "
-                    id="card-heading-vis-network"
-                  >
-                    Ocean Carrier Service Network Connectivity
-                    <div
-                      class="btn-group"
-                      role="group"
-                      aria-label="Ocean Carrier Service Network Connectivity Card Button Group"
-                    >
-                      <button
-                        type="button"
-                        class="btn btn-md btn-light info-button"
-                        aria-label="Information"
-                        data-bs-toggle="collapse"
-                        data-bs-target="#info-vis-network"
-                        aria-expanded="false"
-                        aria-controls="info-vis-network"
-                      >
-                        <i class="bi bi-info-circle"></i>
-                      </button>
-
-                      <button
-                        class="accordion-button d-none"
-                        type="button"
-                        data-bs-toggle="collapse"
-                        data-bs-target="#card-body-vis-network"
-                        aria-expanded="true"
-                        aria-controls="card-body-vis-network"
-                      ></button>
-                    </div>
-                  </h6>
-                  <div
-                    id="card-body-vis-network"
-                    class="card-body collapse show"
-                    aria-labelledby="card-heading-vis-network"
-                  >
-                    <div class="collapse card-text" id="info-vis-network">
-                      <p>
-                        Explore the marine terminal connectivity of publicly
-                        posted carrier master service schedules.
-                      </p>
-                    </div>
-                    <div id="vis-network" class=""></div>
-                  </div>
-                </div>
-              </div>
-
-              <div class="col-lg-8">
-                <div id="card-vis-map" class="card h-100">
-                  <h6
-                    class="
-                      card-header
-                      d-flex
-                      justify-content-between
-                      align-items-center
-                    "
-                    id="card-heading-vis-map"
-                  >
-                    Ocean Carrier Service Network Topography
-                    <div
-                      class="btn-group"
-                      role="group"
-                      aria-label="Ocean Carrier Service Network Map Card Button Group"
-                    >
-                      <button
-                        type="button"
-                        class="btn btn-md btn-light info-button"
-                        aria-label="Information"
-                        data-bs-toggle="collapse"
-                        data-bs-target="#info-vis-map"
-                        aria-expanded="false"
-                        aria-controls="info-vis-map"
-                      >
-                        <i class="bi bi-info-circle"></i>
-                      </button>
-
-                      <button
-                        class="accordion-button d-none"
-                        type="button"
-                        data-bs-toggle="collapse"
-                        data-bs-target="#card-body-vis-map"
-                        aria-expanded="true"
-                        aria-controls="card-body-vis-map"
-                      ></button>
-                    </div>
-                  </h6>
-                  <div
-                    id="card-body-vis-map"
-                    class="card-body collapse show"
-                    aria-labelledby="card-heading-vis-map"
-                  >
-                    <div class="collapse card-text" id="info-vis-map">
-                      <p>
-                        Explore the shortest navigable maritime paths between
-                        marine terminals of publicly posted carrier master
-                        service schedules.
-                        <br />
-                        For a selected vessel, view the actual trajectory
-                        (historical path) over a set time period.
-                        <br />
-                        <br />
-                        *Note: the shortest paths paths may not reflect the
-                        ideal route.
-                      </p>
-                    </div>
-                    <div id="vis-map" class=""></div>
-                  </div>
-                </div>
-              </div>
-
-              <div class="">
-                <div id="card-controls" class="card">
-                  <h6
-                    class="
-                      card-header
-                      d-flex
-                      justify-content-between
-                      align-items-center
-                    "
-                    id="card-heading-controls"
-                  >
-                    Visualization Controls & Legend
-                    <div
-                      class="btn-group"
-                      role="group"
-                      aria-label="Controls Card Button Group"
-                    >
-                      <button
-                        type="button"
-                        class="btn btn-md btn-light info-button"
-                        aria-label="Information"
-                        data-bs-toggle="collapse"
-                        data-bs-target="#info-controls"
-                        aria-expanded="false"
-                        aria-controls="info-controls"
-                      >
-                        <i class="bi bi-info-circle"></i>
-                      </button>
-
-                      <button
-                        class="accordion-button d-none"
-                        type="button"
-                        data-bs-toggle="collapse"
-                        data-bs-target="#card-body-controls"
-                        aria-expanded="true"
-                        aria-controls="card-body-controls"
-                      ></button>
-                    </div>
-                  </h6>
-                  <div
-                    id="card-body-controls"
-                    class="card-body collapse show"
-                    aria-labelledby="card-heading-controls"
-                  >
-                    <div class="collapse card-text" id="info-controls">
-                      <p>
-                        Explore the marine terminal connectivity of publicly
-                        posted carrier master service schedules.
-                      </p>
-                    </div>
-
-                    <div class="d-flex">
-                      <div id="button-clear-filters"></div>
-
-                      <div id="legend">Legend</div>
-                    </div>
-                  </div>
-                </div>
-              </div>
 
               <div class="col-lg-3">
                 <div id="card-filters-carriers" class="card">
@@ -487,6 +310,184 @@
                       </p>
                     </div>
                     <div id="filters-vessels" class="table-responsive"></div>
+                  </div>
+                </div>
+              </div>
+
+              <div class="">
+                <div id="card-controls" class="card">
+                  <h6
+                    class="
+                      card-header
+                      d-flex
+                      justify-content-between
+                      align-items-center
+                    "
+                    id="card-heading-controls"
+                  >
+                    Visualization Controls & Legend
+                    <div
+                      class="btn-group"
+                      role="group"
+                      aria-label="Controls Card Button Group"
+                    >
+                      <button
+                        type="button"
+                        class="btn btn-md btn-light info-button"
+                        aria-label="Information"
+                        data-bs-toggle="collapse"
+                        data-bs-target="#info-controls"
+                        aria-expanded="false"
+                        aria-controls="info-controls"
+                      >
+                        <i class="bi bi-info-circle"></i>
+                      </button>
+
+                      <button
+                        class="accordion-button d-none"
+                        type="button"
+                        data-bs-toggle="collapse"
+                        data-bs-target="#card-body-controls"
+                        aria-expanded="true"
+                        aria-controls="card-body-controls"
+                      ></button>
+                    </div>
+                  </h6>
+                  <div
+                    id="card-body-controls"
+                    class="card-body collapse show"
+                    aria-labelledby="card-heading-controls"
+                  >
+                    <div class="collapse card-text" id="info-controls">
+                      <p>
+                        Explore the marine terminal connectivity of publicly
+                        posted carrier master service schedules.
+                      </p>
+                    </div>
+
+                    <div class="d-flex">
+                      <div id="button-clear-filters"></div>
+
+                      <div id="legend">Legend</div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <div class="col-lg-4">
+                <div id="card-vis-network" class="card h-100">
+                  <h6
+                    class="
+                      card-header
+                      d-flex
+                      justify-content-between
+                      align-items-center
+                    "
+                    id="card-heading-vis-network"
+                  >
+                    Ocean Carrier Service Network Connectivity
+                    <div
+                      class="btn-group"
+                      role="group"
+                      aria-label="Ocean Carrier Service Network Connectivity Card Button Group"
+                    >
+                      <button
+                        type="button"
+                        class="btn btn-md btn-light info-button"
+                        aria-label="Information"
+                        data-bs-toggle="collapse"
+                        data-bs-target="#info-vis-network"
+                        aria-expanded="false"
+                        aria-controls="info-vis-network"
+                      >
+                        <i class="bi bi-info-circle"></i>
+                      </button>
+
+                      <button
+                        class="accordion-button d-none"
+                        type="button"
+                        data-bs-toggle="collapse"
+                        data-bs-target="#card-body-vis-network"
+                        aria-expanded="true"
+                        aria-controls="card-body-vis-network"
+                      ></button>
+                    </div>
+                  </h6>
+                  <div
+                    id="card-body-vis-network"
+                    class="card-body collapse show"
+                    aria-labelledby="card-heading-vis-network"
+                  >
+                    <div class="collapse card-text" id="info-vis-network">
+                      <p>
+                        Explore the marine terminal connectivity of publicly
+                        posted carrier master service schedules.
+                      </p>
+                    </div>
+                    <div id="vis-network" class=""></div>
+                  </div>
+                </div>
+              </div>
+
+              <div class="col-lg-8">
+                <div id="card-vis-map" class="card h-100">
+                  <h6
+                    class="
+                      card-header
+                      d-flex
+                      justify-content-between
+                      align-items-center
+                    "
+                    id="card-heading-vis-map"
+                  >
+                    Ocean Carrier Service Network Topography
+                    <div
+                      class="btn-group"
+                      role="group"
+                      aria-label="Ocean Carrier Service Network Map Card Button Group"
+                    >
+                      <button
+                        type="button"
+                        class="btn btn-md btn-light info-button"
+                        aria-label="Information"
+                        data-bs-toggle="collapse"
+                        data-bs-target="#info-vis-map"
+                        aria-expanded="false"
+                        aria-controls="info-vis-map"
+                      >
+                        <i class="bi bi-info-circle"></i>
+                      </button>
+
+                      <button
+                        class="accordion-button d-none"
+                        type="button"
+                        data-bs-toggle="collapse"
+                        data-bs-target="#card-body-vis-map"
+                        aria-expanded="true"
+                        aria-controls="card-body-vis-map"
+                      ></button>
+                    </div>
+                  </h6>
+                  <div
+                    id="card-body-vis-map"
+                    class="card-body collapse show"
+                    aria-labelledby="card-heading-vis-map"
+                  >
+                    <div class="collapse card-text" id="info-vis-map">
+                      <p>
+                        Explore the shortest navigable maritime paths between
+                        marine terminals of publicly posted carrier master
+                        service schedules.
+                        <br />
+                        For a selected vessel, view the actual trajectory
+                        (historical path) over a set time period.
+                        <br />
+                        <br />
+                        *Note: the shortest paths paths may not reflect the
+                        ideal route.
+                      </p>
+                    </div>
+                    <div id="vis-map" class=""></div>
                   </div>
                 </div>
               </div>
