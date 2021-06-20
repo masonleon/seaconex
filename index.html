@@ -66,341 +66,442 @@
       </a>
     </span>
 
-    <div class="container">
-      <div id="dashboard" class="mt-5">
-        <div class="row">
-          <div class="col-lg-3">
+    <!-- <main> -->
+    <div class="container py-4">
+      <header class="pb-3 mb-4 border-bottom">
+        <!-- Writeup -->
+        <div class="content-column">
+          <div id="container-content-intro">
+            <div id="div-content-heading" class="">
+              <h1>SeaCONEX:</h1>
 
-            <div id="card-controls" class="card" >
-              <h6
-                class="
-                  card-header
-                  d-flex
-                  justify-content-between
-                  align-items-center
-                "
-                id="card-heading-controls"
-              >
-                Visualization Controls
-            
-              </h6>
-              <div
-                id="card-body-controls"
-                class="card-body"
-                aria-labelledby="card-heading-controls"
-              >
-                <div class="collapse card-text" id="info-controls">
-                  <!-- <p>
-                    Explore the marine terminal connectivity of publicly posted
-                    carrier master service schedules.
-                  </p> -->
-                </div>
-                <div id="button-clear-filters"></div>
-              </div>
+              <p>
+                <strong>Mason Leon</strong>,
+                <strong>Rithika Lakshminarayanan</strong>
+              </p>
+
+              <!-- <p>
+                  Service-Learning Course Project as part of
+                  <a href="https://northeastern.instructure.com/courses/63405">
+                    CS 7250 S21 Information Visualization: Theory and Applications </a
+                  >, taught by
+                  <a href="https://cody.khoury.northeastern.edu/">
+                    Prof. Cody Dunne </a
+                  >,
+                  <a href="https://visualization.khoury.northeastern.edu/">
+                    Data Visualization @ Khoury </a
+                  >,
+                  <a href="https://www.khoury.northeastern.edu/">
+                    Northeastern University </a
+                  >.
+                </p> -->
             </div>
+            <div id="div-content-abstract" class="">
+              <h1>Abstract</h1>
+              <p>
+                The Container Express also known as the CONEX, was introduced by
+                the United States Military during the Korean War as an
+                intermodal logistics platform to improve cargo flows and
+                operations throughout supply chain networks. The CONEX and
+                Malcolm McLean's intermodal container were simple freight
+                technology concepts that revolutionized supply chains.
+                Containerization and the equipment utilized to transport goods
+                efficiently have fostered globalization and made the modern
+                world. However, supply chains remain vulnerable to disruption
+                and are plagued by poor visibility and difficulty exchanging
+                information about cargo and freight networks. Supply chain
+                disruption and the complexity of maritime and hinterland
+                networks remain key issues around the world. SeaCONEX is not
+                just a portmanteau, but a visualization tool focused on this
+                larger issue by allowing users to see the connections of
+                maritime supply chain networks. In this paper, we present a
+                visualization dashboard that allows users to evaluate carrier
+                service rotation between terminals, view the shortest navigable
+                marine route between connections, and investigate vessel
+                trajectories and deviations from the optimal route.
+              </p>
+            </div>
+            <div id="div-content-visualization" class="">
+              <h1>Visualization</h1>
+              <p>
+                The visualizations below depicts a hypothetical scenario where
+                the UKMOD is trying to transport a shipment from London to the
+                UK Overseas Territory of Bermuda. In this case study, UKMOD
+                needs to evaluate commercial shipping options between the UK and
+                Bermuda across 6 ocean carriers, 9 services, 18 deployed
+                vessels, and their network of ports. The vessels include several
+                Container/Roll-On Roll-Off (ConRo), geared container vessels,
+                and fully-cellular container vessels actively deployed on the
+                Trans-Atlantic and US-Bermuda trade lanes.
+              </p>
 
-            <div id="card-filters-carriers" class="card">
-              <h6
-                class="
-                  card-header
-                  d-flex
-                  justify-content-between
-                  align-items-center
-                "
-              >
-                Ocean Carriers
-                <button
-                  type="button"
-                  class="btn btn-lg btn-light"
-                  aria-label="Information"
-                  data-bs-toggle="collapse"
-                  data-bs-target="#info-filters-carriers"
-                  aria-expanded="false"
-                  aria-controls="info-filters-carriers"
-                >
-                  <i class="bi bi-info-circle"></i>
-                </button>
-              </h6>
-              <div class="card-body">
-                <div class="collapse" id="info-filters-carriers">
-                  <div class="card card-body">
-                    <p class="card-text">Select an Ocean Carrier.</p>
-                  </div>
-                </div>
-                <div id="filters-carriers"></div>
-              </div>
+              <p>
+                To support the two important tasks of 1) examining connectivity
+                between ports with seemingly disjoint carrier networks and 2)
+                tracking vessel trajectories based on AIS data; we present two
+                views that allow users to accomplish these tasks. The first view
+                shows connections between ports in a node-link diagram and
+                allows users to filter routes based on carriers. The second view
+                allows users to examine actual paths taken by vessels and their
+                deviation from the shortest or most ideal routes in red.
+              </p>
             </div>
           </div>
-
-          <div class="col-lg-9">
-            <div id="card-vis-network" class="card" >
-              <h6
-                class="
-                  card-header
-                  d-flex
-                  justify-content-between
-                  align-items-center
-                "
-                id="card-heading-vis-network"
-              >
-                Ocean Carrier Service Network Connectivity
-                <div
-                  class="btn-group"
-                  role="group"
-                  aria-label="Ocean Carrier Service Network Connectivity Card Button Group"
-                >
-                  <button
-                    type="button"
-                    class="btn btn-lg btn-light info-button"
-                    aria-label="Information"
-                    data-bs-toggle="collapse"
-                    data-bs-target="#info-vis-network"
-                    aria-expanded="false"
-                    aria-controls="info-vis-network"
-                  >
-                    <i class="bi bi-info-circle"></i>
-                  </button>
-
-                  <button
-                    class="accordion-button"
-                    type="button"
-                    data-bs-toggle="collapse"
-                    data-bs-target="#card-body-vis-network"
-                    aria-expanded="true"
-                    aria-controls="card-body-vis-network"
-                  ></button>
-                </div>
-              </h6>
-              <div
-                id="card-body-vis-network"
-                class="card-body collapse show"
-                aria-labelledby="card-heading-vis-network"
-              >
-                <div class="collapse card-text" id="info-vis-network">
-                  <p>
-                    Explore the marine terminal connectivity of publicly posted
-                    carrier master service schedules.
-                  </p>
-                </div>
-                <div id="vis-network"></div>
-              </div>
-            </div>
-
-
-            <div id="card-filters-vessels" class="card" >
-              <h6
-                class="
-                  card-header
-                  d-flex
-                  justify-content-between
-                  align-items-center
-                "
-                id="card-heading-filters-vessels"
-              >
-                Vessels
-                <div
-                  class="btn-group"
-                  role="group"
-                  aria-label="Vessels Card Button Group"
-                >
-                  <button
-                    type="button"
-                    class="btn btn-lg btn-light info-button"
-                    aria-label="Information"
-                    data-bs-toggle="collapse"
-                    data-bs-target="#info-filters-vessels"
-                    aria-expanded="false"
-                    aria-controls="info-filters-vessels"
-                  >
-                    <i class="bi bi-info-circle"></i>
-                  </button>
-
-                  <button
-                    class="accordion-button"
-                    type="button"
-                    data-bs-toggle="collapse"
-                    data-bs-target="#card-body-filters-vessels"
-                    aria-expanded="true"
-                    aria-controls="card-body-filters-vessels"
-                  ></button>
-                </div>
-              </h6>
-              <div
-                id="card-body-filters-vessels"
-                class="card-body collapse show"
-                aria-labelledby="card-heading-filters-vessels"
-              >
-                <div class="collapse card-text" id="info-filters-vessels">
-                  <p>
-                    Select a vessel or vessels to visualize the trajectories.
-                  </p>
-                </div>
-                <div id="filters-vessels"></div>
-              </div>
-            </div>
-
-            <div id="card-vis-map" class="card">
-              <h6
-                class="
-                  card-header
-                  d-flex
-                  justify-content-between
-                  align-items-center
-                "
-                id="card-heading-vis-map"
-              >
-                Ocean Carrier Service Network Topography
-                <div
-                  class="btn-group"
-                  role="group"
-                  aria-label="Ocean Carrier Service Network Map Card Button Group"
-                >
-                  <button
-                    type="button"
-                    class="btn btn-lg btn-light info-button"
-                    aria-label="Information"
-                    data-bs-toggle="collapse"
-                    data-bs-target="#info-vis-map"
-                    aria-expanded="false"
-                    aria-controls="info-vis-map"
-                  >
-                    <i class="bi bi-info-circle"></i>
-                  </button>
-
-                  <button
-                    class="accordion-button"
-                    type="button"
-                    data-bs-toggle="collapse"
-                    data-bs-target="#card-body-vis-map"
-                    aria-expanded="true"
-                    aria-controls="card-body-vis-map"
-                  ></button>
-                </div>
-              </h6>
-              <div
-                id="card-body-vis-map"
-                class="card-body collapse show"
-                aria-labelledby="card-heading-vis-map"
-              >
-                <div class="collapse card-text" id="info-vis-map">
-                  <p>
-                    Explore the shortest navigable maritime paths between marine
-                    terminals of publicly posted carrier master service
-                    schedules.
-                    <br />
-                    For a selected vessel, view the actual trajectory
-                    (historical path) over a set time period.
-                    <br />
-                    <br />
-                    *Note: the shortest paths paths may not reflect the ideal
-                    route.
-                  </p>
-                </div>
-                <div id="vis-map"></div>
-              </div>
-            </div>
-
-          </div>
         </div>
-        <div class="row">
-          <div class="col-lg-12">
-            
-          </div>
-        </div>
-      </div>
-    </div>
-
-    <!-- Writeup -->
-    <div class="content-column">
-      <div id="container-content-intro">
-        <div id="div-content-heading" class="d-none">
-          <h1>SeaCONEX:</h1>
-
-          <p>
-            <strong>Mason Leon</strong>,
-            <strong>Rithika Lakshminarayanan</strong>,
-            <strong>Alice Tilles</strong>
-          </p>
-
-          <p>
-            Service-Learning Course Project as part of
-            <a href="https://northeastern.instructure.com/courses/63405">
-              CS 7250 S21 Information Visualization: Theory and Applications </a
-            >, taught by
-            <a href="https://cody.khoury.northeastern.edu/">
-              Prof. Cody Dunne </a
-            >,
-            <a href="https://visualization.khoury.northeastern.edu/">
-              Data Visualization @ Khoury </a
-            >,
-            <a href="https://www.khoury.northeastern.edu/">
-              Northeastern University </a
-            >.
-          </p>
-        </div>
-
-        <div id="div-content-abstract" class="d-none">
-          <h1>Abstract</h1>
-          <p>
-            The Container Express also known as the CONEX, was introduced by the
-            United States Military during the Korean War as an intermodal
-            logistics platform to improve cargo flows and operations throughout
-            supply chain networks. The CONEX and Malcolm McLean's intermodal
-            container were simple freight technology concepts that
-            revolutionized supply chains. Containerization and the equipment
-            utilized to transport goods efficiently have fostered globalization
-            and made the modern world. However, supply chains remain vulnerable
-            to disruption and are plagued by poor visibility and difficulty
-            exchanging information about cargo and freight networks. Supply
-            chain disruption and the complexity of maritime and hinterland
-            networks remain key issues around the world. SeaCONEX is not just a
-            portmanteau, but a visualization tool focused on this larger issue
-            by allowing users to see the connections of maritime supply chain
-            networks. In this paper, we present a visualization dashboard that
-            allows users to evaluate carrier service rotation between terminals,
-            view the shortest navigable marine route between connections, and
-            investigate vessel trajectories and deviations from the optimal
-            route.
-          </p>
-        </div>
-
-        <div id="div-content-visualization" class="d-none">
-          <h1>Visualization</h1>
-          <p>
-            The visualizations below depicts a hypothetical scenario where the
-            UKMOD is trying to transport a shipment from London to the UK
-            Overseas Territory of Bermuda. In this case study, UKMOD needs to
-            evaluate commercial shipping options between the UK and Bermuda
-            across 6 ocean carriers, 9 services, 18 deployed vessels, and their
-            network of ports. The vessels include several Container/Roll-On
-            Roll-Off (ConRo), geared container vessels, and fully-cellular
-            container vessels actively deployed on the Trans-Atlantic and
-            US-Bermuda trade lanes.
-          </p>
-
-          <p>
-            To support the two important tasks of 1) examining connectivity
-            between ports with seemingly disjoint carrier networks and 2)
-            tracking vessel trajectories based on AIS data; we present two views
-            that allow users to accomplish these tasks. The first view shows
-            connections between ports in a node-link diagram and allows users to
-            filter routes based on carriers. The second view allows users to
-            examine actual paths taken by vessels and their deviation from the
-            shortest or most ideal routes in red.
-          </p>
-        </div>
-      </div>
+      </header>
 
       <!-- Visualization goes here -->
       <!-- <div class="vis-holder"> -->
-        
+      <div class="bg-light border rounded-3" id="seaconex-dashboard">
+        <div class="container-fluid mt-2 mb-2">
+          <a
+            href="https://visdunneright.github.io/SeaCONEX/#seaconex-dashboard"
+            class="d-flex align-items-center text-dark text-decoration-none"
+          >
+            <span class="fs-0">SeaCONEX Dashboard</span>
+          </a>
+
+          <div id="dashboard" class="mt-3">
+            <div class="row">
+              <div class="col-lg-4">
+                <div id="card-vis-network" class="card h-100">
+                  <h6
+                    class="
+                      card-header
+                      d-flex
+                      justify-content-between
+                      align-items-center
+                    "
+                    id="card-heading-vis-network"
+                  >
+                    Ocean Carrier Service Network Connectivity
+                    <div
+                      class="btn-group"
+                      role="group"
+                      aria-label="Ocean Carrier Service Network Connectivity Card Button Group"
+                    >
+                      <button
+                        type="button"
+                        class="btn btn-md btn-light info-button"
+                        aria-label="Information"
+                        data-bs-toggle="collapse"
+                        data-bs-target="#info-vis-network"
+                        aria-expanded="false"
+                        aria-controls="info-vis-network"
+                      >
+                        <i class="bi bi-info-circle"></i>
+                      </button>
+
+                      <button
+                        class="accordion-button d-none"
+                        type="button"
+                        data-bs-toggle="collapse"
+                        data-bs-target="#card-body-vis-network"
+                        aria-expanded="true"
+                        aria-controls="card-body-vis-network"
+                      ></button>
+                    </div>
+                  </h6>
+                  <div
+                    id="card-body-vis-network"
+                    class="card-body collapse show"
+                    aria-labelledby="card-heading-vis-network"
+                  >
+                    <div class="collapse card-text" id="info-vis-network">
+                      <p>
+                        Explore the marine terminal connectivity of publicly
+                        posted carrier master service schedules.
+                      </p>
+                    </div>
+                    <div id="vis-network" class=""></div>
+                  </div>
+                </div>
+              </div>
+
+              <div class="col-lg-8">
+                <div id="card-vis-map" class="card h-100">
+                  <h6
+                    class="
+                      card-header
+                      d-flex
+                      justify-content-between
+                      align-items-center
+                    "
+                    id="card-heading-vis-map"
+                  >
+                    Ocean Carrier Service Network Topography
+                    <div
+                      class="btn-group"
+                      role="group"
+                      aria-label="Ocean Carrier Service Network Map Card Button Group"
+                    >
+                      <button
+                        type="button"
+                        class="btn btn-md btn-light info-button"
+                        aria-label="Information"
+                        data-bs-toggle="collapse"
+                        data-bs-target="#info-vis-map"
+                        aria-expanded="false"
+                        aria-controls="info-vis-map"
+                      >
+                        <i class="bi bi-info-circle"></i>
+                      </button>
+
+                      <button
+                        class="accordion-button d-none"
+                        type="button"
+                        data-bs-toggle="collapse"
+                        data-bs-target="#card-body-vis-map"
+                        aria-expanded="true"
+                        aria-controls="card-body-vis-map"
+                      ></button>
+                    </div>
+                  </h6>
+                  <div
+                    id="card-body-vis-map"
+                    class="card-body collapse show"
+                    aria-labelledby="card-heading-vis-map"
+                  >
+                    <div class="collapse card-text" id="info-vis-map">
+                      <p>
+                        Explore the shortest navigable maritime paths between
+                        marine terminals of publicly posted carrier master
+                        service schedules.
+                        <br />
+                        For a selected vessel, view the actual trajectory
+                        (historical path) over a set time period.
+                        <br />
+                        <br />
+                        *Note: the shortest paths paths may not reflect the
+                        ideal route.
+                      </p>
+                    </div>
+                    <div id="vis-map" class=""></div>
+                  </div>
+                </div>
+              </div>
+
+              <div class="">
+                <div id="card-controls" class="card">
+                  <h6
+                    class="
+                      card-header
+                      d-flex
+                      justify-content-between
+                      align-items-center
+                    "
+                    id="card-heading-controls"
+                  >
+                    Visualization Controls & Legend
+                    <div
+                      class="btn-group"
+                      role="group"
+                      aria-label="Controls Card Button Group"
+                    >
+                      <button
+                        type="button"
+                        class="btn btn-md btn-light info-button"
+                        aria-label="Information"
+                        data-bs-toggle="collapse"
+                        data-bs-target="#info-controls"
+                        aria-expanded="false"
+                        aria-controls="info-controls"
+                      >
+                        <i class="bi bi-info-circle"></i>
+                      </button>
+
+                      <button
+                        class="accordion-button d-none"
+                        type="button"
+                        data-bs-toggle="collapse"
+                        data-bs-target="#card-body-controls"
+                        aria-expanded="true"
+                        aria-controls="card-body-controls"
+                      ></button>
+                    </div>
+                  </h6>
+                  <div
+                    id="card-body-controls"
+                    class="card-body collapse show"
+                    aria-labelledby="card-heading-controls"
+                  >
+                    <div class="collapse card-text" id="info-controls">
+                      <p>
+                        Explore the marine terminal connectivity of publicly
+                        posted carrier master service schedules.
+                      </p>
+                    </div>
+
+                    <div class="d-flex">
+                      <div id="button-clear-filters"></div>
+
+                      <div id="legend">Legend</div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <div class="col-lg-3">
+                <div id="card-filters-carriers" class="card">
+                  <h6
+                    class="
+                      card-header
+                      d-flex
+                      justify-content-between
+                      align-items-center
+                    "
+                    id="card-heading-filters-carriers"
+                  >
+                    Ocean Carriers
+                    <div
+                      class="btn-group"
+                      role="group"
+                      aria-label="Carriers Card Button Group"
+                    >
+                      <button
+                        type="button"
+                        class="btn btn-md btn-light info-button"
+                        aria-label="Information"
+                        data-bs-toggle="collapse"
+                        data-bs-target="#info-filters-carriers"
+                        aria-expanded="false"
+                        aria-controls="info-filters-carriers"
+                      >
+                        <i class="bi bi-info-circle"></i>
+                      </button>
+
+                      <button
+                        class="accordion-button d-none"
+                        type="button"
+                        data-bs-toggle="collapse"
+                        data-bs-target="#card-body-filters-carriers"
+                        aria-expanded="true"
+                        aria-controls="card-body-filters-carriers"
+                      ></button>
+                    </div>
+                  </h6>
+                  <div
+                    id="card-body-filters-carriers"
+                    class="card-body collapse show"
+                    aria-labelledby="card-heading-filters-carriers"
+                  >
+                    <div class="collapse card-text" id="info-filters-carriers">
+                      <p>Select an Ocean Carrier.</p>
+                    </div>
+
+                    <div id="filters-carriers"></div>
+                  </div>
+                </div>
+              </div>
+
+              <div class="col-lg-9">
+                <div id="card-filters-vessels" class="card">
+                  <h6
+                    class="
+                      card-header
+                      d-flex
+                      justify-content-between
+                      align-items-center
+                    "
+                    id="card-heading-filters-vessels"
+                  >
+                    Vessels
+                    <div
+                      class="btn-group"
+                      role="group"
+                      aria-label="Vessels Card Button Group"
+                    >
+                      <button
+                        type="button"
+                        class="btn btn-md btn-light info-button"
+                        aria-label="Information"
+                        data-bs-toggle="collapse"
+                        data-bs-target="#info-filters-vessels"
+                        aria-expanded="false"
+                        aria-controls="info-filters-vessels"
+                      >
+                        <i class="bi bi-info-circle"></i>
+                      </button>
+
+                      <button
+                        class="accordion-button d-none"
+                        type="button"
+                        data-bs-toggle="collapse"
+                        data-bs-target="#card-body-filters-vessels"
+                        aria-expanded="true"
+                        aria-controls="card-body-filters-vessels"
+                      ></button>
+                    </div>
+                  </h6>
+                  <div
+                    id="card-body-filters-vessels"
+                    class="card-body collapse show"
+                    aria-labelledby="card-heading-filters-vessels"
+                  >
+                    <div class="collapse card-text" id="info-filters-vessels">
+                      <p>
+                        Select a vessel or vessels to visualize the
+                        trajectories.
+                        <br />
+                        <br />
+                        Each record in the vessel table represents an individual
+                        ship.
+                        <br />
+                        A vessel entity has:
+                        <br />
+                        "IMO" : a unique IMO (International Maritime
+                        Organization) number,
+                        <br />
+                        "Name" : the ship name,
+                        <br />
+                        "MMSI" : a MMSI (Maritime Mobile Service Identity)
+                        number,
+                        <br />
+                        "Call Sign" : a radio call sign,
+                        <br />
+                        "Build Yr." : the year vessel was constructed,
+                        <br />
+                        "Gross Tonnage (GT)" : gross tonnage,
+                        <br />
+                        "Type" : vessel type (i.e. container, Container or
+                        ConRo),
+                        <br />
+                        "Flag" : flag country,
+                        <br />
+                        "Cargo Capacity (TEU)" : container carrying capacity in
+                        twenty-foot equivalent units (TEU) (only applicable for
+                        Container (LoLo) or ConRo vessels, 0 if N/A),
+                        <br />
+                        "Cargo Capacity (CEU)" : vehicle unit carrying capacity
+                        in vehicle equivalent units (CEU) (only applicable for
+                        RoRo or ConRo vessels, 0 if N/A),
+                        <br />
+                        "Stern Ramp Capacity (Tons)" : the capacity of the stern
+                        ramp (only applicable for RoRo or ConRo vessels, 0 if
+                        N/A),
+                        <br />
+                        "Carrier Operator" : operating carrier id,
+                        <br />
+                        "Carrier Service" : ocean carrier service id
+                        <br />
+                      </p>
+                    </div>
+                    <div id="filters-vessels" class="table-responsive"></div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
       </div>
+      <!-- </div> -->
     </div>
+    <!-- </main> -->
 
     <!-- Further writeup -->
     <div class="content-column">
       <div id="container-content-writeup">
-        <div id="div-content-video" class="d-none">
+        <div id="div-content-video" class="">
           <h1>Demo Video</h1>
 
           <p>See below for a quick demo of the above visualization.</p>
@@ -415,7 +516,7 @@
           </video> -->
         </div>
 
-        <div id="div-content-explanation" class="d-none">
+        <div id="div-content-explanation" class="">
           <h1>Visualization explanation</h1>
 
           <p>
@@ -441,7 +542,7 @@
           </p>
         </div>
 
-        <div id="div-content-acknowledgements" class="d-none">
+        <div id="div-content-acknowledgements" class="">
           <h1>Acknowledgments</h1>
 
           <p>

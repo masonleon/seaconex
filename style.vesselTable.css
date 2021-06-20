@@ -1,6 +1,10 @@
 #filters-vessels {
   /* background-color: #f8f5f1; */
   width: 100%;
+  /* height: 50%; */
+  max-height: 200px;
+  overflow-y: scroll;
+  overflow-x:scroll;
   /* color: #343f56; */
   /*padding: 10px;*/
   /*margin-right: 10px;*/

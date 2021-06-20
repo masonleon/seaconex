@@ -493,6 +493,38 @@ function leafletMap() {
       //   max : dates[dates.length -1].toDateString()
       // }
     }
+
+    if (selectedData.some(e => e.hasOwnProperty('terminal'))) {
+      let selectedTerminal = selectedData.map(e => e.terminal)
+
+      d3.selectAll('.point-terminal-facility')
+        .data()
+        .map(selected => selected.properties)
+        .filter(record => record.terminal.includes("ACOT"))
+        .classed('mouseover', d => d)
+
+      let x = 
+        d3.selectAll('.point-terminal-facility')
+        .data()
+        .map
+        .filter(item => selectedTerminal
+          .map(selected =>
+            selected.lookup.terminal
+          )
+          .reduce((prev, curr) =>
+            prev.concat(curr), []
+          )
+          .filter((item, i, arr) =>
+            arr.indexOf(item) === i
+          )
+          .includes(item.properties.terminal)
+        )
+        // .classed('mouseover', d => d)
+
+        console.log(x)
+
+
+    }
   };
 
   // Deselect everything

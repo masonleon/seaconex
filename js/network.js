@@ -6,14 +6,23 @@ function network() {
     // Based on Mike Bostock's margin convention
   // https://bl.ocks.org/mbostock/3019563
   let margin = {
-      top: 40,
-      left: 40,
-      right: 20,
-      bottom: 30
+      // top: 40,
+      // left: 40,
+      // right: 20,
+      // bottom: 30
+      top: 50,
+      left: 50,
+      right: 50,
+      bottom: 50
     },
-    width = 960 - margin.left - margin.right,
-    height = 550 - margin.top - margin.bottom,
-    // ourBrush = null,
+    // height = 550 - margin.top - margin.bottom,
+    // height = 450 - margin.top - margin.bottom,
+    height = 600,
+
+    // height = 100,
+    // width = 960 - margin.left - margin.right,
+    width = 600,
+    // width = 100,
     selectableElements = d3.select(null),
     dispatcher;
 
@@ -23,7 +32,8 @@ function network() {
     let svg = d3.select(selector)
       .append("svg")
         .attr('preserveAspectRatio', 'xMidYMid meet') // this will scale your visualization according to the size of its parent element and the page.
-        .attr("height", height)
+        // .attr("height", height)
+        .attr("height", '100%')
         .attr('width', '100%') // this is now required by Chrome to ensure the SVG shows up at all
         .attr('viewBox', [
             0,
@@ -33,24 +43,6 @@ function network() {
           ].join(' '))
         .style("cursor", "crosshair")
         .style('background-color', '#ccc'); // change the background color to light gray
-
-
-       // //http://www.d3noob.org/2013/01/adding-title-to-your-d3js-graph.html
-       // svg.append("text")
-       //    .attr("x", (width / 2))
-       //    .attr("y", 0 - (margin.top / 2))
-       //    .attr("text-anchor", "middle")
-       //    .style("font-size", "40px")
-       //    .style("text-decoration", "underline")
-       //    .text("Ocean Carrier Service Network");
-       //
-       //  svg.append("text")
-       //    .attr("x", (width / 2))
-       //    .attr("y", 0 - (margin.top / 2) + 35)
-       //    .attr("text-anchor", "middle")
-       //    .style("font-size", "20px")
-       //    // .style("text-decoration", "underline")
-       //    .text("Explore the marine terminal connectivity of publicly posted carrier master service schedules")
 
     let links = data['network'].get('links')
     let nodes = data['network'].get('nodes')
@@ -63,25 +55,27 @@ function network() {
     let lanes = Array.from(new Set(links.map(d => d.lane)))
     let color = d3.scaleOrdinal(lanes, d3.schemeCategory10)
 
-    // console.log(lanes)
-    // console.log(graph.nodes);
-    // console.log(graph.links);
-
     let force = d3.forceSimulation(graph.nodes)
       .force("charge",
         d3.forceManyBody()
-          .strength(-650))
+          .strength(-650)
+      )
       .force("link",
         d3.forceLink(graph.links)
-          .id(d => d.terminal)
+          .id(d => 
+            d.terminal)
           .distance(100)
-          .strength(1).iterations(50))
+          .strength(1)
+          .iterations(50)
+      )
       .force('center',
         d3.forceCenter(
-      //  (width / 2)
-      (width + margin.left + margin.right) / 2,
-      //  (height + margin.top + margin.bottom) / 2)
-      (height + margin.top + margin.bottom + 50) / 2))
+          //  (width / 2)
+          (width + margin.left + margin.right) / 2,
+          (height + margin.top + margin.bottom) / 2
+          // (height + margin.top + margin.bottom + 50) / 2
+        )
+        )
       .force("x", d3.forceX())
       .force("y", d3.forceY())
       .alphaTarget(0.3);
@@ -98,8 +92,8 @@ function network() {
         .attr("viewBox", "0 -5 10 10")
         .attr("refX", 15)
         .attr("refY", -0.5)
-        .attr("markerWidth", 6)
-        .attr("markerHeight", 6)
+        .attr("markerWidth", 7)
+        .attr("markerHeight", 7)
         .attr("orient", "auto")
       .append("path")
         .attr("fill", color)
@@ -107,7 +101,7 @@ function network() {
 
     let link = svg.append("g")
       .attr("fill", "none")
-      .attr("stroke-width", 1.5)
+      .attr("stroke-width", 2)
       .selectAll("path")
       .data(graph.links)
       .join("path")
@@ -169,6 +163,8 @@ function network() {
         .duration(300)
           .attr("r", 15)
 
+      selectElement(d3.select(this));
+
       tooltip
         .html(
           "Terminal: " + d.terminal_name + "<br/>" +
@@ -193,7 +189,7 @@ function network() {
 
     svg.append("text")
       // .attr("class", "vis-network-legend")
-      .attr("x", width-10)
+      .attr("x", width - 10)
       .attr("y", 50)
       .attr("text-anchor", "left")
       .text("Trade Lanes")
@@ -207,77 +203,101 @@ function network() {
       .enter()
       .append("rect")
         .attr("x", width)
-        .attr("y", function(d,i){ return 75 + i*(size+5)})
+        .attr("y", function(d,i){ 
+          return 75 + i * (size + 5)
+        })
         .attr("width", size)
         .attr("height", size)
-        .style("fill", function(d){ return color(d)})
+        .style("fill", function(d){ 
+          return color(d)
+        })
 
     // Add one square in the legend for each lane.
     svg.selectAll("legend-text")
       .data(lanes)
       .enter()
       .append("text")
-        .attr("x", width + size*1.2)
+        .attr("x", width + size * 1.2)
         .attr("y", function(d,i){
-          return 75 + i*(size+5) + (size/2)})
+          return 75 + i * (size + 5) + size / 2
+        })
         .text(function(d){
           if ( d === 'E' ) return 'East';
-          else return 'West';})
+          else return 'West';
+        })
         .attr("text-anchor", "left")
         .style("fill", function(d){
-          return color(d)})
+          return color(d)
+        })
         .style("alignment-baseline", "middle")
 
-    // svg.call(brush);
+    
 
-    // // Highlight points when brushed
-    // function brush(g) {
-    //   const brush = d3.brush() // Create a 2D interactive brush
-    //   .on('start brush', highlight) // When the brush starts/continues do...
-    //   .on('end', brushEnd) // When the brush ends do...
-    //   .extent([
-    //     [-margin.left, -margin.bottom],
-    //     [width + margin.right, height + margin.top]
-    //   ]);
+      // Highlight the selected circles
+      function highlight(event, d) {
+        // if (event.selection === null) {
+        //   return;
+        // }
 
-    //   ourBrush = brush;
+        // const [
+        //   [x0, y0],
+        //   [x1, y1]
+        // ] = event.selection;
 
-    //   //set brush constraints to full width
-    //   const brushX = d3.scaleLinear()
-    //           .domain([0, width])
-    //           .rangeRound([0, width]),
-    //         brushY = d3.scaleLinear()
-    //           .domain([0, height])
-    //           .rangeRound([0, height]);
+        // If within the bounds of the brush, select it
+        // node.classed('selected', d =>
+        //     x0 <= brushX.invert(d.x) && brushX.invert(d.x) <= x1 &&
+        //     y0 <= brushY.invert(d.y) && brushY.invert(d.y) <= y1
+        // );
 
-    //   g.call(brush); // Adds the brush to this element
+        // Get the name of our dispatcher's event
+        let dispatchString = Object.getOwnPropertyNames(dispatcher._)[0];
 
-    //   // Highlight the selected circles
-    //   function highlight(event, d) {
-    //     if (event.selection === null) {
-    //       return;
-    //     }
-    //     const [
-    //       [x0, y0],
-    //       [x1, y1]
-    //     ] = event.selection;
+        // Let other charts know about our selection
+        // dispatcher.call(
+        //     dispatchString,
+        //     this,
+        //     svg.selectAll('.selected').data()
+        // );
+      }
 
-    //     // If within the bounds of the brush, select it
-    //     node.classed('selected', d =>
-    //         x0 <= brushX.invert(d.x) && brushX.invert(d.x) <= x1 &&
-    //         y0 <= brushY.invert(d.y) && brushY.invert(d.y) <= y1
-    //     );
+      function selectElement(element) {
+  
+        // Get the name of our dispatcher's event
+        let dispatchString = Object.getOwnPropertyNames(dispatcher._)[0];
 
-    //     // Get the name of our dispatcher's event
-    //     let dispatchString = Object.getOwnPropertyNames(dispatcher._)[0];
+        let selectedTerminalArr = Array.from(
+          new Set(
+            element
+              .data()
+                .map(d =>
+                  d.terminal)
+          )
+        )
+        // console.log(selectedTerminalArr)
+  
+        let result = [];
+  
+        selectedTerminalArr
+          .map(terminal => {
+            let lookup_record = data
+              .api_callback_lookup
+              .terminal
+                .find(record =>
+                    record.terminal === terminal)
+  
+            result.push(lookup_record)
+          })
 
-    //     // Let other charts know about our selection
-    //     dispatcher.call(
-    //         dispatchString,
-    //         this,
-    //         svg.selectAll('.selected').data()
-    //     );
-    //   }
+        // console.log(result)
+  
+        // Let other charts know about our selection
+        dispatcher.call(
+          dispatchString,
+          this,
+          result
+        );
+      }
 
     //   function brushEnd(event, d) {
     //     // We don't want infinite recursion

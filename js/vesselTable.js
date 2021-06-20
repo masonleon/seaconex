@@ -236,6 +236,8 @@ function vesselTable() {
   chart.updateSelection = function (selectedData) {
     if (!arguments.length) return;
 
+    // console.log(selectedData)
+
     // only update if data was for a carrier
     if (selectedData.some(e => e.hasOwnProperty('carrier'))){
       // clear all vessels
