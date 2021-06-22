@@ -128,20 +128,43 @@
             <div id="div-content-visualization" class="">
               <h1>Visualization</h1>
               <p>
-                <!-- We present SeaCONEX- a tool to help .  -->
-                SeaCONEX combines vessel movement data along with network connectivity data to present users with a dashboard for investigating carrier routes and possible anomalies or discrepancies between services and vessel operations.  
-                <br>
-                <br>
-                The visualization below applies the concept to a case study crafted for the project's partner: The Volpe National Transportation Systems Center (Volpe).
-                Volpe is a United States Department of Transportation (USDOT) Research Center for advanced logistics and transportation technical expertise based in Cambridge, MA. 
-                Volpe is a fee-for-service organization that supports a variety of national strategic transportation projects across the entire transportation spectrum. 
-                Specifically, we partnered with Volpe’s Situational Awareness and Logistics Division under the Infrastructure Systems and Technology Technical Center.
-                A key client of the division is the United Kingdom Ministry of Defense (UKMOD). 
-                <br>
-                <br>
-                In the case study, UKMOD needs to evaluate transport options for containerized and/or roll-on/roll-off cargo between the UK and the UK Overseas Territory of Bermuda. 
-                This must be done using a limited selection of "in-network" commerical ocean carrier partners and corresponding service offerings.  
-                The following table provides an overview of the six ocean carriers and services chosen for the case study.
+                SeaCONEX combines vessel movement data along with network
+                connectivity data to present users with a dashboard for
+                investigating carrier routes and possible anomalies or
+                discrepancies between services and vessel operations.
+                <br />
+                <br />
+                The visualization below applies the concept to a case study
+                crafted for the project's partner: The Volpe National
+                Transportation Systems Center (Volpe). Volpe is a United States
+                Department of Transportation (USDOT) Research Center for
+                advanced logistics and transportation technical expertise based
+                in Cambridge, MA. Volpe is a fee-for-service organization that
+                supports a variety of national strategic transportation projects
+                across the entire transportation spectrum. Specifically, we
+                partnered with
+                <a
+                  href="https://www.volpe.dot.gov/our-work/infrastructure-systems-and-technology/situational-awareness-and-logistics"
+                >
+                  Volpe’s Situational Awareness and Logistics Division
+                </a>
+                under the Infrastructure Systems and Technology Technical
+                Center. A key client of the division is the
+                <a
+                  href="https://www.volpe.dot.gov/our-work/infrastructure-systems-and-technology/innovative-approach-military-cargo-operations"
+                >
+                  United Kingdom Ministry of Defense
+                </a>
+                (UKMOD).
+                <br />
+                <br />
+                In the case study, UKMOD needs to evaluate transport options for
+                containerized and/or roll-on/roll-off cargo between the UK and
+                the UK Overseas Territory of Bermuda. This must be done using a
+                limited selection of "in-network" commerical ocean carrier
+                partners and corresponding service offerings. The following
+                table provides an overview of the six ocean carriers and
+                services chosen for the case study.
               </p>
               <table class="table">
                 <tr>
@@ -201,10 +224,13 @@
                   <td>8</td>
                 </tr>
               </table>
-              <br>
+              <br />
               <p>
-                Interact with the visualization dashboard to investigate maritime connections between marine terminals, ocean carrier service rotations, and historical vessel movements for the Trans-Atlantic and US-Bermuda trade lanes. 
-                Click the information icon in each dashboard element for help. 
+                Interact with the visualization dashboard to investigate
+                maritime connections between marine terminals, ocean carrier
+                service rotations, and historical vessel movements for the
+                Trans-Atlantic and US-Bermuda trade lanes. Click the information
+                icon in each dashboard element for help.
               </p>
             </div>
           </div>
@@ -270,7 +296,18 @@
                     aria-labelledby="card-heading-filters-carriers"
                   >
                     <div class="collapse card-text" id="info-filters-carriers">
-                      <p>Select an Ocean Carrier.</p>
+                      <p>
+                        Select a carrier or carriers to visualize the
+                        corresponding vessels and marine terminal networks.
+                        <br />
+                        <br />
+                        The carrier filters pane encodes the logos for ocean
+                        carrier companies. On hover, a user is presented with
+                        additional information about the carrier company and its
+                        service. Brushing links to the other views to filter the
+                        corresponding marine terminals and vessels by the
+                        selected carrier(s).
+                      </p>
                     </div>
 
                     <div id="filters-carriers"></div>
@@ -326,6 +363,13 @@
                       <p>
                         Select a vessel or vessels to visualize the
                         trajectories.
+                        <br />
+                        <br />
+                        The vessel table pane displays vessels in a tabular
+                        format with each column corresponding to a ship’s
+                        attribute. Brushing allows users to view data in the
+                        geographic map for the vessel(s) corresponding historic
+                        geographic movements over the 90 day period.
                         <br />
                         <br />
                         Each record in the vessel table represents an individual
@@ -387,7 +431,7 @@
                     id="card-heading-controls"
                   >
                     Visualization Controls & Legend -->
-                    <!-- <div
+              <!-- <div
                       class="btn-group"
                       role="group"
                       aria-label="Controls Card Button Group"
@@ -413,31 +457,31 @@
                         aria-controls="card-body-controls"
                       ></button>
                     </div> -->
-                  <!-- </h6>
+              <!-- </h6>
                   <div
                     id="card-body-controls"
                     class="card-body collapse show"
                     aria-labelledby="card-heading-controls"
                   > -->
-                    <!-- <div class="collapse card-text" id="info-controls">
+              <!-- <div class="collapse card-text" id="info-controls">
                       <p>
                         Explore the marine terminal connectivity of publicly
                         posted carrier master service schedules.
                       </p>
                     </div> -->
 
-                    <!-- <div class="d-flex"> -->
-                      <!-- <div id="button-clear-filters"></div> -->
+              <!-- <div class="d-flex"> -->
+              <!-- <div id="button-clear-filters"></div> -->
 
-                      <!-- <h3>Legend</div>
+              <!-- <h3>Legend</div>
                       <div id="container-legend">
                         <ul id="list-legend">
 
                         </ul>
                       </div>
                     </div> -->
-                  <!-- </div> -->
-                <!-- </div> -->
+              <!-- </div> -->
+              <!-- </div> -->
               <!-- </div> -->
 
               <div class="col-lg-4">
@@ -488,6 +532,32 @@
                       <p>
                         Explore the marine terminal connectivity of publicly
                         posted carrier master service schedules.
+                        <br />
+                        <br />
+                        The node-link diagram pane represents a directed network
+                        graph with marine terminals (nodes) as circles and
+                        carrier service connections (edges) as lines with
+                        arrows. By default, a user may see terminals represented
+                        by a white color and all network connections, albeit in
+                        a faded out manner. Hovering over a marine terminal
+                        displays details such as the terminal’s identifying
+                        code, facility name, address, and the port it belongs
+                        to. The hover interaction also brings attention to the
+                        terminal of interest by changing the terminal’s color
+                        to deep red and taking advantage of the pop-out effect.
+                        The terminal encoding returns to default when the user
+                        interaction focus changes. A selection in the carrier
+                        filters pane changes color of the associated terminal
+                        nodes to a red outline with a pink fill and brings the
+                        connections into focus using color highlighting. When in
+                        view, the connections are encoded with a blue or orange
+                        color rep- resenting a respective East or West trade
+                        lane. This is important to highlight because a carrier
+                        may not visit a facility in both directions. The
+                        force-directed node-link diagram is advantageous for
+                        showing network data because it removes geographic
+                        distance and allows the user to focus clearly on
+                        specific nodes and edges connections.
                       </p>
                     </div>
                     <div id="vis-network" class=""></div>
@@ -551,6 +621,38 @@
                         <br />
                         *Note: the shortest paths paths may not reflect the
                         ideal route.
+                        <br />
+                        <br />
+                        The geographic map pane displays marine terminals, an
+                        optimal maritime route (shortest distance) between
+                        terminals, and the trajectory (historical path) for
+                        vessels over a set time period. By default, a user may
+                        see terminals represented by a white circle. Hovering
+                        over a marine terminal displays details such as the
+                        terminal’s identifying code, facility name, address, and
+                        the port it belongs to. The hover interaction also
+                        brings attention to the terminal of interest by changing
+                        the terminal’s color to deep red and taking advantage
+                        of the pop-out effect. The terminal encoding returns to
+                        default when the user interaction focus changes. A
+                        selection in the carrier filters pane changes color of
+                        the associated terminal nodes to a red outline with a
+                        pink fill and brings optimal maritime routes of the
+                        carrier network into focus using color highlighting. The
+                        optimal maritime route is calculated using the SeaRoute
+                        model from the European Union’s statistical office.
+                        These elements are not visible by default and ap pear
+                        red for a carrier selection. Although these connections
+                        may not be accurate for navigation, they show the
+                        shortest distance between terminal pairings and provide
+                        a base comparison against actual vessel movements
+                        (trajectories). A vessel table selection links to this
+                        map view and displays the corresponding vessel(s)
+                        trajectory for the dataset time period. The trajectory
+                        for each vessel is encoded with a different color
+                        allowing users can visually compare the actual paths for
+                        vessels assigned to the same service as well as the
+                        optimal route.
                       </p>
                     </div>
                     <div id="vis-map" class=""></div>
