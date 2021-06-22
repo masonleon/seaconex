@@ -13,7 +13,7 @@ function leafletMap() {
 
   map,
   layerControl,
-  leafletLegend,
+  // leafletLegend,
   // traj,
   trajectoryLayerGroup,
   trajectoryHashMap = new Map();
@@ -35,7 +35,7 @@ function leafletMap() {
     map = initL.map;
     layerControl = initL.layerControl;
     trajectoryLayerGroup = initL.trajectoryLayerGroup;
-    leafletLegend = initL.leafletLegend;
+    // leafletLegend = initL.leafletLegend;
 
     let overlay = d3.select(
       map.getPanes()
@@ -221,87 +221,87 @@ function leafletMap() {
       }
     );
 
-    leafletLegend.onAdd = () => {
+    // leafletLegend.onAdd = () => {
 
-      let dates = data['timestamped_trajectory'].features
-        .flatMap((c) =>
-          c
-          .properties
-          .times
-          .map((x) =>
-            new Date(x)
-          )
-        )
+    //   let dates = data['timestamped_trajectory'].features
+    //     .flatMap((c) =>
+    //       c
+    //       .properties
+    //       .times
+    //       .map((x) =>
+    //         new Date(x)
+    //       )
+    //     )
 
-      let dateRange = {
-        min : dates[0].toDateString(),
-        max : dates[dates.length - 1].toDateString()
-      }
+    //   let dateRange = {
+    //     min : dates[0].toDateString(),
+    //     max : dates[dates.length - 1].toDateString()
+    //   }
 
-      // let div = d3.select(document.createElement("div"))
-      //   .classed('legend', true)
-      //   // .text(
-      //   //   `
-      //   //     <u>
-      //   //       Vessel Trajectories between <strong>${dateRange.min} - ${dateRange.max}</strong>
-      //   //     </u>
-      //   //   `
-      //   // )
-      //   .text(
-      //     `
-      //     <u>
-      //       Vessel Trajectories between <strong>${dateRange.min} - ${dateRange.max}</strong>
-      //     </u>
-      //     `
-      //   )
+    //   // let div = d3.select(document.createElement("div"))
+    //   //   .classed('legend', true)
+    //   //   // .text(
+    //   //   //   `
+    //   //   //     <u>
+    //   //   //       Vessel Trajectories between <strong>${dateRange.min} - ${dateRange.max}</strong>
+    //   //   //     </u>
+    //   //   //   `
+    //   //   // )
+    //   //   .text(
+    //   //     `
+    //   //     <u>
+    //   //       Vessel Trajectories between <strong>${dateRange.min} - ${dateRange.max}</strong>
+    //   //     </u>
+    //   //     `
+    //   //   )
 
-      // let p = div.selectAll('p')
-      //  .data(vesselNames)
-      //  .enter()
-      //   .append('p')
+    //   // let p = div.selectAll('p')
+    //   //  .data(vesselNames)
+    //   //  .enter()
+    //   //   .append('p')
 
-      // p.append('span')
-      //   .classed('legend-item', true)
-      //   .style('background-color', d =>
-      //     color(d));
+    //   // p.append('span')
+    //   //   .classed('legend-item', true)
+    //   //   .style('background-color', d =>
+    //   //     color(d));
 
-      // p.append('span')
-      //   .text(d => d);
+    //   // p.append('span')
+    //   //   .text(d => d);
 
-      // return div.node();
+    //   // return div.node();
 
-      //https://codepen.io/haakseth/pen/KQbjdO
-      let div = L.DomUtil.create("div", "legend");
-      div.innerHTML += `
-        <h4>Legend</h4>
-        <hr>
-      `;
+    //   //https://codepen.io/haakseth/pen/KQbjdO
+    //   let div = L.DomUtil.create("div", "legend");
+    //   div.innerHTML += `
+    //     <h4>Legend</h4>
+    //     <hr>
+    //   `;
 
-      div.innerHTML += `
-        <h5>Interactive Map Elements</h5>
-        <br>
-        <div class="legend-svg-elements" id="legend-svg-elements"></div>
-        <hr>
-      `;
+    //   div.innerHTML += `
+    //     <h5>Interactive Map Elements</h5>
+    //     <br>
+    //     <div class="legend-svg-elements" id="legend-svg-elements"></div>
+    //     <hr>
+    //   `;
 
-      div.innerHTML += `
-        <h5>
-          Vessel Trajectories between <u><strong>${dateRange.min} - ${dateRange.max}</strong></u>
-        </h5>
-        <br>
-        <div class="legend-vessel-trajectories" id="legend-vessel-trajectories"></div>
-      `;
+    //   div.innerHTML += `
+    //     <h5>
+    //       Vessel Trajectories between <u><strong>${dateRange.min} - ${dateRange.max}</strong></u>
+    //     </h5>
+    //     <br>
+    //     <div class="legend-vessel-trajectories" id="legend-vessel-trajectories"></div>
+    //   `;
 
-      return div
-    };
-    leafletLegend.addTo(map);
+    //   return div
+    // };
+    // leafletLegend.addTo(map);
     // leafletLegend.style("display", "none");
 
     return {
       map: map,
       layerControl: layerControl,
       trajectoryLayerGroup: trajectoryLayerGroup,
-      leafletLegend: leafletLegend
+      // leafletLegend: leafletLegend
     }
   }
 
