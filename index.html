@@ -5,7 +5,10 @@
     <meta charset="utf-8" />
 
     <!-- Title -->
-    <title>SeaCONEX</title>
+    <title>
+      SeaCONEX: Simultaneously Visualizing Ocean Carrier Supply Chain Service
+      Networks and Continuous Vessel Movement Data
+    </title>
 
     <!-- CSS Styling -->
 
@@ -73,77 +76,135 @@
         <div class="content-column">
           <div id="container-content-intro">
             <div id="div-content-heading" class="">
-              <h1>SeaCONEX:</h1>
+              <h1>
+                SeaCONEX: Simultaneously Visualizing Ocean Carrier Supply Chain
+                Service Networks and Continuous Vessel Movement Data
+              </h1>
 
               <p>
-                <strong>Mason Leon</strong>,
-                <strong>Rithika Lakshminarayanan</strong>
+                <a
+                  href="https://www.khoury.northeastern.edu/student_stories/mason/"
+                  ><strong>Mason Leon</strong></a
+                >,
+                <a
+                  href="https://www.khoury.northeastern.edu/people/rithika-lakshminarayanan/"
+                  ><strong>Rithika Lakshminarayanan</strong></a
+                >,
+                <a
+                  href="https://www.khoury.northeastern.edu/people/david-saffo/"
+                  ><strong>David Saffo</strong></a
+                >,
+                <a
+                  href="https://www.khoury.northeastern.edu/people/sara-di-bartolomeo/"
+                  ><strong>Sara Di Bartolomeo</strong></a
+                >,
+                <a href="https://cody.khoury.northeastern.edu/"
+                  ><strong>Cody Dunne</strong></a
+                >
               </p>
-
-              <!-- <p>
-                  Service-Learning Course Project as part of
-                  <a href="https://northeastern.instructure.com/courses/63405">
-                    CS 7250 S21 Information Visualization: Theory and Applications </a
-                  >, taught by
-                  <a href="https://cody.khoury.northeastern.edu/">
-                    Prof. Cody Dunne </a
-                  >,
-                  <a href="https://visualization.khoury.northeastern.edu/">
-                    Data Visualization @ Khoury </a
-                  >,
-                  <a href="https://www.khoury.northeastern.edu/">
-                    Northeastern University </a
-                  >.
-                </p> -->
             </div>
             <div id="div-content-abstract" class="">
               <h1>Abstract</h1>
               <p>
-                The Container Express also known as the CONEX, was introduced by
-                the United States Military during the Korean War as an
-                intermodal logistics platform to improve cargo flows and
-                operations throughout supply chain networks. The CONEX and
-                Malcolm McLean's intermodal container were simple freight
-                technology concepts that revolutionized supply chains.
-                Containerization and the equipment utilized to transport goods
-                efficiently have fostered globalization and made the modern
-                world. However, supply chains remain vulnerable to disruption
-                and are plagued by poor visibility and difficulty exchanging
-                information about cargo and freight networks. Supply chain
-                disruption and the complexity of maritime and hinterland
-                networks remain key issues around the world. SeaCONEX is not
-                just a portmanteau, but a visualization tool focused on this
-                larger issue by allowing users to see the connections of
-                maritime supply chain networks. In this paper, we present a
-                visualization dashboard that allows users to evaluate carrier
-                service rotation between terminals, view the shortest navigable
-                marine route between connections, and investigate vessel
-                trajectories and deviations from the optimal route.
+                Supply chain disruption and the complexity of maritime and
+                hinterland freight networks remain key issues around the world.
+                SeaCONEX is not just a portmanteau of the humble container's
+                origin, but a visualization tool that enables users to see the
+                marine terminal connections for ocean carrier service rotations,
+                investigate the historical trajectories of vessels assigned to
+                ocean carrier services, and assess deviations from a
+                shortest-path optimal route. In this paper, we present an
+                approach to integrating ocean carrier service network
+                information with continuous movement data for container and
+                roll-on/roll-off cargo vessels with reproducibility in mind and
+                utilizing new open-source industry data standards. We developed
+                a multiple-view visualization that presents commercial maritime
+                freight carrier service connections between marine terminals and
+                links the spatial temporal movements of vessels assigned to each
+                service over a 90 day period which can be filtered by carrier.
+                <!-- A copy of this paper along with all supplemental material is available at \url{https://osf.io/k9nvc/} -->
               </p>
             </div>
             <div id="div-content-visualization" class="">
               <h1>Visualization</h1>
               <p>
-                The visualizations below depicts a hypothetical scenario where
-                the UKMOD is trying to transport a shipment from London to the
-                UK Overseas Territory of Bermuda. In this case study, UKMOD
-                needs to evaluate commercial shipping options between the UK and
-                Bermuda across 6 ocean carriers, 9 services, 18 deployed
-                vessels, and their network of ports. The vessels include several
-                Container/Roll-On Roll-Off (ConRo), geared container vessels,
-                and fully-cellular container vessels actively deployed on the
-                Trans-Atlantic and US-Bermuda trade lanes.
+                <!-- We present SeaCONEX- a tool to help .  -->
+                SeaCONEX combines vessel movement data along with network connectivity data to present users with a dashboard for investigating carrier routes and possible anomalies or discrepancies between services and vessel operations.  
+                <br>
+                <br>
+                The visualization below applies the concept to a case study crafted for the project's partner: The Volpe National Transportation Systems Center (Volpe).
+                Volpe is a United States Department of Transportation (USDOT) Research Center for advanced logistics and transportation technical expertise based in Cambridge, MA. 
+                Volpe is a fee-for-service organization that supports a variety of national strategic transportation projects across the entire transportation spectrum. 
+                Specifically, we partnered with Volpe’s Situational Awareness and Logistics Division under the Infrastructure Systems and Technology Technical Center.
+                A key client of the division is the United Kingdom Ministry of Defense (UKMOD). 
+                <br>
+                <br>
+                In the case study, UKMOD needs to evaluate transport options for containerized and/or roll-on/roll-off cargo between the UK and the UK Overseas Territory of Bermuda. 
+                This must be done using a limited selection of "in-network" commerical ocean carrier partners and corresponding service offerings.  
+                The following table provides an overview of the six ocean carriers and services chosen for the case study.
               </p>
-
+              <table class="table">
+                <tr>
+                  <td><strong>Carrier</strong></td>
+                  <td><strong>Trade</strong></td>
+                  <td><strong>Service</strong></td>
+                  <td><strong>Vessel Deployment</strong></td>
+                  <td><strong>Num. Ports</strong></td>
+                  <td><strong>Num. Marine Terminals</strong></td>
+                </tr>
+                <tr>
+                  <td>Bermuda Container Lines (BCL)</td>
+                  <td>Bermuda</td>
+                  <td>Oleander (O)</td>
+                  <td>1 ConRo vessel</td>
+                  <td>2</td>
+                  <td>2</td>
+                </tr>
+                <tr>
+                  <td>Bermuda International Shipping Ltd. (BISL)</td>
+                  <td>Bermuda</td>
+                  <td>Bermuda Islander (BI)</td>
+                  <td>1 LoLo vessel</td>
+                  <td>2</td>
+                  <td>2</td>
+                </tr>
+                <tr>
+                  <td>Somers Isles Shipping Ltd. (SISL)</td>
+                  <td>Bermuda</td>
+                  <td>Somers Isles (SI)</td>
+                  <td>1 LoLo vessel</td>
+                  <td>2</td>
+                  <td>2</td>
+                </tr>
+                <tr>
+                  <td>Independent Container Line (ICL)</td>
+                  <td>Trans-Atlantic</td>
+                  <td>Trans-Atlantic (TAC1)</td>
+                  <td>4 LoLo vessels</td>
+                  <td>5</td>
+                  <td>5</td>
+                </tr>
+                <tr>
+                  <td>Atlantic Container Line (ACL)</td>
+                  <td>Trans-Atlantic</td>
+                  <td>Atlantic (A)</td>
+                  <td>5 ConRo vessels</td>
+                  <td>8</td>
+                  <td>10</td>
+                </tr>
+                <tr>
+                  <td>Hapag-Lloyd USA, LLC (HLUS)</td>
+                  <td>Trans-Atlantic</td>
+                  <td>US Flag Priority 1/Atlantic 3 (P1/AL3)</td>
+                  <td>6 LoLo vessels</td>
+                  <td>8</td>
+                  <td>8</td>
+                </tr>
+              </table>
+              <br>
               <p>
-                To support the two important tasks of 1) examining connectivity
-                between ports with seemingly disjoint carrier networks and 2)
-                tracking vessel trajectories based on AIS data; we present two
-                views that allow users to accomplish these tasks. The first view
-                shows connections between ports in a node-link diagram and
-                allows users to filter routes based on carriers. The second view
-                allows users to examine actual paths taken by vessels and their
-                deviation from the shortest or most ideal routes in red.
+                Interact with the visualization dashboard to investigate maritime connections between marine terminals, ocean carrier service rotations, and historical vessel movements for the Trans-Atlantic and US-Bermuda trade lanes. 
+                Click the information icon in each dashboard element for help. 
               </p>
             </div>
           </div>
@@ -160,10 +221,10 @@
           >
             <span class="fs-0">SeaCONEX Dashboard</span>
           </a>
+          <div id="button-clear-filters"></div>
 
           <div id="dashboard" class="mt-3">
             <div class="row">
-
               <div class="col-lg-3">
                 <div id="card-filters-carriers" class="card">
                   <h6
@@ -314,7 +375,7 @@
                 </div>
               </div>
 
-              <div class="">
+              <!-- <div class="d-none">
                 <div id="card-controls" class="card">
                   <h6
                     class="
@@ -325,8 +386,8 @@
                     "
                     id="card-heading-controls"
                   >
-                    Visualization Controls & Legend
-                    <div
+                    Visualization Controls & Legend -->
+                    <!-- <div
                       class="btn-group"
                       role="group"
                       aria-label="Controls Card Button Group"
@@ -351,28 +412,33 @@
                         aria-expanded="true"
                         aria-controls="card-body-controls"
                       ></button>
-                    </div>
-                  </h6>
+                    </div> -->
+                  <!-- </h6>
                   <div
                     id="card-body-controls"
                     class="card-body collapse show"
                     aria-labelledby="card-heading-controls"
-                  >
-                    <div class="collapse card-text" id="info-controls">
+                  > -->
+                    <!-- <div class="collapse card-text" id="info-controls">
                       <p>
                         Explore the marine terminal connectivity of publicly
                         posted carrier master service schedules.
                       </p>
-                    </div>
+                    </div> -->
 
-                    <div class="d-flex">
-                      <div id="button-clear-filters"></div>
+                    <!-- <div class="d-flex"> -->
+                      <!-- <div id="button-clear-filters"></div> -->
 
-                      <div id="legend">Legend</div>
-                    </div>
-                  </div>
-                </div>
-              </div>
+                      <!-- <h3>Legend</div>
+                      <div id="container-legend">
+                        <ul id="list-legend">
+
+                        </ul>
+                      </div>
+                    </div> -->
+                  <!-- </div> -->
+                <!-- </div> -->
+              <!-- </div> -->
 
               <div class="col-lg-4">
                 <div id="card-vis-network" class="card h-100">
@@ -502,7 +568,7 @@
     <!-- Further writeup -->
     <div class="content-column">
       <div id="container-content-writeup">
-        <div id="div-content-video" class="">
+        <div id="div-content-video" class="d-none">
           <h1>Demo Video</h1>
 
           <p>See below for a quick demo of the above visualization.</p>
@@ -517,33 +583,13 @@
           </video> -->
         </div>
 
-        <div id="div-content-explanation" class="">
+        <div id="div-content-explanation" class="d-none">
           <h1>Visualization explanation</h1>
 
-          <p>
-            For the node-link diagram, we chose a very simple rendering. Marine
-            terminals are in blue and, and when selected, change color to red,
-            taking advantage of the pop-out effect which brings attention to
-            terminals of interest. On hovering over a marine terminal, users can
-            see more details like the name of the marine terminal and the
-            carriers that operate their vessels there. The advantage of the
-            node-link diagram is that it removes geographic interference,
-            allowing the user to focus clearly on which ports are connected,
-            without worrying about the distance between them, ocean conditions
-            between them, etc. This can help remove bias on "best" or "most
-            connected" ports, and just examine the data.
-          </p>
-
-          <p>
-            <a
-              href="https://docs.google.com/presentation/d/1oqcMSHFFXwJzNTfjltaHumTK51zBVicduE65jQskXr0/edit?usp=sharing"
-            >
-              Link to Slides
-            </a>
-          </p>
+          <p></p>
         </div>
 
-        <div id="div-content-acknowledgements" class="">
+        <div id="div-content-acknowledgements" class="d-none">
           <h1>Acknowledgments</h1>
 
           <p>
