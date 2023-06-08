@@ -1,0 +1,65 @@
+# https://stackoverflow.com/a/43873901
+# update with: `conda env update -n seaconex-dev -f environment-dev.yml --prune`
+# https://stackoverflow.com/a/53546634
+# add env to `jupyter kernelspec list`: ipython kernel install --user --name=seaconex-dev
+name: seaconex-dev
+channels:
+  - conda-forge
+  - default
+dependencies:
+  - python=3.7
+  - numpy
+  - cython
+  - matplotlib
+  - seaborn
+  - pandas
+  - geopandas
+  - rasterio
+  - hvplot
+  - bokeh
+  - proj
+  - cartopy
+  - geoviews
+  - scikit-learn
+  - geopy
+  - panel
+  - networkx
+  - osmnx
+  - spaghetti
+  - esda
+  - splot
+  - folium
+  - requests
+  - pycountry
+  - requests
+  - shapely
+  - movingpandas
+#  - lxml
+#  - camelot-py
+  - nb_conda_kernels
+#  - notebook
+#  - jupyterhub
+  - jupyterlab
+  - ipykernel
+#  - altair
+#  - beautifulsoup4
+#  - bottleneck
+#  - cloudpickle
+#  - conda-forge::blas=*=openblas
+#  - dask
+#  - dill
+#  - h5py
+#  - ipympl
+#  - ipywidgets
+#  - numba
+#  - numexpr
+#  - patsy
+#  - protobuf
+#  - pytables
+#  - scikit-image
+#  - scipy
+#  - sqlalchemy
+#  - statsmodels
+#  - sympy
+#  - widgetsnbextension
+#  - xlrd

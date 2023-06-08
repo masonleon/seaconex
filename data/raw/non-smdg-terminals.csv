@@ -1,0 +1,5 @@
+terminal,port_unlocode,port_unlocode_alt,terminal_name,terminal_operator,terminal_lat,terminal_lon,terminal_address,terminal_website,code_provider,remarks
+OHPA,USFEB,,PORT OF FERNANDINA WORLDWIDE TERMINALS,OCEAN HIGHWAY & PORT AUTHORITY NASSAU COUNTY,"N 30°40'43""","W 81°27'49""","501 N. 3rd Street, Fernandina Beach, FL 32034, USA",https://www.portoffernandina.org/,OTHER,
+PHCD,BMBDA ,,PORT OF HAMILTON CARGO DOCKS,STEVEDORING SERVICES LTD,"N 32°17'32""","W 64°46'48""","38 Front Street Hamilton, Bermuda",http://polaris.bm/,OTHER,
+FAPS,USNYC,USEWR,PORT NEWARK AUTO MARINE TERMINAL,"FAPS, INC. (FOREIGN AUTOMOTIVE PREPARATION SERVICE)","N 40°41'45""","W 74°08'22""","325 Distribution Street, Port Newark, NJ 07114, USA",https://www.panynj.gov/port/en/shipping/automotive-logistics.html,OTHER,Berth 17
+BIT,USSEM,,BERMUDA INTERNATIONAL TERMINALS,MID ATLANTIC SHIPPING AND STEVEDORING,"N 39°34'24""","W 75°29'08""","128 Tilbury Road, Salem, NJ 08079, USA",https://www.bermudaislander.bm/,OTHER,

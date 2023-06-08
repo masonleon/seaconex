@@ -1,0 +1,1016 @@
+<!DOCTYPE html>
+<html lang="en">
+  <!-- Metadata -->
+  <head>
+    <meta charset="utf-8" />
+
+    <!-- Title -->
+    <title>
+      SeaCONEX: Simultaneously Visualizing Ocean Carrier Supply Chain Service
+      Networks and Continuous Vessel Movement Data
+    </title>
+
+    <!-- CSS Styling -->
+
+    <!-- Bootstrap core CSS -->
+    <link rel="stylesheet" href="lib/bootstrap.v5.0.1/css/bootstrap.min.css" />
+
+    <!-- Bootstrap-Icons CSS -->
+    <link
+      rel="stylesheet"
+      href="lib/bootstrap-icons.v1.5.0/bootstrap-icons.css"
+    />
+
+    <!-- SeaCONEX CSS -->
+    <link rel="stylesheet" href="style.neu.cs7250.s21.gh-pages.template.css" />
+    <link rel="stylesheet" href="style.visualization.css" />
+    <link rel="stylesheet" href="style.css" />
+    <link rel="stylesheet" href="style.vesselTable.css" />
+    <link rel="stylesheet" href="style.carrierFilter.css" />
+    <link rel="stylesheet" href="style.leafletMap.css" />
+    <link rel="stylesheet" href="style.network.css" />
+    <link rel="stylesheet" href="style.resetBtn.css" />
+
+    <!-- Leaflet CSS -->
+    <link rel="stylesheet" href="lib/leaflet.v1.7.1/leaflet.css" />
+    <script src="lib/leaflet.v1.7.1/leaflet.js"></script>
+
+    <!-- Favicons -->
+    <link
+      rel="apple-touch-icon"
+      sizes="180x180"
+      href="favicons/apple-touch-icon.png"
+    />
+    <link
+      rel="icon"
+      type="image/png"
+      sizes="32x32"
+      href="favicons/favicon-32x32.png"
+    />
+    <link
+      rel="icon"
+      type="image/png"
+      sizes="16x16"
+      href="favicons/favicon-16x16.png"
+    />
+    <link rel="manifest" href="favicons/site.webmanifest" />
+    <link rel="shortcut icon" href="favicons/favicon.ico" />
+    <meta name="msapplication-TileColor" content="#da532c" />
+    <meta name="msapplication-config" content="favicons/browserconfig.xml" />
+    <meta name="theme-color" content="#ffffff" />
+  </head>
+
+  <!-- Main page content -->
+  <body>
+    <!-- Update this with your GitHub repo URL -->
+    <span id="forkongithub">
+      <a href="https://github.com/VisDunneRight/SeaCONEX">
+        Fork me on GitHub
+      </a>
+    </span>
+
+    <!-- <main> -->
+    <div class="container py-4">
+      <header class="pb-3 mb-4 border-bottom">
+        <!-- Writeup -->
+        <div class="content-column">
+          <div id="container-content-intro">
+            <div id="div-content-heading" class="">
+              <h1>
+                SeaCONEX: Simultaneously Visualizing Ocean Carrier Supply Chain
+                Service Networks and Continuous Vessel Movement Data
+              </h1>
+
+              <p>
+                <a
+                  href="https://www.khoury.northeastern.edu/student_stories/mason/"
+                >
+                  <strong>Mason Leon</strong> </a
+                >,
+                <a
+                  href="https://www.khoury.northeastern.edu/people/rithika-lakshminarayanan/"
+                >
+                  <strong>Rithika Lakshminarayanan</strong> </a
+                >,
+                <a
+                  href="https://www.khoury.northeastern.edu/people/david-saffo/"
+                >
+                  <strong>David Saffo</strong> </a
+                >,
+                <a
+                  href="https://www.khoury.northeastern.edu/people/sara-di-bartolomeo/"
+                >
+                  <strong>Sara Di Bartolomeo</strong> </a
+                >,
+                <a href="https://cody.khoury.northeastern.edu/">
+                  <strong>Cody Dunne</strong>
+                </a>
+              </p>
+            </div>
+            <div id="div-content-abstract" class="">
+              <h1>Abstract</h1>
+              <p>
+                Supply chain disruption and the complexity of maritime and
+                hinterland freight networks remain key issues around the world.
+                SeaCONEX is not just a portmanteau of the humble container's
+                origin, but a visualization tool that enables users to see the
+                marine terminal connections for ocean carrier service rotations,
+                investigate the historical trajectories of vessels assigned to
+                ocean carrier services, and assess deviations from a
+                shortest-path optimal route. In this paper, we present an
+                approach to integrating ocean carrier service network
+                information with continuous movement data for container and
+                roll-on/roll-off cargo vessels with reproducibility in mind and
+                utilizing new open-source industry data standards. We developed
+                a multiple-view visualization that presents commercial maritime
+                freight carrier service connections between marine terminals and
+                links the spatial temporal movements of vessels assigned to each
+                service over a 90 day period which can be filtered by carrier.
+                <br />
+                <br />
+                A copy of the IEEE Vis 2021 Short Paper submission along with
+                supplemental material may be found at
+                <a href="https://osf.io/k9nvc/"> https://osf.io/k9nvc/ </a>
+              </p>
+            </div>
+            <div id="div-content-visualization" class="">
+              <h1>Visualization</h1>
+              <p>
+                SeaCONEX combines vessel movement data along with network
+                connectivity data to present users with a dashboard for
+                investigating carrier routes and possible anomalies or
+                discrepancies between services and vessel operations.
+                <br />
+                <br />
+                The visualization below applies the concept to a case study
+                crafted for the project's partner: The Volpe National
+                Transportation Systems Center (Volpe). Volpe is a United States
+                Department of Transportation (USDOT) Research Center for
+                advanced logistics and transportation technical expertise based
+                in Cambridge, MA. Volpe is a fee-for-service organization that
+                supports a variety of national strategic transportation projects
+                across the entire transportation spectrum. Specifically, we
+                partnered with
+                <a
+                  href="https://www.volpe.dot.gov/our-work/infrastructure-systems-and-technology/situational-awareness-and-logistics"
+                >
+                  Volpe’s Situational Awareness and Logistics Division
+                </a>
+                under the Infrastructure Systems and Technology Technical
+                Center. A key client of the division is the
+                <a
+                  href="https://www.volpe.dot.gov/our-work/infrastructure-systems-and-technology/innovative-approach-military-cargo-operations"
+                >
+                  United Kingdom Ministry of Defense
+                </a>
+                (UKMOD).
+                <br />
+                <br />
+                In the case study, UKMOD needs to evaluate transport options for
+                containerized and/or roll-on/roll-off cargo between the UK and
+                the UK Overseas Territory of Bermuda. This must be done using a
+                limited selection of "in-network" commerical ocean carrier
+                partners and corresponding service offerings. The following
+                table provides an overview of the six ocean carriers and
+                services chosen for the case study.
+              </p>
+              <table class="table">
+                <tr>
+                  <td><strong>Carrier</strong></td>
+                  <td><strong>Trade</strong></td>
+                  <td><strong>Service</strong></td>
+                  <td><strong>Vessel Deployment</strong></td>
+                  <td><strong>Num. Ports</strong></td>
+                  <td><strong>Num. Marine Terminals</strong></td>
+                </tr>
+                <tr>
+                  <td>Bermuda Container Lines (BCL)</td>
+                  <td>Bermuda</td>
+                  <td>Oleander (O)</td>
+                  <td>1 ConRo vessel</td>
+                  <td>2</td>
+                  <td>2</td>
+                </tr>
+                <tr>
+                  <td>Bermuda International Shipping Ltd. (BISL)</td>
+                  <td>Bermuda</td>
+                  <td>Bermuda Islander (BI)</td>
+                  <td>1 LoLo vessel</td>
+                  <td>2</td>
+                  <td>2</td>
+                </tr>
+                <tr>
+                  <td>Somers Isles Shipping Ltd. (SISL)</td>
+                  <td>Bermuda</td>
+                  <td>Somers Isles (SI)</td>
+                  <td>1 LoLo vessel</td>
+                  <td>2</td>
+                  <td>2</td>
+                </tr>
+                <tr>
+                  <td>Independent Container Line (ICL)</td>
+                  <td>Trans-Atlantic</td>
+                  <td>Trans-Atlantic (TAC1)</td>
+                  <td>4 LoLo vessels</td>
+                  <td>5</td>
+                  <td>5</td>
+                </tr>
+                <tr>
+                  <td>Atlantic Container Line (ACL)</td>
+                  <td>Trans-Atlantic</td>
+                  <td>Atlantic (A)</td>
+                  <td>5 ConRo vessels</td>
+                  <td>8</td>
+                  <td>10</td>
+                </tr>
+                <tr>
+                  <td>Hapag-Lloyd USA, LLC (HLUS)</td>
+                  <td>Trans-Atlantic</td>
+                  <td>US Flag Priority 1/Atlantic 3 (P1/AL3)</td>
+                  <td>6 LoLo vessels</td>
+                  <td>8</td>
+                  <td>8</td>
+                </tr>
+              </table>
+              <br />
+              <p>
+                Interact with the visualization dashboard to investigate
+                maritime connections between marine terminals, ocean carrier
+                service rotations, and historical vessel movements for the
+                Trans-Atlantic and US-Bermuda trade lanes. Click the information
+                icon in each dashboard element for help.
+              </p>
+            </div>
+          </div>
+        </div>
+      </header>
+
+      <!-- Visualization goes here -->
+      <!-- <div class="vis-holder"> -->
+      <div class="bg-light border rounded-3" id="seaconex-dashboard">
+        <div class="container-fluid mt-2 mb-2">
+          <a
+            href="https://visdunneright.github.io/SeaCONEX/#seaconex-dashboard"
+            class="d-flex align-items-center text-dark text-decoration-none"
+          >
+            <span class="fs-0">SeaCONEX Dashboard</span>
+          </a>
+          <div id="button-clear-filters"></div>
+
+          <div id="dashboard" class="mt-3">
+            <div class="row">
+              <div class="col-lg-3">
+                <div id="card-filters-carriers" class="card">
+                  <h6
+                    class="
+                      card-header
+                      d-flex
+                      justify-content-between
+                      align-items-center
+                    "
+                    id="card-heading-filters-carriers"
+                  >
+                    Ocean Carriers
+                    <div
+                      class="btn-group"
+                      role="group"
+                      aria-label="Carriers Card Button Group"
+                    >
+                      <button
+                        type="button"
+                        class="btn btn-md btn-light info-button"
+                        aria-label="Information"
+                        data-bs-toggle="collapse"
+                        data-bs-target="#info-filters-carriers"
+                        aria-expanded="false"
+                        aria-controls="info-filters-carriers"
+                      >
+                        <i class="bi bi-info-circle"></i>
+                      </button>
+
+                      <button
+                        class="accordion-button d-none"
+                        type="button"
+                        data-bs-toggle="collapse"
+                        data-bs-target="#card-body-filters-carriers"
+                        aria-expanded="true"
+                        aria-controls="card-body-filters-carriers"
+                      ></button>
+                    </div>
+                  </h6>
+                  <div
+                    id="card-body-filters-carriers"
+                    class="card-body collapse show"
+                    aria-labelledby="card-heading-filters-carriers"
+                  >
+                    <div class="collapse card-text" id="info-filters-carriers">
+                      <p>
+                        Select a carrier or carriers to visualize the
+                        corresponding vessels and marine terminal networks.
+                        <br />
+                        <br />
+                        The carrier filters pane encodes the logos for ocean
+                        carrier companies. On hover, a user is presented with
+                        additional information about the carrier company and its
+                        service. Brushing links to the other views to filter the
+                        corresponding marine terminals and vessels by the
+                        selected carrier(s).
+                      </p>
+                    </div>
+
+                    <div id="filters-carriers"></div>
+                  </div>
+                </div>
+              </div>
+
+              <div class="col-lg-9">
+                <div id="card-filters-vessels" class="card">
+                  <h6
+                    class="
+                      card-header
+                      d-flex
+                      justify-content-between
+                      align-items-center
+                    "
+                    id="card-heading-filters-vessels"
+                  >
+                    Vessels
+                    <div
+                      class="btn-group"
+                      role="group"
+                      aria-label="Vessels Card Button Group"
+                    >
+                      <button
+                        type="button"
+                        class="btn btn-md btn-light info-button"
+                        aria-label="Information"
+                        data-bs-toggle="collapse"
+                        data-bs-target="#info-filters-vessels"
+                        aria-expanded="false"
+                        aria-controls="info-filters-vessels"
+                      >
+                        <i class="bi bi-info-circle"></i>
+                      </button>
+
+                      <button
+                        class="accordion-button d-none"
+                        type="button"
+                        data-bs-toggle="collapse"
+                        data-bs-target="#card-body-filters-vessels"
+                        aria-expanded="true"
+                        aria-controls="card-body-filters-vessels"
+                      ></button>
+                    </div>
+                  </h6>
+                  <div
+                    id="card-body-filters-vessels"
+                    class="card-body collapse show"
+                    aria-labelledby="card-heading-filters-vessels"
+                  >
+                    <div class="collapse card-text" id="info-filters-vessels">
+                      <p>
+                        Select a vessel or vessels to visualize the
+                        trajectories.
+                        <br />
+                        <br />
+                        The vessel table pane displays vessels in a tabular
+                        format with each column corresponding to a ship’s
+                        attribute. Brushing allows users to view data in the
+                        geographic map for the vessel(s) corresponding historic
+                        geographic movements over the 90 day period.
+                        <br />
+                        <br />
+                        Each record in the vessel table represents an individual
+                        ship.
+                        <br />
+                        A vessel entity has:
+                        <br />
+                        "IMO" : a unique IMO (International Maritime
+                        Organization) number,
+                        <br />
+                        "Name" : the ship name,
+                        <br />
+                        "MMSI" : a MMSI (Maritime Mobile Service Identity)
+                        number,
+                        <br />
+                        "Call Sign" : a radio call sign,
+                        <br />
+                        "Build Yr." : the year vessel was constructed,
+                        <br />
+                        "Gross Tonnage (GT)" : gross tonnage,
+                        <br />
+                        "Type" : vessel type (i.e. container, Container or
+                        ConRo),
+                        <br />
+                        "Flag" : flag country,
+                        <br />
+                        "Cargo Capacity (TEU)" : container carrying capacity in
+                        twenty-foot equivalent units (TEU) (only applicable for
+                        Container (LoLo) or ConRo vessels, 0 if N/A),
+                        <br />
+                        "Cargo Capacity (CEU)" : vehicle unit carrying capacity
+                        in vehicle equivalent units (CEU) (only applicable for
+                        RoRo or ConRo vessels, 0 if N/A),
+                        <br />
+                        "Stern Ramp Capacity (Tons)" : the capacity of the stern
+                        ramp (only applicable for RoRo or ConRo vessels, 0 if
+                        N/A),
+                        <br />
+                        "Carrier Operator" : operating carrier id,
+                        <br />
+                        "Carrier Service" : ocean carrier service id
+                        <br />
+                      </p>
+                    </div>
+                    <div id="filters-vessels" class="table-responsive"></div>
+                  </div>
+                </div>
+              </div>
+
+              <!-- <div class="d-none">
+                <div id="card-controls" class="card">
+                  <h6
+                    class="
+                      card-header
+                      d-flex
+                      justify-content-between
+                      align-items-center
+                    "
+                    id="card-heading-controls"
+                  >
+                    Visualization Controls & Legend -->
+              <!-- <div
+                      class="btn-group"
+                      role="group"
+                      aria-label="Controls Card Button Group"
+                    >
+                      <button
+                        type="button"
+                        class="btn btn-md btn-light info-button"
+                        aria-label="Information"
+                        data-bs-toggle="collapse"
+                        data-bs-target="#info-controls"
+                        aria-expanded="false"
+                        aria-controls="info-controls"
+                      >
+                        <i class="bi bi-info-circle"></i>
+                      </button>
+
+                      <button
+                        class="accordion-button d-none"
+                        type="button"
+                        data-bs-toggle="collapse"
+                        data-bs-target="#card-body-controls"
+                        aria-expanded="true"
+                        aria-controls="card-body-controls"
+                      ></button>
+                    </div> -->
+              <!-- </h6>
+                  <div
+                    id="card-body-controls"
+                    class="card-body collapse show"
+                    aria-labelledby="card-heading-controls"
+                  > -->
+              <!-- <div class="collapse card-text" id="info-controls">
+                      <p>
+                        Explore the marine terminal connectivity of publicly
+                        posted carrier master service schedules.
+                      </p>
+                    </div> -->
+
+              <!-- <div class="d-flex"> -->
+              <!-- <div id="button-clear-filters"></div> -->
+
+              <!-- <h3>Legend</div>
+                      <div id="container-legend">
+                        <ul id="list-legend">
+
+                        </ul>
+                      </div>
+                    </div> -->
+              <!-- </div> -->
+              <!-- </div> -->
+              <!-- </div> -->
+
+              <div class="col-lg-4">
+                <div id="card-vis-network" class="card h-100">
+                  <h6
+                    class="
+                      card-header
+                      d-flex
+                      justify-content-between
+                      align-items-center
+                    "
+                    id="card-heading-vis-network"
+                  >
+                    Ocean Carrier Service Network Connectivity
+                    <div
+                      class="btn-group"
+                      role="group"
+                      aria-label="Ocean Carrier Service Network Connectivity Card Button Group"
+                    >
+                      <button
+                        type="button"
+                        class="btn btn-md btn-light info-button"
+                        aria-label="Information"
+                        data-bs-toggle="collapse"
+                        data-bs-target="#info-vis-network"
+                        aria-expanded="false"
+                        aria-controls="info-vis-network"
+                      >
+                        <i class="bi bi-info-circle"></i>
+                      </button>
+
+                      <button
+                        class="accordion-button d-none"
+                        type="button"
+                        data-bs-toggle="collapse"
+                        data-bs-target="#card-body-vis-network"
+                        aria-expanded="true"
+                        aria-controls="card-body-vis-network"
+                      ></button>
+                    </div>
+                  </h6>
+                  <div
+                    id="card-body-vis-network"
+                    class="card-body collapse show"
+                    aria-labelledby="card-heading-vis-network"
+                  >
+                    <div class="collapse card-text" id="info-vis-network">
+                      <p>
+                        Explore the marine terminal connectivity of publicly
+                        posted carrier master service schedules.
+                        <br />
+                        <br />
+                        The node-link diagram pane represents a directed network
+                        graph with marine terminals (nodes) as circles and
+                        carrier service connections (edges) as lines with
+                        arrows. By default, a user may see terminals represented
+                        by a white color and all network connections, albeit in
+                        a faded out manner. Hovering over a marine terminal
+                        displays details such as the terminal’s identifying
+                        code, facility name, address, and the port it belongs
+                        to. The hover interaction also brings attention to the
+                        terminal of interest by changing the terminal’s color to
+                        deep red and taking advantage of the pop-out effect. The
+                        terminal encoding returns to default when the user
+                        interaction focus changes. A selection in the carrier
+                        filters pane changes color of the associated terminal
+                        nodes to a red outline with a pink fill and brings the
+                        connections into focus using color highlighting. When in
+                        view, the connections are encoded with a blue or orange
+                        color rep- resenting a respective East or West trade
+                        lane. This is important to highlight because a carrier
+                        may not visit a facility in both directions. The
+                        force-directed node-link diagram is advantageous for
+                        showing network data because it removes geographic
+                        distance and allows the user to focus clearly on
+                        specific nodes and edges connections.
+                      </p>
+                    </div>
+                    <div id="vis-network" class=""></div>
+                  </div>
+                </div>
+              </div>
+
+              <div class="col-lg-8">
+                <div id="card-vis-map" class="card h-100">
+                  <h6
+                    class="
+                      card-header
+                      d-flex
+                      justify-content-between
+                      align-items-center
+                    "
+                    id="card-heading-vis-map"
+                  >
+                    Ocean Carrier Service Network Topography
+                    <div
+                      class="btn-group"
+                      role="group"
+                      aria-label="Ocean Carrier Service Network Map Card Button Group"
+                    >
+                      <button
+                        type="button"
+                        class="btn btn-md btn-light info-button"
+                        aria-label="Information"
+                        data-bs-toggle="collapse"
+                        data-bs-target="#info-vis-map"
+                        aria-expanded="false"
+                        aria-controls="info-vis-map"
+                      >
+                        <i class="bi bi-info-circle"></i>
+                      </button>
+
+                      <button
+                        class="accordion-button d-none"
+                        type="button"
+                        data-bs-toggle="collapse"
+                        data-bs-target="#card-body-vis-map"
+                        aria-expanded="true"
+                        aria-controls="card-body-vis-map"
+                      ></button>
+                    </div>
+                  </h6>
+                  <div
+                    id="card-body-vis-map"
+                    class="card-body collapse show"
+                    aria-labelledby="card-heading-vis-map"
+                  >
+                    <div class="collapse card-text" id="info-vis-map">
+                      <p>
+                        Explore the shortest navigable maritime paths between
+                        marine terminals of publicly posted carrier master
+                        service schedules.
+                        <br />
+                        For a selected vessel, view the actual trajectory
+                        (historical path) over a set time period.
+                        <br />
+                        <br />
+                        *Note: the shortest paths paths may not reflect the
+                        ideal route.
+                        <br />
+                        <br />
+                        The geographic map pane displays marine terminals, an
+                        optimal maritime route (shortest distance) between
+                        terminals, and the trajectory (historical path) for
+                        vessels over a set time period. By default, a user may
+                        see terminals represented by a white circle. Hovering
+                        over a marine terminal displays details such as the
+                        terminal’s identifying code, facility name, address, and
+                        the port it belongs to. The hover interaction also
+                        brings attention to the terminal of interest by changing
+                        the terminal’s color to deep red and taking advantage of
+                        the pop-out effect. The terminal encoding returns to
+                        default when the user interaction focus changes. A
+                        selection in the carrier filters pane changes color of
+                        the associated terminal nodes to a red outline with a
+                        pink fill and brings optimal maritime routes of the
+                        carrier network into focus using color highlighting. The
+                        optimal maritime route is calculated using the SeaRoute
+                        model from the European Union’s statistical office.
+                        These elements are not visible by default and ap pear
+                        red for a carrier selection. Although these connections
+                        may not be accurate for navigation, they show the
+                        shortest distance between terminal pairings and provide
+                        a base comparison against actual vessel movements
+                        (trajectories). A vessel table selection links to this
+                        map view and displays the corresponding vessel(s)
+                        trajectory for the dataset time period. The trajectory
+                        for each vessel is encoded with a different color
+                        allowing users can visually compare the actual paths for
+                        vessels assigned to the same service as well as the
+                        optimal route.
+                      </p>
+                    </div>
+                    <div id="vis-map" class=""></div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <!-- </div> -->
+    </div>
+    <!-- </main> -->
+
+    <!-- Further writeup -->
+    <div class="content-column">
+      <div id="container-content-writeup">
+        <div id="div-content-video" class="d-none">
+          <h1>Demo Video</h1>
+
+          <p>See below for a quick demo of the above visualization.</p>
+
+          <!-- <video controls width="100%">
+            <source src="img/seaconex_demo.mp4" type="video/mp4" />
+            <p>
+              Your browser doesn't support HTML5 video. Here is a
+              <a href="img/seaconex_demo.mp4"> link to the video </a>
+              instead.
+            </p>
+          </video> -->
+        </div>
+
+        <div id="div-content-explanation" class="d-none">
+          <h1>Visualization explanation</h1>
+
+          <p></p>
+        </div>
+
+        <div id="div-content-acknowledgements" class="">
+          <h1>Acknowledgments</h1>
+          <ul>
+            <li>
+              <a href="https://anitagraser.github.io/movingpandas/">
+                Moving Pandas: Python library for handling movement data based
+                on Pandas and GeoPandas
+              </a>
+              by Anita Graser
+            </li>
+            <li>
+              <a href="https://github.com/anitagraser/movingpandas-examples">
+                Moving Pandas Examples: Example notebooks illustrating
+                MovingPandas use cases
+              </a>
+              by Anita Graser
+            </li>
+            <li>
+              <a
+                href="https://anitagraser.com/2021/03/28/movement-data-in-gis-35-stop-detection-analysis-with-movingpandas/"
+              >
+                Movement data in GIS #35: stop detection & analysis with
+                MovingPandas
+              </a>
+              by Anita Graser
+            </li>
+            <li>
+              <a
+                href="https://anitagraser.com/2021/03/17/movement-data-in-gis-34-a-protocol-for-exploring-movement-data/"
+              >
+                Movement data in GIS #34: a protocol for exploring movement data
+              </a>
+              by Anita Graser
+            </li>
+            <li>
+              <a
+                href="https://github.com/anitagraser/EDA-protocol-movement-data"
+              >
+                A protocol for identifying problems in continuous movement data
+              </a>
+              by Anita Graser
+            </li>
+            <li>
+              <a
+                href="https://anitagraser.com/2020/07/26/extracting-trajectories-from-massive-movement-datasets/"
+              >
+                Generating trajectories from massive movement datasets
+              </a>
+              by Anita Graser
+            </li>
+            <li>
+              <a
+                href="https://anitagraser.com/2020/01/12/movement-data-in-gis-27-extracting-trip-origin-clusters-from-movingpandas-trajectories/"
+              >
+                Movement data in GIS #27: extracting trip origin clusters from
+                MovingPandas trajectories
+              </a>
+              by Anita Graser
+            </li>
+            <li>
+              <a
+                href="https://anitagraser.com/2019/09/11/movement-data-in-gis-24-movingpandas-hands-on-tutorials/"
+              >
+                Movement data in GIS #24: MovingPandas hands-on tutorials
+              </a>
+              by Anita Graser
+            </li>
+            <li>
+              <a
+                href="https://anitagraser.com/2019/05/22/movement-data-in-gis-23-trajectories-in-context/"
+              >
+                Movement data in GIS #23: trajectories in context
+              </a>
+              by Anita Graser
+            </li>
+            <li>
+              <a href="https://github.com/eurostat/searoute/"> SeaRoute </a>
+              by Eurostat, the statistical office of the European Union
+            </li>
+            <li>
+              <a href="https://d3js.org/"> D3: Data-Driven Documents </a>
+              by Mike Bostock
+            </li>
+            <li>
+              <a href="https://codepo8.github.io/css-fork-on-github-ribbon/#">
+                Pure CSS responsive 'Fork me on GitHub' ribbon
+              </a>
+              by Chris Heilmann
+            </li>
+            <li>
+              <a
+                href="https://neu-cs-7250-s21-staff.github.io/Assignment--Brushing_and_Linking--Solution/"
+              >
+                Assignment: Brushing & Linking in D3 Solution
+              </a>
+              by Cody Dunne
+            </li>
+            <li>
+              <a href="https://github.com/topojson/world-atlas">
+                Pre-built TopoJSON from Natural Earth
+              </a>
+              by Mike Bostock
+            </li>
+            <li>
+              <a
+                href="https://bl.ocks.org/d3noob/f052595e2f92c0da677c67d5cf6f98a1"
+              >
+                Bl.ocks.org: World Map Centered v6
+              </a>
+              by d3noob
+            </li>
+            <li>
+              <a
+                href="https://bl.ocks.org/d3noob/c056543aff74a0ac45bef099ee6f5ff4"
+              >
+                Bl.ocks.org: Map Pan / Zoom with Cities v6
+              </a>
+              by d3noob
+            </li>
+            <li>
+              <a
+                href="https://www.d3-graph-gallery.com/graph/connectionmap_csv.html"
+              >
+                d3 graph gallery: Connection Map from csv in d3.js
+              </a>
+              by Yan Holtz
+            </li>
+            <li>
+              <a
+                href="https://www.sohamkamani.com/blog/javascript/2019-02-18-d3-geo-projections-explained/"
+              >
+                D3 Geo Projections Explained
+              </a>
+              by Soham Kamani
+            </li>
+            <li>
+              <a href="https://leafletjs.com/reference-1.7.1.html">
+                Leaflet: an open-source JavaScript library for mobile-friendly
+                interactive maps
+              </a>
+              by Vladimir Agafonkin
+            </li>
+            <li>
+              <a
+                href="https://geojson.org/geojson-spec.html#feature-collection-objects"
+              >
+                GeoJSON Spec
+              </a>
+              by GeoJSON.org
+            </li>
+            <li>
+              <a href="https://tools.ietf.org/html/rfc7946">
+                RFC 7946: The GeoJSON Format
+              </a>
+              by Internet Engineering Task Force (IETF)
+            </li>
+            <li>
+              <a
+                href="https://observablehq.com/@bernardoct/leaftlet-d3-js-map-zoom--and-data-dependent-map-display"
+              >
+                Observable: Leaflet + D3.js Map, zoom- and data-dependent svgMap
+                display
+              </a>
+              by bernardoct
+            </li>
+            <li>
+              <a
+                href="https://observablehq.com/@sfu-iat355/introduction-to-leaflet-and-d3"
+              >
+                Observable: Introduction to leaflet and D3
+              </a>
+              by IAT355
+            </li>
+            <li>
+              <a
+                href="https://observablehq.com/@valentinapremoli/week-10b-intro-to-d3-js-mapping-data-with-d3"
+              >
+                Observable: Week 10b - Intro to D3.js, Mapping Data with D3
+              </a>
+              by Valentina Premoli
+            </li>
+            <li>
+              <a
+                href="https://livebook.manning.com/book/d3-js-in-action/chapter-7/1"
+              >
+                D3.js In Action: Chapter 7. Geospatial information visualization
+              </a>
+              by Elijah Meeks
+            </li>
+            <li>
+              <a
+                href="http://bl.ocks.org/EE2dev/d17037089246a3b23cba1a3ca8ed0cc1"
+              >
+                Bl.ocks.org: leaflet and d3.legend
+              </a>
+              by EE2dev
+            </li>
+            <li>
+              <a
+                href="https://www.d3-graph-gallery.com/graph/custom_legend.html"
+              >
+                d3 graph gallery: Custom legend in D3 graph gallery
+              </a>
+              by Yan Holtz
+            </li>
+            <li>
+              <a href="http://bl.ocks.org/wrobstory/5762547">
+                Bl.ocks.org: Choropleth with Vincent
+              </a>
+              by Rob Story
+            </li>
+            <li>
+              <a href="http://bl.ocks.org/ndobie/336055eed95f62350ec3">
+                Bl.ocks.org: Building a table with D3
+              </a>
+              by Nathan Dobie
+            </li>
+            <li>
+              <a href="https://codepen.io/ryshackleton/pen/NpdNjJ">
+                Codepen.io: D3 Earthquakes on Leaflet Map
+              </a>
+              by Ryan Shackleton
+            </li>
+            <li>
+              <a
+                href="https://observablehq.com/@olemi/mapping-data-on-openstreetmap-using-leaflet"
+              >
+                Observable: Mapping data on OpenStreetMap (using LeafLet) Bubble
+                chart example
+              </a>
+              by olemi
+            </li>
+            <li>
+              <a
+                href="https://bl.ocks.org/almsuarez/fa9502b0087b829ef4d97e5d6d5ccfde"
+              >
+                Bl.ocks.org: Force layout v6
+              </a>
+              by almsuarez
+            </li>
+            <li>
+              <a
+                href="https://observablehq.com/@brunolaranjeira/d3-v6-force-directed-graph-with-directional-straight-arrow"
+              >
+                Observable: D3 v6 force directed graph with directional arrows
+              </a>
+              by brunolaranjeira
+            </li>
+            <li>
+              <a href="https://observablehq.com/@d3/mobile-patent-suits">
+                Observable: Mobile Patent Suits
+              </a>
+              by Mike Bostock
+            </li>
+            <li>
+              <a href="https://stackoverflow.com/a/44316580">
+                Stack Overflow: d3 Network with Multiple Links in the Same
+                Direction
+              </a>
+              by andrew-reid
+            </li>
+            <li>
+              <a href="https://bl.ocks.org/mbostock/1129492">
+                Bl.ocks.org: Bounded force layout
+              </a>
+              by Mike Bostock
+            </li>
+            <li>
+              <a href="https://stackoverflow.com/a/13369282-m">
+                Stack Overflow: Labels / text on the nodes of a D3 force
+                directed graph
+              </a>
+              by Superboggly
+            </li>
+            <li>
+              <a
+                href="https://d19jftygre6gh0.cloudfront.net/almsuarez/4333a12d2531d6c1f6f22b74f2c57102"
+              >
+                Bl.ocks.org: Force layout with highlights
+              </a>
+              by Alejandro Suarez
+            </li>
+            <li>
+              <a
+                href="https://www.d3-graph-gallery.com/graph/interactivity_button.html"
+              >
+                d3 graph gallery: Adding and using buttons in D3
+              </a>
+              by Yan Holtz
+            </li>
+            <li>
+              <a href="https://observablehq.com/@benoldenburg/patterns-tooltip">
+                Observable: Patterns- Tooltip
+              </a>
+              by Ben Oldenburg
+            </li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <!-- Scripts at the end avoid need for dealing with async, defer, or onload event handlers -->
+    <script src="lib/bootstrap.v5.0.1/js/bootstrap.bundle.min.js"></script>
+    <script src="lib/d3.v6.1.1/d3.min.js"></script>
+    <script src="lib/topojson.v3.0.2/topojson.min.js"></script>
+    <script src="js/svgMap.js"></script>
+    <script src="js/leafletMap.js"></script>
+    <script src="js/vesselTable.js"></script>
+    <script src="js/network.js"></script>
+    <!--<script src='js/detailPane.js'></script>-->
+    <script src="js/carrierFilter.js"></script>
+    <script src="js/resetBtn.js"></script>
+    <script src="js/visualization.js"></script>
+  </body>
+</html>

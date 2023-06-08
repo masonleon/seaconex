@@ -1,0 +1,26 @@
+/* Container for Visualizations */
+.flex-box {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: nowrap;
+}
+
+#center-container {
+  display: flex;
+  width: 100%;
+  /*height: 100%;*/
+  flex-direction: column;
+  align-items: baseline;
+  background-color: #dddddd;
+}
+
+/* Visualization Interactive Controls */
+#filters-container {
+  background-color: #387c6d;
+  width: 400px;
+  color: #FFF;
+  padding: 10px;
+  margin-right: 5px;
+  padding-right: 20px;
+  padding-left: 20px;
+}

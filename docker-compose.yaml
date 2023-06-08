@@ -1,0 +1,27 @@
+version: '3.8'
+services:
+
+  sealab:
+    build:
+      context: .
+      dockerfile: docker/sealab/Dockerfile
+    container_name: sealab
+    volumes:
+      - ./seaconex/:/home/joyvan/work/seaconex
+      - ./notebooks/:/home/jovyan/work/notebooks
+      - ./data/:/home/jovyan/work/data
+      - ./files/:/home/jovyan/work/files
+      - ./img/:/home/jovyan/work/img
+    ports:
+      - 8888:8888
+    environment:
+      - JUPYTER_ENABLE_LAB=yes
+#    restart: always
+
+  searoute:
+    build:
+      context: .
+      dockerfile: docker/searoute/Dockerfile
+    container_name: searoute
+    volumes:
+      - ./data/searoute/data/:/data

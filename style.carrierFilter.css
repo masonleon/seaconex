@@ -1,0 +1,44 @@
+#filters-carriers {
+  column-count: 2;
+  width: 100%;
+}
+
+div.carrier-selector {
+  /*-webkit-user-select: none;*/
+  /*-khtml-user-select: none;*/
+  /*-moz-user-select: none;*/
+  /*-ms-user-select: none;*/
+  /*-o-user-select: none;*/
+  /*user-select: none;*/
+  background-size: 90%;
+  background-repeat: no-repeat;
+  background-position: center center;
+  height: 70px;
+}
+
+div.carrier-selector.selected {
+  background-color: pink;
+}
+
+div.carrier-selector.mouseover {
+  background-color: #d6d6d6;
+}
+
+div.carrier-selector.mouseover.selected {
+  background-color: #e08fa3;
+}
+
+div.carrier-selector-tooltip {
+  position: absolute;
+  display: none;
+  min-width: 30px;
+  max-width: 900px;
+  border-radius: 4px;
+  height: auto;
+  background: rgba(250, 250, 250, 0.9);
+  border: 1px solid #DDD;
+  padding: 4px 8px;
+  font-size: .85rem;
+  text-align: left;
+  z-index: 1000;
+}

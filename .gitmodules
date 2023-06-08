@@ -1,0 +1,3 @@
+[submodule "lib/movingpandas"]
+	path = lib/movingpandas
+	url = https://github.com/anitagraser/movingpandas.git
